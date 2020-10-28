@@ -1,0 +1,265 @@
+{%- if form is defined -%}
+    {%- block form_theme -%}
+        {%- form_theme form '@ArkounayQuickAdminGenerator/form/form_theme.html.twig' -%}
+    {%- endblock -%}
+{%- endif -%}
+{%- set current_route = app.request.get('_route') -%}
+
+{% set menu_vertical = qag.config.menu.theme == 'vertical'  %}
+{% set menu_horizontal = not menu_vertical  %}
+
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"/>
+    <meta http-equiv="X-UA-Compatible" content="ie=edge"/>
+    <meta name="msapplication-TileColor" content="#206bc4"/>
+    <meta name="theme-color" content="#206bc4"/>
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
+    <meta name="apple-mobile-web-app-capable" content="yes"/>
+    <meta name="mobile-web-app-capable" content="yes"/>
+    <meta name="HandheldFriendly" content="True"/>
+    <meta name="MobileOptimized" content="320"/>
+    <meta name="robots" content="noindex,nofollow,noarchive"/>
+
+    {% block css %}
+        <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin>
+        <link rel="stylesheet" href="{{ asset('bundles/arkounayquickadmingenerator/build/app.css') }}">
+    {% endblock %}
+
+    {% block head_js %}
+        <script src="{{ asset('bundles/arkounayquickadmingenerator/build/app.js') }}"></script>
+    {% endblock %}
+
+
+    <title>{% block title qag.config.title|trans %}</title>
+</head>
+
+<body class="antialiased {% block body_extra_class '' %}">
+{% block body %}
+    {% if menu_vertical %}
+    <aside class="navbar navbar-vertical navbar-expand-lg navbar-dark">
+        <div class="container">
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-menu">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            {% block main_title %}
+                <a href="{{ path('qag.dashboard') }}" class="navbar-brand navbar-brand-autodark">
+                    {{ qag.config.title|trans }}
+                </a>
+            {% endblock %}
+
+
+            <div class="navbar-nav flex-row d-lg-none">
+
+                {% block user_menu %}
+                    <div class="nav-item dropdown">
+                        <a href="#" class="nav-link d-flex lh-1 text-reset p-0" data-toggle="dropdown">
+                            {% block user_menu_username %}
+                                {% if app.user is not null %}
+                                    {% if app.user.username is defined %}
+                                        <span class="avatar">{{ app.user.username[:1] }}</span>
+                                    {% endif %}
+                                    <div class="d-none d-xl-block pl-2">
+                                        {% if app.user.username is defined %}
+                                            <div>{{ app.user.username|title }}</div>
+                                        {% else %}
+                                            <div>{{ app.user|title }}</div>
+                                        {% endif %}
+                                        {% if app.user.email is defined %}
+                                            <div class="mt-1 small text-muted">{{ app.user.email }}</div>
+                                        {% endif %}
+                                    </div>
+                                {% else %}
+                                    <div>Guest</div>
+                                {% endif %}
+                            {% endblock %}
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-right">
+                            {% block user_menu_dropdown %}
+                                {% block user_menu_dropdown_homepage %}
+                                    <a class="dropdown-item" href="/">
+                                        {{ _self.tabler_icon('home', 50, 44, 'icon dropdown-item-icon icon-tabler icon-tabler-logout') }}
+                                        Homepage
+                                    </a>
+                                {% endblock %}
+                                {% block user_menu_dropdown_logout %}
+                                    {% if app.user is not null %}
+                                        <a class="dropdown-item" href="{% block user_menu_dropdown_logout_path '/logout' %}">
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="icon dropdown-item-icon icon-tabler icon-tabler-logout" width="50" height="44" viewBox="0 0 24 24" stroke-width="1.5" stroke="#2c3e50" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                                <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+                                                <path d="M14 8v-2a2 2 0 0 0 -2 -2h-7a2 2 0 0 0 -2 2v12a2 2 0 0 0 2 2h7a2 2 0 0 0 2 -2v-2" />
+                                                <path d="M7 12h14l-3 -3m0 6l3 -3" />
+                                            </svg>
+                                            Logout
+                                        </a>
+                                    {% endif %}
+                                {% endblock %}
+                            {% endblock %}
+
+                        </div>
+                    </div>
+                {% endblock %}
+            </div>
+
+            <div class="collapse navbar-collapse" id="navbar-menu">
+                <ul class="navbar-nav pt-lg-3">
+                    {% block menu_items %}
+                        {% set icon_class = menu_vertical ? 'mr-2' : 'mr-1' %}
+                        <li class="nav-item {{ current_route == 'qag.dashboard' ? 'active' }}">
+                            {% block menu_items_dashboard %}
+                                <a class="nav-link" href="{{ path('qag.dashboard') }}">
+                                    <span class="nav-link-title"> Dashboard </span>
+                                </a>
+                            {% endblock %}
+                        </li>
+                        {% for k, menu_item in qag.menu_items %}
+                            {% if menu_item is iterable %}
+                                {% set active = false %}
+                                {% set items = menu_item %}
+                                {% set has_children = false %}
+                                {% for menu_item in items %}
+                                    {% if not active %}
+                                        {% set active = "qag.#{menu_item.route}" == current_route or "qag.#{menu_item.route}_" in current_route %}
+                                    {% endif %}
+                                    {% if not has_children and menu_item.enabled %}
+                                        {% set has_children = true %}
+                                    {% endif %}
+                                {% endfor %}
+                                {% if has_children %}
+                                    <li class="nav-item dropdown {{ active ? 'active' }}">
+                                        <a class="nav-link dropdown-toggle show" href="#" data-toggle="dropdown" role="button" aria-expanded="true">
+                                            <span class="nav-link-title">{{ k }}</span>
+                                        </a>
+                                        <ul class="dropdown-menu {{ active and menu_vertical ? 'show' }}">
+                                            {% for menu_item in items %}
+                                                {% block menu_item_children %}
+                                                    {% if menu_item.enabled %}
+                                                        <li>
+                                                            <a class="dropdown-item {{ active and menu_vertical ? 'text-white' }} {% if "qag.#{menu_item.route}" == current_route or "qag.#{menu_item.route}_" in current_route %}active{% endif %}" href="{{ path('qag.' ~ menu_item.route) }}">
+                                                                {% if menu_vertical or menu_item.icon is not null %}
+                                                                    {{ _self.tabler_icon(menu_item.icon|default('chevron-right'), 16, 16, icon_class) }}
+                                                                {% endif %}
+                                                                <span>{{ menu_item.pluralName|trans }}</span>
+                                                            </a>
+                                                        </li>
+                                                    {% endif %}
+                                                {% endblock %}
+                                            {% endfor %}
+                                        </ul>
+                                    </li>
+                                {% endif %}
+                            {% else %}
+                                {% block menu_item %}
+                                    {% if menu_item.enabled %}
+                                        {# menu_item \Arkounay\Bundle\QuickAdminGeneratorBundle\Crud\Crud #}
+                                        <li class="nav-item {% if "qag.#{menu_item.route}" == current_route or "qag.#{menu_item.route}_" in current_route %}active{% endif %}">
+                                            <a class="nav-link" href="{{ path('qag.' ~ menu_item.route) }}">
+                                                {% if  menu_vertical or menu_item.icon is not null %}
+                                                    {{ _self.tabler_icon(menu_item.icon|default('chevron-right'), 16, 16, icon_class) }}
+                                                {% endif %}
+                                                <span>{{ menu_item.pluralName|trans }}</span>
+                                            </a>
+                                        </li>
+                                    {% endif %}
+                                {% endblock %}
+
+                            {% endif %}
+                        {% endfor %}
+                    {% endblock %}
+                </ul>
+            </div>
+
+        </div>
+    </aside>
+    {% endif %}
+
+    <header class="navbar navbar-expand-md navbar-light {% if menu_vertical %}d-none d-lg-flex{% endif %}">
+        <div class="container-xl">
+            {% if menu_horizontal %}
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-menu">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <a href="{{ path('qag.dashboard') }}" class="navbar-brand navbar-brand-autodark d-none-navbar-horizontal pr-0 pr-md-3">
+                    {{ qag.config.title }}
+                </a>
+            {% else %}
+                <div></div>
+            {% endif %}
+            <div class="navbar-nav flex-row order-md-last">
+                {{ block('user_menu') }}
+            </div>
+        </div>
+    </header>
+
+    {% if menu_horizontal %}
+    <div class="navbar-expand-md">
+        <div class="collapse navbar-collapse" id="navbar-menu">
+            <div class="navbar navbar-light">
+                <div class="container-xl">
+                    <ul class="navbar-nav">
+                        {{ block('menu_items') }}
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+
+
+    {% if menu_vertical %}
+    <div class="page">
+        {% endif %}
+        <div class="content">
+            <div class="container-xl">
+                <div class="page-header">
+                    <div class="row align-items-start align-items-sm-center justify-content-between">
+                        <div class="col-auto">
+                            {% block content_title_wrapper %}
+                                <h2 class="page-title">
+                                    {% block content_title block('title') %}
+                                </h2>
+                            {% endblock %}
+                        </div>
+                        {% block help_text %}{% endblock %}
+                        {% block global_actions %}{% endblock %}
+                    </div>
+                </div>
+
+                {% block flash_messages %}
+                    {% for label, messages in app.flashes(['danger', 'success', 'warning', 'info']) %}
+                        {% for message in messages %}
+                            <div class="alert alert-{{ label}} alert-dismissible in" role="alert">
+                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                                {{ message|raw }}
+                            </div>
+                        {% endfor %}
+                    {% endfor %}
+                {% endblock %}
+                {% block content %}{% endblock %}
+            </div>
+        </div>
+        {% if menu_vertical %}
+    </div>
+    {% endif %}
+
+    <!-- Optional JavaScript -->
+{% block js %}
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
+{% endblock %}
+
+{% endblock %}
+</body>
+</html>
+
+{% macro tabler_icon(name, width=16, height=16, class='') %}
+    <svg width="{{ width }}" height="{{ height }}" {% if class %}class="{{ class }}"{% endif %}>
+        <use xlink:href="{{ asset('bundles/arkounayquickadmingenerator/tabler-sprite.svg') }}#tabler-{{ name }}" />
+    </svg>
+{% endmacro  %}

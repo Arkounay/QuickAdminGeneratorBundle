@@ -1,0 +1,16 @@
+{
+  "devDependencies": {
+    "@symfony/webpack-encore": "^0.31.0",
+    "node-sass": "^4.14.1",
+    "sass-loader": "^9.0.1",
+    "webpack-notifier": "^1.6.0"
+  },
+  "dependencies": {
+    "@ttskch/select2-bootstrap4-theme": "^1.4.0",
+    "core-js": "^3.6.5",
+    "jquery": "^3.5.1",
+    "select2": "^4.0.13",
+    "symfony-collection": "ninsuo/symfony-collection",
+    "tabler": "^1.0.0-alpha.7"
+  }
+}

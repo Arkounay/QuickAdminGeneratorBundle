@@ -1,0 +1,42 @@
+{% extends '@ArkounayQuickAdminGenerator/form/form_theme.html.twig' %}
+
+{% block date_filter_widget %}
+    {{ _self.filter_multiple(form, 'date') }}
+{% endblock %}
+
+{% block date_time_filter_widget %}
+    {{ _self.filter_multiple(form, 'date') }}
+{% endblock %}
+
+{% block integer_filter_widget %}
+    {{ _self.filter_multiple(form, 'number') }}
+{% endblock %}
+
+{% block entity_filter_widget %}
+    <div class="row">
+        <div class="col-4">
+            {{ form_widget(form.choice) }}
+        </div>
+        <div class="col">
+            {{ form_widget(form.entity) }}
+        </div>
+    </div>
+{% endblock %}
+
+{% macro filter_multiple(form, name) %}
+    <div class="row filter-row">
+        <div class="col-3">
+            {{ form_widget(form.choice) }}
+        </div>
+        <div class="col js-filter-multiple">
+            {{ form_widget(form[name ~ '_start']) }}
+            <strong>{{ 'and'|trans }}</strong>
+            {{ form_widget(form[name ~ '_end']) }}
+        </div>
+        <div class="col js-filter-single">
+            {{ form_widget(form[name]) }}
+        </div>
+    </div>
+
+    {{ form_rest(form) }}
+{% endmacro %}

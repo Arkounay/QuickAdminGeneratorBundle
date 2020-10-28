@@ -1,0 +1,46 @@
+{% extends '@ArkounayQuickAdminGenerator/base.html.twig' %}
+
+{% block content_title %}
+    {{ 'Create'|trans }} {{ name|trans }}
+{% endblock %}
+
+{% block content_title_wrapper %}
+    <div class="d-flex flex-column">
+        {{ parent() }}
+        {% block breadcrumb_wrapper %}
+            <nav class="breadcrumb">
+                {% block breadcrumb %}
+                    <a class="breadcrumb-item" href="{{ back }}">{{ plural_name|trans }}</a>
+                    <span class="breadcrumb-item active">{{ 'Create'|trans }} {{ name|trans }}</span>
+                {% endblock %}
+            </nav>
+        {% endblock %}
+    </div>
+{% endblock %}
+
+
+{% block content_classes %}
+    {{ parent() }} p-4
+{% endblock %}
+
+{% block content %}
+    {{ form_start(form) }}
+    <div class="card">
+        {% block card %}
+            {% block card_body %}
+                <div class="card-body">
+                    {% block form_content %}
+                        {{ form_rest(form) }}
+                    {% endblock %}
+                </div>
+            {% endblock %}
+            {% block card_footer %}
+                <div class="card-footer">
+                    <a class="btn btn-secondary" href="{{ back }}">{{ _self.tabler_icon('arrow-narrow-left')}} {{ 'Back'|trans }}</a>
+                    <button type="submit" class="btn btn-primary float-right">{{ 'Save'|trans }}</button>
+                </div>
+            {% endblock %}
+        {% endblock %}
+    </div>
+    {{ form_end(form) }}
+{% endblock %}

@@ -1,0 +1,6 @@
+num_of_result: >-
+    {results, plural,
+        =0    {Aucun résultat pour « <strong>{search}</strong> ».}
+        one   {Un résultat pour « <strong>{search}</strong> » :}
+        other {# résultats pour « <strong>{search}</strong> » :}
+    }

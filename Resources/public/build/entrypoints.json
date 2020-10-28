@@ -1,0 +1,12 @@
+{
+  "entrypoints": {
+    "app": {
+      "css": [
+        "/bundles/arkounayquickadmingenerator/build/app.css"
+      ],
+      "js": [
+        "/bundles/arkounayquickadmingenerator/build/app.js"
+      ]
+    }
+  }
+}

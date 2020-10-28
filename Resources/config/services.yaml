@@ -1,0 +1,45 @@
+services:
+    # default configuration for services in *this* file
+    _defaults:
+        autowire: true      # Automatically injects dependencies in your services.
+        autoconfigure: true # Automatically registers your services as commands, event subscribers, etc.
+
+    # makes classes in / available to be used as services
+    # this creates a service per class whose id is the fully-qualified class name
+    #    Arkounay\Bundle\QuickAdminGeneratorBundle\:
+    #        resource: '../../*'
+    #        exclude: '../../{DependencyInjection,Tests}'
+
+    Arkounay\Bundle\QuickAdminGeneratorBundle\Extension\FieldService:
+        autowire: true
+
+    Arkounay\Bundle\QuickAdminGeneratorBundle\Extension\TwigLoaderService:
+        autowire: true
+
+    Arkounay\Bundle\QuickAdminGeneratorBundle\Crud\CrudListener:
+        autowire: true
+
+    # controllers are imported separately to make sure services can be injected
+    # as action arguments even if you don't extend any base controller class
+    Arkounay\Bundle\QuickAdminGeneratorBundle\Controller\DashboardController:
+        tags: ['controller.service_arguments']
+
+    # add more service definitions when explicit configuration is needed
+    # please note that last definitions always *replace* previous ones
+
+    Arkounay\Bundle\QuickAdminGeneratorBundle\Extension\QaExtension:
+        arguments:
+            $cruds: !tagged_iterator quickadmin.crud
+            $config: '%quick_admin_generator%'
+        tags:
+            - 'twig.extension'
+
+    Arkounay\Bundle\QuickAdminGeneratorBundle\Crud\RouteLoader:
+        arguments:
+            - !tagged_iterator quickadmin.crud
+            - '@qag.admin'
+
+    qag.admin:
+        class: Arkounay\Bundle\QuickAdminGeneratorBundle\Controller\DashboardController
+
+    Arkounay\Bundle\QuickAdminGeneratorBundle\Controller\AdminInterface: '@qag.admin'

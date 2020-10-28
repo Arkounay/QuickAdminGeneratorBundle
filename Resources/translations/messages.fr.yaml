@@ -1,0 +1,32 @@
+entity_deleted: 'La suppression de « %entity% » a été effectuée avec succès.'
+one_entity_deleted: 'Un élément a été supprimé.'
+multiple_entity_deleted: '<strong>%count%</strong> éléments ont été supprimés.'
+are_you_sure: 'Êtes-vous sûr de vouloir supprimer cet élément ? <br> Cette opération est irréversible.'
+are_you_sure_batch: 'Êtes-vous sûr de vouloir supprimer ces éléments ? <br> Cette opération est irréversible.'
+
+Entities: Entités
+Create: Créer
+Edit: Modifier
+Delete: Supprimer
+Back: Retour
+Save: Enregistrer
+Search: Rechercher
+No result: Aucun résultat
+Remove: Supprimer
+Cancel: Annuler
+Content: Contenu
+Filter: Filtrer
+Close: Fermer
+
+Equal: Égal à
+Different: Différent de
+Under: Inférieur à
+Above: Supérieur à
+Before: Avant
+After: Après
+Between: Entre
+Not in: Hors
+and: et
+
+pagination:
+    num_of_result: '<strong> %total_count% </strong> résultats'

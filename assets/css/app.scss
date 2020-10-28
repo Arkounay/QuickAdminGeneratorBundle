@@ -1,0 +1,110 @@
+@import '~tabler/scss/tabler-core';
+
+@import "~select2/src/scss/core";
+@import "~@ttskch/select2-bootstrap4-theme/dist/select2-bootstrap4.min.css";
+
+.batch-column {
+  width: 15px;
+  @include media-breakpoint-down(md) {
+    width: auto;
+  }
+}
+
+@include media-breakpoint-up(sm) {
+  .w-sm-auto {
+    width: auto !important;
+  }
+}
+
+.table th > a {
+  display: block;
+  white-space: nowrap;
+}
+
+.btn-group-table > a, .btn-group-table > button {
+  font-size: .8rem;
+}
+
+.btn-table-dropdown {
+  width: 32px;
+  height: 32px;
+  padding: 0 !important;
+}
+
+.table-thumbnail {
+  min-width: 80px;
+}
+
+@mixin card {
+  margin-bottom: .5rem;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  word-wrap: break-word;
+  background-color: #ffffff;
+  background-clip: border-box;
+  border: 1px solid rgba(110, 117, 130, 0.2);
+  border-radius: 3px;
+}
+
+@include media-breakpoint-up(sm) {
+  .table-card {
+    @include card;
+  }
+}
+
+@include media-breakpoint-down(xs) {
+
+  table.table {
+
+    border: 0;
+
+    thead {
+      display: none;
+    }
+
+    tr {
+      @include card;
+    }
+
+    td {
+      display: block;
+    }
+
+    td::before {
+      content: attr(data-label);
+      font-weight: bold;
+      text-transform: uppercase;
+      display: block;
+      width: 100%;
+    }
+
+    td:last-child {
+      border-bottom: 0;
+    }
+  }
+
+}
+
+
+.btn-collection-container {
+  position: absolute;
+  right: 0;
+  top: 0;
+}
+.btn-collection {
+  @extend .close;
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  box-shadow: none !important;
+
+  &-remove:hover {
+      color: $danger;
+  }
+}
+
+.position input {
+  height: 28px;
+}
