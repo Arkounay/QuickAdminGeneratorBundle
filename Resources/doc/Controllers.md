@@ -105,7 +105,7 @@ In the listing, you can add a description by overriding the `getDescription` met
 
 By default, the responsive mode of the list view will be simplified.
 
-<img src="https://raw.githubusercontent.com/Arkounay/QuickAdminGeneratorBundle/master/Resources/doc/images/responsive-simple.png" alt="Actions" align="center" />
+![Responsive Simple](https://raw.githubusercontent.com/Arkounay/QuickAdminGeneratorBundle/master/Resources/doc/images/responsive-simple.png)
 
 This will disallow batch actions and hide some information, but make the view more simple on mobile devices.
 To undo this, you can override the `simpleResponsiveMode` method and return false there.
@@ -119,7 +119,7 @@ protected function simpleResponsiveMode(): bool
 
 You will get a full table:
 
-<img src="https://raw.githubusercontent.com/Arkounay/QuickAdminGeneratorBundle/master/Resources/doc/images/responsive-full.png" alt="Actions" align="center" />
+![Responsive Full](https://raw.githubusercontent.com/Arkounay/QuickAdminGeneratorBundle/master/Resources/doc/images/responsive-full.png)
 
 Keep in mind you can change how simple responsive mode looks by overriding the corresponding twig block. (`simple_responsive_item`)
 
@@ -172,7 +172,9 @@ this will make an extra request when accessing an entity to check if it was filt
 
 Filtering through Filters can work in conjunction with the Query Builder.
 Filters allow the users to specify how they want to filter a list.
-<img src="https://raw.githubusercontent.com/Arkounay/QuickAdminGeneratorBundle/master/Resources/doc/images/filters.png" alt="Actions" align="center" />
+
+![Filters](https://raw.githubusercontent.com/Arkounay/QuickAdminGeneratorBundle/master/Resources/doc/images/filters.png)
+
 To add a filter, override the getFilters method:
 ```php
 protected function getFilters(): Filters

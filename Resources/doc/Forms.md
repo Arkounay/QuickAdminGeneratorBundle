@@ -124,7 +124,7 @@ protected function buildForm($entity, bool $creation): FormBuilderInterface
 
 It will render collections properly.
 
-<img src="https://raw.githubusercontent.com/Arkounay/QuickAdminGeneratorBundle/master/Resources/doc/images/collections.png" alt="Actions" align="center" />
+![Collections](https://raw.githubusercontent.com/Arkounay/QuickAdminGeneratorBundle/master/Resources/doc/images/collections.png)
 
 This uses [ninsuo/symfony-collection](https://github.com/ninsuo/symfony-collection). Although not maintained, this still works very well and has many interesting features.
 

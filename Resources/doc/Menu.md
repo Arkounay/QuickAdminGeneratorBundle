@@ -68,7 +68,7 @@ arkounay_quick_admin_generator:
 
 this allows you to have subitems in a menu.
 
-<img src="https://raw.githubusercontent.com/Arkounay/QuickAdminGeneratorBundle/master/Resources/doc/images/menu-subitems.png" alt="Menu" align="center" />
+![Menu](https://raw.githubusercontent.com/Arkounay/QuickAdminGeneratorBundle/master/Resources/doc/images/menu-subitems.png)
 
 However, there is no dependency injection.
 
@@ -88,7 +88,7 @@ If you want to configure how the dashboard item looks, you can override the bloc
 
 By default, the menu is horizontal. 
 
-<img src="https://raw.githubusercontent.com/Arkounay/QuickAdminGeneratorBundle/master/Resources/doc/images/menu-horizontal.png" alt="Horizontal Menu" align="center" />
+![Horizontal Menu](https://raw.githubusercontent.com/Arkounay/QuickAdminGeneratorBundle/master/Resources/doc/images/menu-horizontal.png)
 
 You can make it vertical by editing the yaml:
 ```yaml
@@ -97,9 +97,7 @@ arkounay_quick_admin_generator:
         theme: 'vertical'
 ```
 
-<img src="https://raw.githubusercontent.com/Arkounay/QuickAdminGeneratorBundle/master/Resources/doc/images/menu-vertical.png" alt="Vertical Menu" align="center" />
-
-
+![Vertical Menu](https://raw.githubusercontent.com/Arkounay/QuickAdminGeneratorBundle/master/Resources/doc/images/menu-vertical.png)
 
 ## Changing the title
 
