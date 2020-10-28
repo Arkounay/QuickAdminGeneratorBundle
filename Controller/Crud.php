@@ -565,7 +565,7 @@ abstract class Crud extends AbstractController
 
     public function getIcon(): ?string
     {
-        return 'tag';
+        return null;
     }
 
     public function filterFormAjaxAction(Request $request): Response
