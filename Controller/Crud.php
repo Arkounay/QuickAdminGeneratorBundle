@@ -465,7 +465,7 @@ abstract class Crud extends AbstractController
                 continue;
             }
 
-            $options = ['label' => $field->getLabel()];
+            $options = ['label' => $field->getLabel(), 'required' => $field->isRequired()];
             if ($field->getFormClass() !== null) {
                 $options['attr'] = ['class' => $field->getFormClass()];
             }
@@ -473,7 +473,7 @@ abstract class Crud extends AbstractController
             switch ($field->getType()) {
                 case 'datetime':
                     $builder->add($field->getIndex(), $field->getFormType() ?? DateTimeType::class, array_merge($options, [
-                        'widget' => 'single_text'
+                        'widget' => 'single_text',
                     ]));
                     break;
                 case 'relation_to_many':

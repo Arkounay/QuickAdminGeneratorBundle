@@ -33,4 +33,9 @@ class Field
      */
     public $formType;
 
+    /**
+     * @var bool
+     */
+    public $required = null;
+
 }
