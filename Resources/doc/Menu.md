@@ -68,7 +68,7 @@ arkounay_quick_admin_generator:
 
 this allows you to have subitems in a menu.
 
-[Menu](https://raw.githubusercontent.com/Arkounay/QuickAdminGeneratorBundle/master/Resources/doc/images/menu-subitems.png)
+![Menu](https://raw.githubusercontent.com/Arkounay/QuickAdminGeneratorBundle/master/Resources/doc/images/menu-subitems.png)
 
 However, there is no dependency injection.
 
