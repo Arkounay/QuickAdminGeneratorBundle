@@ -4,7 +4,7 @@ QAG is a bundle that allows quick and simple administration backends generation 
 
 The theme used is [Tabler](github.com/tabler/tabler).
 
-Disclaimer: this is primarily made for fun and for my specific use cases :sweat_smile: there will be funcitonnal tests in the demo repo.
+Disclaimer: this is primarily made for fun and for my specific use cases :sweat_smile: there will be functional tests in the demo repo.
 
 <img src="https://raw.githubusercontent.com/Arkounay/QuickAdminGeneratorBundle/master/Resources/doc/images/menu-horizontal.png" alt="Horizontal Menu" align="center" />
 
