@@ -13,7 +13,7 @@ Disclaimer: this is primarily made for fun and for my specific use cases :sweat_
 Install the dependency:
 
 ```
-composer install arkounay/quick-admin-generator-bundle
+composer require arkounay/quick-admin-generator-bundle
 ```
 
 also make sure the following line was added in `config/bundles.php`:
