@@ -6,4 +6,32 @@
 
 
 {% block content %}
+    <div class="card">
+        <div class="card-header h3">
+            Welcome!
+        </div>
+        <div class="card-body">
+            To override this file, you can create a twig file in <pre class="d-inline p-0 text-green">templates/bundles/ArkounayQuickAdminGeneratorBundle/crud/index.html.twig</pre>. <br>
+            For example:
+            <pre>
+                {%- verbatim -%}
+{% extends '@!ArkounayQuickAdminGenerator/crud/index.html.twig' %}
+
+{% block content %}
+    &lt;div class=&quot;card&quot;&gt;
+        &lt;div class=&quot;card-body&quot;&gt;
+            Hi {{ app.user }}
+        &lt;/div&gt;
+    &lt;/div&gt;
+{% endblock %}
+                {%- endverbatim -%}
+            </pre>
+        </div>
+        <div class="card-footer">
+            Checkout the <a target="_blank" href="https://github.com/Arkounay/QuickAdminGeneratorBundle/blob/master/README.md">documentation</a>  for more informations.
+        </div>
+    </div>
+
+
+
 {% endblock %}

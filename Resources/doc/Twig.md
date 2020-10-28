@@ -35,7 +35,7 @@ See more at [Fields](Fields.md) documentation to see how to override how the tab
 
 ### Overriding the dashboard
 
-Override the twig `crud/index.html.twig` by creating a field in `templates/bundles/ArkounayQuickAdminGeneratorBundle/crud/index.html.twig`
+Override the twig `crud/index.html.twig` by creating a file in `templates/bundles/ArkounayQuickAdminGeneratorBundle/crud/index.html.twig`
 
 ```twig
 {% extends '@!ArkounayQuickAdminGenerator/crud/index.html.twig' %}
