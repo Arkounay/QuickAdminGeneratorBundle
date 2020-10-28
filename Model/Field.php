@@ -31,6 +31,11 @@ class Field implements Listable
     protected $sortable;
 
     /**
+     * @var bool
+     */
+    protected $required = true;
+
+    /**
      * @var string
      */
     protected $sortQuery;
@@ -202,6 +207,18 @@ class Field implements Listable
     public function setFormClass(?string $formClass): self
     {
         $this->formClass = $formClass;
+
+        return $this;
+    }
+
+    public function isRequired(): bool
+    {
+        return $this->required;
+    }
+
+    public function setRequired(bool $required): self
+    {
+        $this->required = $required;
 
         return $this;
     }

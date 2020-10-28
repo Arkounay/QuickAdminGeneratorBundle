@@ -56,7 +56,8 @@ class FieldService
         /** @var \Arkounay\Bundle\QuickAdminGeneratorBundle\Annotation\Field $annotationField */
         $annotationField = null;
         if ($metadata) {
-            if ($metadata->hasField($fieldIndex) || $metadata->hasAssociation($fieldIndex)) {
+            $hasField = $metadata->hasField($fieldIndex);
+            if ($hasField || $metadata->hasAssociation($fieldIndex)) {
                 $reflectionProperty = $metadata->getReflectionProperty($fieldIndex);
 
                 if ($reflectionProperty) {
@@ -78,6 +79,12 @@ class FieldService
                         $field->setDefaultSortDirection($sort->direction);
                     }
                     $annotationField = $this->reader->getPropertyAnnotation($reflectionProperty, \Arkounay\Bundle\QuickAdminGeneratorBundle\Annotation\Field::class);
+                }
+
+                if ($hasField) {
+                    $fieldMapping = $metadata->getFieldMapping($fieldIndex);
+                    $nullable = $fieldMapping['nullable'] ?? false;
+                    $field->setRequired(!$nullable);
                 }
             }
         }
@@ -105,6 +112,9 @@ class FieldService
         }
 
         if ($annotationField !== null) {
+            if ($annotationField->required !== null) {
+                $field->setRequired($annotationField->required);
+            }
             if ($annotationField->sortable !== null) {
                 $field->setSortable($annotationField->sortable);
             }
