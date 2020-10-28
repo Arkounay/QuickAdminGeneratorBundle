@@ -59,6 +59,9 @@ The default route expected by actions and generates by automatic routes is `qag.
 So, for example if you need to add a "Show", or a "Duplicate" action, you can use this method.
 Extra actions are automatically put in a dropdown.
 
+
+![solarized palette](https://github.com/altercation/solarized/raw/master/img/solarized-palette.png)
+
 <img src="https://raw.githubusercontent.com/Arkounay/QuickAdminGeneratorBundle/master/Resources/doc/images/actions.png" alt="Actions" align="center" />
 
 #### Batch actions
