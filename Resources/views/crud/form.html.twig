@@ -1,7 +1,9 @@
 {% extends '@ArkounayQuickAdminGenerator/base.html.twig' %}
 
+{% set action_name = creation ? ('Create'|trans):('Edit'|trans) %}
+
 {% block content_title %}
-    {{ 'Create'|trans }} {{ name|trans }}
+    {{ action_name }} {{ name|trans }}
 {% endblock %}
 
 {% block content_title_wrapper %}
@@ -11,7 +13,7 @@
             <nav class="breadcrumb">
                 {% block breadcrumb %}
                     <a class="breadcrumb-item" href="{{ back }}">{{ plural_name|trans }}</a>
-                    <span class="breadcrumb-item active">{{ 'Create'|trans }} {{ name|trans }}</span>
+                    <span class="breadcrumb-item active">{{ action_name }} {{ name|trans }}</span>
                 {% endblock %}
             </nav>
         {% endblock %}
