@@ -3,6 +3,7 @@
 
 namespace Arkounay\Bundle\QuickAdminGeneratorBundle\Controller;
 
+use Arkounay\Bundle\QuickAdminGeneratorBundle\Extension\FieldService;
 use Arkounay\Bundle\QuickAdminGeneratorBundle\Extension\TwigLoaderService;
 use Arkounay\Bundle\QuickAdminGeneratorBundle\Model\Action;
 use Arkounay\Bundle\QuickAdminGeneratorBundle\Model\Actions;
@@ -10,7 +11,6 @@ use Arkounay\Bundle\QuickAdminGeneratorBundle\Model\Field;
 use Arkounay\Bundle\QuickAdminGeneratorBundle\Model\Fields;
 use Arkounay\Bundle\QuickAdminGeneratorBundle\Model\Filter;
 use Arkounay\Bundle\QuickAdminGeneratorBundle\Model\Filters;
-use Arkounay\Bundle\QuickAdminGeneratorBundle\Extension\FieldService;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Mapping\ClassMetadata;
@@ -21,13 +21,13 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\EventDispatcher\GenericEvent;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 use Symfony\Component\Form\Extension\Core\Type\FormType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\String\Inflector\EnglishInflector;
 use Symfony\Component\String\Inflector\InflectorInterface;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
@@ -101,7 +101,8 @@ abstract class Crud extends AbstractController
      * Used to set the dependencies.
      * We don't get them through a constructor to make it easier to override it custom dependencies.
      */
-    public function setInternalDependencies(EntityManagerInterface $em, FieldService $fieldService, RequestStack $requestStack, EventDispatcherInterface $eventDispatcher, TranslatorInterface $translator, TwigLoaderService $twigLoader): void {
+    public function setInternalDependencies(EntityManagerInterface $em, FieldService $fieldService, RequestStack $requestStack, EventDispatcherInterface $eventDispatcher, TranslatorInterface $translator, TwigLoaderService $twigLoader): void
+    {
         $this->em = $em;
         $this->repository = $em->getRepository($this->getEntity());
         $this->fieldService = $fieldService;
@@ -471,6 +472,14 @@ abstract class Crud extends AbstractController
             }
 
             switch ($field->getType()) {
+                case 'decimal':
+                    $builder->add($field->getIndex(), TextType::class, $options);
+                    break;
+                case 'date':
+                    $builder->add($field->getIndex(), $field->getFormType() ?? DateTimeType::class, array_merge($options, [
+                        'widget' => 'single_text',
+                    ]));
+                    break;
                 case 'datetime':
                     $builder->add($field->getIndex(), $field->getFormType() ?? DateTimeType::class, array_merge($options, [
                         'widget' => 'single_text',
@@ -514,7 +523,7 @@ abstract class Crud extends AbstractController
 
     protected function getListingFields(): Fields
     {
-        return clone $this->fields->filter(static function(Field $field) {
+        return clone $this->fields->filter(static function (Field $field) {
             return $field->isDisplayedInList();
         });
     }
@@ -526,7 +535,7 @@ abstract class Crud extends AbstractController
 
     protected function getFormFields(): Fields
     {
-        return clone $this->fields->filter(static function(Field $field) {
+        return clone $this->fields->filter(static function (Field $field) {
             return $field->isDisplayedInEdition();
         });
     }
@@ -541,11 +550,16 @@ abstract class Crud extends AbstractController
         }
         $this->isPrimary = true;
         $this->metadata = $this->em->getClassMetadata($this->getEntity());
-        $this->fields = $this->createFields();
+        $this->fields = $this->createFieldsFromMetadata();
         $this->filters = $this->createFilters();
     }
 
     protected function createFields(): Fields
+    {
+        return new Fields($this->metadata, $this->fieldService);
+    }
+
+    protected function createFieldsFromMetadata(): Fields
     {
         $fields = new Fields($this->metadata, $this->fieldService);
         foreach ($this->getAllEntityFields() as $fieldIndex) {
