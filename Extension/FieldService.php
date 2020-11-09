@@ -84,6 +84,9 @@ class FieldService
                 if ($hasField) {
                     $fieldMapping = $metadata->getFieldMapping($fieldIndex);
                     $nullable = $fieldMapping['nullable'] ?? false;
+                    if ($fieldMapping['type'] === 'boolean') {
+                        $nullable = true;
+                    }
                     $field->setRequired(!$nullable);
                 }
             }
