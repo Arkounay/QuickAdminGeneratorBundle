@@ -64,7 +64,7 @@ abstract class Crud extends AbstractController
     /**
      * @var FieldService
      */
-    private $fieldService;
+    protected $fieldService;
 
     /**
      * @var Request
@@ -84,12 +84,12 @@ abstract class Crud extends AbstractController
     /**
      * @var TranslatorInterface
      */
-    private $translator;
+    protected $translator;
 
     /**
      * @var TwigLoaderService
      */
-    private $twigLoader;
+    protected $twigLoader;
 
     /**
      * @var bool If the Crud is active and fully loaded
