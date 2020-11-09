@@ -33,7 +33,7 @@
     {% endblock %}
 
 
-    <title>{% block title qag.config.title|trans %}</title>
+    <title>{% block title block('header_title') %}</title>
 </head>
 
 <body class="antialiased {% block body_extra_class '' %}">
@@ -47,7 +47,7 @@
 
             {% block main_title %}
                 <a href="{{ path('qag.dashboard') }}" class="navbar-brand navbar-brand-autodark">
-                    {{ qag.config.title|trans }}
+                    {% block header_title qag.config.title|trans %}
                 </a>
             {% endblock %}
 
@@ -183,7 +183,7 @@
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <a href="{{ path('qag.dashboard') }}" class="navbar-brand navbar-brand-autodark d-none-navbar-horizontal pr-0 pr-md-3">
-                    {{ qag.config.title }}
+                    {{ block('header_title') }}
                 </a>
             {% else %}
                 <div></div>
