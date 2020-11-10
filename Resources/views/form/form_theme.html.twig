@@ -70,7 +70,7 @@
         {% set attr = attr|merge({'data-allow-add': allow_add ? 1 : 0}) %}
         {% set attr = attr|merge({'data-allow-remove': allow_delete ? 1 : 0 }) %}
         {% set attr = attr|merge({'data-name-prefix': full_name}) %}
-        {% set attr = attr|merge({'class': attr.class|default() ~ ' collection'}) %}
+        {% set attr = attr|merge({'class': attr.class|default('collection')}) %}
         {% set attr = attr|merge({'data-add-label': (attr['data-add-label']|default('Add'))|trans}) %}
         {% set attr = attr|merge({'data-remove-label': (attr['data-remove-label']|default('Remove'))|trans}) %}
         {{ block('form_widget') }}
