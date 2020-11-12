@@ -1,11 +1,12 @@
 # Fields
 
 * [Configure Fields by Annotations](#configure-fields-by-annotations)
-  - [@GAQ\Field](#-gaq-field)
-  - [@GAQ\HideInEdition](#-gaq-hideinedition)
-  - [@GAQ\HideInList](#-gaq-hideinlist)
-  - [@GAQ\Ignore](#-gaq-ignore)
-  - [@GAQ\Sort](#-gaq-sort)
+  - [@GAQ\Field](#gaqfield)
+  - [@GAQ\HideInEdition](#gaqhideinedition)
+  - [@GAQ\HideInList](#gaqhideinlist)
+  - [@GAQ\Ignore](#gaqignore)
+  - [@GAQ\Sort](#gaqsort)
+  - [@GAQ\Crud](#gaqcrud)
 * [Configure Fields by overriding controllers](#configure-fields-by-overriding-controllers)
 * [Configure Fields by using Listeners](#configure-fields-by-using-listeners)
   
@@ -64,13 +65,17 @@ You can import the QAG annotations with
 use Arkounay\Bundle\QuickAdminGeneratorBundle\Annotation as QAG;
 ```
 
-There are **5** annotations available:
+There are **9** annotations available:
 
 - @GAQ\Field
 - @GAQ\HideInEdition
 - @GAQ\HideInList
 - @GAQ\Ignore
 - @GAQ\Sort
+- @GAQ\Crud *(class-level)*
+- @GAQ\Show (only in manual fetch mode)
+- @GAQ\ShowInList (only in manual fetch mode)
+- @GAQ\ShowInEdition (only in manual fetch mode)
 
 
 #### @GAQ\Field
@@ -96,6 +101,33 @@ Allows you to completely ignore a field. It will not be parsed, and thus hidden 
 Allows you to sort by a specific field in listing by default.
 Has 1 attribute, `direction`. 'asc' or 'desc', specifies the sorting order.
 Only **one** field in an entity should have this annotation.
+
+#### @GAQ\Crud (class-level)
+This field must be at the class level.
+```php
+/**
+ * @ORM\Entity(repositoryClass=CategoryRepository::class)
+ * @QAG\Crud(fetchMode=QAG\Crud::FETCH_MANUAL)
+ */
+class Category 
+{
+    // ...
+}
+```
+Has 1 attribute, `fetchMode`.
+
+By default, any property added in a doctrine class will be converted into a Field.
+You can change that by specifying a manual Fetch Mode.
+In manual mode, you'll have to add @QAG\Show, @QAG\ShowInList and @QAG\ShowInEdition to make them appear, otherwise fields will be ignored.
+
+#### @GAQ\Show (only in manual fetch mode)
+Will show the field both in listing, creation and edition.
+
+#### @GAQ\ShowInEdition (only in manual fetch mode)
+Will show the field both in creation and edition only
+
+#### @GAQ\ShowInList (only in manual fetch mode)
+Will show the field both in listing only
 
 
 ## Configure Fields by overriding controllers

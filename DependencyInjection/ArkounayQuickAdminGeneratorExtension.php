@@ -6,6 +6,8 @@ namespace Arkounay\Bundle\QuickAdminGeneratorBundle\DependencyInjection;
 
 use Arkounay\Bundle\QuickAdminGeneratorBundle\Controller\Crud;
 use Arkounay\Bundle\QuickAdminGeneratorBundle\Extension\FieldService;
+use Arkounay\Bundle\QuickAdminGeneratorBundle\Extension\TwigLoaderService;
+use Doctrine\Common\Annotations\Reader;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -33,7 +35,15 @@ class ArkounayQuickAdminGeneratorExtension extends Extension
             ->addTag('quickadmin.crud')
             ->addTag('controller.service_arguments')
             ->setBindings(['$entity' => expr("service('Arkounay\\\Bundle\\\QuickAdminGeneratorBundle\\\Crud\\\CrudListener').guessEntity()")])
-            ->addMethodCall('setInternalDependencies', [ new Reference(EntityManagerInterface::class), new Reference(FieldService::class), new Reference(RequestStack::class), new Reference(EventDispatcherInterface::class), new Reference(TranslatorInterface::class)]);
+            ->addMethodCall('setInternalDependencies', [
+                new Reference(EntityManagerInterface::class),
+                new Reference(FieldService::class),
+                new Reference(RequestStack::class),
+                new Reference(EventDispatcherInterface::class),
+                new Reference(TranslatorInterface::class),
+                new Reference(TwigLoaderService::class),
+                new Reference(Reader::class)
+            ]);
 
     }
 

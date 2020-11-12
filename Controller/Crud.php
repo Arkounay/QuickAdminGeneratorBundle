@@ -3,6 +3,7 @@
 
 namespace Arkounay\Bundle\QuickAdminGeneratorBundle\Controller;
 
+use Arkounay\Bundle\QuickAdminGeneratorBundle\Annotation\Ignore;
 use Arkounay\Bundle\QuickAdminGeneratorBundle\Extension\FieldService;
 use Arkounay\Bundle\QuickAdminGeneratorBundle\Extension\TwigLoaderService;
 use Arkounay\Bundle\QuickAdminGeneratorBundle\Model\Action;
@@ -12,6 +13,7 @@ use Arkounay\Bundle\QuickAdminGeneratorBundle\Model\Fields;
 use Arkounay\Bundle\QuickAdminGeneratorBundle\Model\Filter;
 use Arkounay\Bundle\QuickAdminGeneratorBundle\Model\Filters;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\Common\Annotations\Reader;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Mapping\ClassMetadata;
 use Doctrine\ORM\QueryBuilder;
@@ -50,6 +52,11 @@ abstract class Crud extends AbstractController
      * @var ClassMetadata
      */
     protected $metadata;
+
+    /**
+     * @var Reader
+     */
+    private $reader;
 
     /**
      * @var Fields|Field[]
@@ -101,7 +108,7 @@ abstract class Crud extends AbstractController
      * Used to set the dependencies.
      * We don't get them through a constructor to make it easier to override it custom dependencies.
      */
-    public function setInternalDependencies(EntityManagerInterface $em, FieldService $fieldService, RequestStack $requestStack, EventDispatcherInterface $eventDispatcher, TranslatorInterface $translator, TwigLoaderService $twigLoader): void
+    public function setInternalDependencies(EntityManagerInterface $em, FieldService $fieldService, RequestStack $requestStack, EventDispatcherInterface $eventDispatcher, TranslatorInterface $translator, TwigLoaderService $twigLoader, Reader $reader): void
     {
         $this->em = $em;
         $this->repository = $em->getRepository($this->getEntity());
@@ -111,6 +118,7 @@ abstract class Crud extends AbstractController
         $this->inflector = new EnglishInflector();
         $this->translator = $translator;
         $this->twigLoader = $twigLoader;
+        $this->reader = $reader;
     }
 
     abstract public function getEntity(): string;
@@ -518,7 +526,39 @@ abstract class Crud extends AbstractController
 
     protected function getAllEntityFields(): array
     {
-        return array_merge($this->metadata->getFieldNames(), $this->metadata->getAssociationNames());
+        $res = array_merge($this->metadata->getFieldNames(), $this->metadata->getAssociationNames());
+
+        $fetchMode = $this->getFieldFetchMode();
+        if ($fetchMode !== \Arkounay\Bundle\QuickAdminGeneratorBundle\Annotation\Crud::FETCH_AUTO) {
+            foreach ($res as $k => $property) {
+                $reflectionProperty = $this->metadata->getReflectionProperty($property);
+                $annotations = $this->reader->getPropertyAnnotations($reflectionProperty);
+                $ignoreField = true;
+                foreach ($annotations as $annotation) {
+                    if (strpos(get_class($annotation), 'Arkounay\Bundle\QuickAdminGeneratorBundle\Annotation\Show') !== false) {
+                        $ignoreField = false;
+                        break;
+                    }
+                }
+                if ($ignoreField) {
+                    unset($res[$k]);
+                }
+            }
+        }
+
+
+        return $res;
+    }
+
+    protected function getFieldFetchMode(): string
+    {
+        $reflectionClass = $this->metadata->getReflectionClass();
+        $crudAnnotation = $this->reader->getClassAnnotation($reflectionClass, \Arkounay\Bundle\QuickAdminGeneratorBundle\Annotation\Crud::class);
+        if ($crudAnnotation !== null) {
+            /** @var \Arkounay\Bundle\QuickAdminGeneratorBundle\Annotation\Crud $crudAnnotation */
+            return $crudAnnotation->fetchMode;
+        }
+        return \Arkounay\Bundle\QuickAdminGeneratorBundle\Annotation\Crud::FETCH_AUTO;
     }
 
     protected function getListingFields(): Fields
@@ -563,7 +603,7 @@ abstract class Crud extends AbstractController
     {
         $fields = new Fields($this->metadata, $this->fieldService);
         foreach ($this->getAllEntityFields() as $fieldIndex) {
-            $field = $this->fieldService->createField($this->metadata, $fieldIndex);
+            $field = $this->fieldService->createField($this->metadata, $fieldIndex, true);
             if ($field !== null) {
                 $fields->add($field);
             }
