@@ -149,7 +149,7 @@
                                 {% endif %}
                                 {% for field in fields %}
                                     {% block field_td %}
-                                        <td data-label="{{ field.label|trans }}">{% include field.twig with {value: attribute(entity, field.index)} %}</td>
+                                        <td data-label="{{ field.label|trans }}">{% include field.twig with {value: attribute(entity, field.index)|default()} %}</td>
                                     {% endblock %}
                                 {% endfor %}
                                 {% block actions %}
