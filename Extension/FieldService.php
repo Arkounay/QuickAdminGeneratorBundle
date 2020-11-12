@@ -5,6 +5,9 @@ namespace Arkounay\Bundle\QuickAdminGeneratorBundle\Extension;
 use Arkounay\Bundle\QuickAdminGeneratorBundle\Annotation\HideInEdition;
 use Arkounay\Bundle\QuickAdminGeneratorBundle\Annotation\HideInList;
 use Arkounay\Bundle\QuickAdminGeneratorBundle\Annotation\Ignore;
+use Arkounay\Bundle\QuickAdminGeneratorBundle\Annotation\Show;
+use Arkounay\Bundle\QuickAdminGeneratorBundle\Annotation\ShowInEdition;
+use Arkounay\Bundle\QuickAdminGeneratorBundle\Annotation\ShowInList;
 use Arkounay\Bundle\QuickAdminGeneratorBundle\Annotation\Sort;
 use Arkounay\Bundle\QuickAdminGeneratorBundle\Model\Field;
 use Arkounay\Bundle\QuickAdminGeneratorBundle\Model\Filter;
@@ -46,7 +49,7 @@ class FieldService
         $this->reader = $reader;
     }
 
-    public function createField(ClassMetadata $metadata, string $fieldIndex): ?Field
+    public function createField(ClassMetadata $metadata, string $fieldIndex, bool $automatic = false): ?Field
     {
         $field = new Field($fieldIndex);
         if ($fieldIndex === 'id') {
@@ -61,17 +64,29 @@ class FieldService
                 $reflectionProperty = $metadata->getReflectionProperty($fieldIndex);
 
                 if ($reflectionProperty) {
-                    $ignore = $this->reader->getPropertyAnnotation($reflectionProperty, Ignore::class);
-                    if ($ignore !== null) {
-                        return null;
-                    }
-                    $hideInEdition = $this->reader->getPropertyAnnotation($reflectionProperty, HideInEdition::class);
-                    if ($hideInEdition !== null) {
-                        $field->setDisplayedInEdition(false);
-                    }
-                    $hideInList = $this->reader->getPropertyAnnotation($reflectionProperty, HideInList::class);
-                    if ($hideInList !== null) {
-                        $field->setDisplayedInList(false);
+
+                    if ($automatic) {
+                        $ignore = $this->reader->getPropertyAnnotation($reflectionProperty, Ignore::class);
+                        if ($ignore !== null) {
+                            return null;
+                        }
+                        $hideInEdition = $this->reader->getPropertyAnnotation($reflectionProperty, HideInEdition::class);
+                        if ($hideInEdition !== null) {
+                            $field->setDisplayedInEdition(false);
+                        }
+                        $hideInList = $this->reader->getPropertyAnnotation($reflectionProperty, HideInList::class);
+                        if ($hideInList !== null) {
+                            $field->setDisplayedInList(false);
+                        }
+
+                        // handle show annotations for manual fetch mode
+                        $showInEdition = $this->reader->getPropertyAnnotation($reflectionProperty, ShowInEdition::class);
+                        $showInList = $this->reader->getPropertyAnnotation($reflectionProperty, ShowInList::class);
+                        if ($showInEdition === null && $showInList !== null) {
+                            $field->setDisplayedInEdition(false);
+                        } elseif ($showInEdition !== null && $showInList === null) {
+                            $field->setDisplayedInList(false);
+                        }
                     }
                     /** @var Sort $sort */
                     $sort = $this->reader->getPropertyAnnotation($reflectionProperty, Sort::class);
