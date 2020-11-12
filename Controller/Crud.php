@@ -331,7 +331,7 @@ abstract class Crud extends AbstractController
 
         $actionsEntities = $this->getActionsPerEntities($entities);
 
-        return $this->render('@ArkounayQuickAdminGenerator/crud/list.html.twig', [
+        return $this->render($this->listTwig(), [
             'route' => 'qag.' . $this->getRoute(),
             'global_actions' => $this->getGlobalActions(),
             'actions_entities' => $actionsEntities,
