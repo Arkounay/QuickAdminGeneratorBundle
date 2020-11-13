@@ -3,7 +3,6 @@
 
 namespace Arkounay\Bundle\QuickAdminGeneratorBundle\Controller;
 
-use Arkounay\Bundle\QuickAdminGeneratorBundle\Annotation\Ignore;
 use Arkounay\Bundle\QuickAdminGeneratorBundle\Extension\FieldService;
 use Arkounay\Bundle\QuickAdminGeneratorBundle\Extension\TwigLoaderService;
 use Arkounay\Bundle\QuickAdminGeneratorBundle\Model\Action;
@@ -22,6 +21,7 @@ use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\EventDispatcher\GenericEvent;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
+use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -35,8 +35,13 @@ use Symfony\Component\String\Inflector\InflectorInterface;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
+/**
+ * Creates a Crud for a given entity managed by Doctrine.
+ */
 abstract class Crud extends AbstractController
 {
+
+    private const ITEMS_PER_PAGE = 15;
 
     /**
      * @var EntityManagerInterface
@@ -121,6 +126,9 @@ abstract class Crud extends AbstractController
         $this->reader = $reader;
     }
 
+    /**
+     * The entity class FQN
+     */
     abstract public function getEntity(): string;
 
 
@@ -135,13 +143,16 @@ abstract class Crud extends AbstractController
     }
 
     /**
-     * @return string The name that will be used for routing
+     * The path that will be used for routing
      */
     public function getRoute(): string
     {
         return strtolower((new \ReflectionClass($this->getEntity()))->getShortName());
     }
 
+    /**
+     * Global actions (actions that don't apply to a single existing entity, such as "create".
+     */
     public function getGlobalActions(): ?Actions
     {
         $res = new Actions();
@@ -164,6 +175,9 @@ abstract class Crud extends AbstractController
         return $res;
     }
 
+    /**
+     * Actions that can be applied to a single existing entity, such as "Edit" or "Delete"
+     */
     public function getActions($entity): ?Actions
     {
         $actions = new Actions();
@@ -185,7 +199,10 @@ abstract class Crud extends AbstractController
         return $actions;
     }
 
-    public function getActionsPerEntities($entities): array
+    /**
+     * All the actions available for a list of entities
+     */
+    public function getActionsPerEntities(iterable $entities): array
     {
         $res = [];
         foreach ($entities as $entity) {
@@ -195,7 +212,10 @@ abstract class Crud extends AbstractController
         return $res;
     }
 
-    public function getBatchActions($entities): ?Actions
+    /**
+     * The batch actions available for a lit of entities
+     */
+    public function getBatchActions(iterable $entities): ?Actions
     {
         $actions = new Actions();
 
@@ -214,6 +234,9 @@ abstract class Crud extends AbstractController
         return $actions;
     }
 
+    /**
+     * Removes an entity
+     */
     public function deleteAction($entity): Response
     {
         if (!$this->isCsrfTokenValid('delete', $this->request->request->get('token'))) {
@@ -232,6 +255,10 @@ abstract class Crud extends AbstractController
         return $this->redirectToList();
     }
 
+
+    /**
+     * Removes multiple entities
+     */
     public function deleteBatchAction(): Response
     {
         if (!$this->isCsrfTokenValid('batch', $this->request->request->get('token'))) {
@@ -259,39 +286,58 @@ abstract class Crud extends AbstractController
         return $this->redirectToList();
     }
 
+    /**
+     * Removes an entity from the entity manager.
+     */
     protected function removeEntity($entity): void
     {
         $this->em->remove($entity);
     }
 
     /**
-     * @param $entity mixed can be null (for batch actions)
+     * Checks if an entity can be deleted.
      */
     public function isDeletable($entity): bool
     {
         return true;
     }
 
+    /**
+     * Checks if an entity can be created.
+     */
     public function isCreatable(): bool
     {
         return true;
     }
 
+    /**
+     * Checks if an entity can be edited
+     */
     public function isEditable($entity): bool
     {
         return true;
     }
 
+    /**
+     * Checks if an entity is searchable
+     */
     public function isSearchable(): bool
     {
         return true;
     }
 
+    /**
+     * The default number of item per pages.
+     */
     protected function getItemsPerPage(): int
     {
-        return 13;
+        return self::ITEMS_PER_PAGE;
     }
 
+    /**
+     * Lists all the entities and actions.
+     * Can be filtered with the ListQueryBuilder method
+     */
     public function listAction(Request $request, PaginatorInterface $paginator): Response
     {
         $queryBuilder = $this->getListQueryBuilder();
@@ -353,6 +399,9 @@ abstract class Crud extends AbstractController
         ]);
     }
 
+    /**
+     * Quick search through a string
+     */
     protected function search(QueryBuilder $queryBuilder, string $search): void
     {
         $fields = $this->metadata->getFieldNames();
@@ -363,6 +412,10 @@ abstract class Crud extends AbstractController
         $queryBuilder->setParameter('search', "%$search%");
     }
 
+    /**
+     * Filters a list of entity through the query builder.
+     * Can also be called to check if the entity was filtered out for quick security (if $this->hasQuickListQueryBuilderSecurity() returns true)
+     */
     protected function getListQueryBuilder(): QueryBuilder
     {
         $associations = $this->metadata->getAssociationNames();
@@ -375,6 +428,9 @@ abstract class Crud extends AbstractController
         return $queryBuilder;
     }
 
+    /**
+     * Create a new entity
+     */
     public function createAction(Request $request): Response
     {
         if (!$this->isCreatable()) {
@@ -406,6 +462,9 @@ abstract class Crud extends AbstractController
         ]);
     }
 
+    /**
+     * Edit an entity.
+     */
     public function editAction(Request $request, $entity)
     {
         if (!$this->isEditable($entity)) {
@@ -441,6 +500,9 @@ abstract class Crud extends AbstractController
         ]);
     }
 
+    /**
+     * Calls the entity's constructor. Override this to add default parameters for the said entity.
+     */
     protected function createNew(): object
     {
         $entityClass = $this->getEntity();
@@ -456,6 +518,9 @@ abstract class Crud extends AbstractController
         return null;
     }
 
+    /**
+     * Creates a form from the entity's Fields
+     */
     protected function buildForm($entity, bool $creation): FormBuilderInterface
     {
         $fields = $this->getFormFields();
@@ -484,7 +549,7 @@ abstract class Crud extends AbstractController
                     $builder->add($field->getIndex(), TextType::class, $options);
                     break;
                 case 'date':
-                    $builder->add($field->getIndex(), $field->getFormType() ?? DateTimeType::class, array_merge($options, [
+                    $builder->add($field->getIndex(), $field->getFormType() ?? DateType::class, array_merge($options, [
                         'widget' => 'single_text',
                     ]));
                     break;
@@ -524,12 +589,16 @@ abstract class Crud extends AbstractController
         return $this->buildForm($entity, $creation)->getForm();
     }
 
+    /**
+     * Returns all the entity's attributes that will be turned into Fields.
+     */
     protected function getAllEntityFields(): array
     {
         $res = array_merge($this->metadata->getFieldNames(), $this->metadata->getAssociationNames());
 
         $fetchMode = $this->getFieldFetchMode();
         if ($fetchMode !== \Arkounay\Bundle\QuickAdminGeneratorBundle\Annotation\Crud::FETCH_AUTO) {
+            // When fetch mode is not automatic, every fields need to have a "Show" annotation to be fetched.
             foreach ($res as $k => $property) {
                 $reflectionProperty = $this->metadata->getReflectionProperty($property);
                 $annotations = $this->reader->getPropertyAnnotations($reflectionProperty);
@@ -550,6 +619,10 @@ abstract class Crud extends AbstractController
         return $res;
     }
 
+    /**
+     * The Field Fetch mode. Auto by default (all attributes will be turned into fields).
+     * Can be set to manual, so all fields will require to be manually added either through annotations or through the getListingFields and getFormFields methods
+     */
     protected function getFieldFetchMode(): string
     {
         $reflectionClass = $this->metadata->getReflectionClass();
@@ -561,10 +634,23 @@ abstract class Crud extends AbstractController
         return \Arkounay\Bundle\QuickAdminGeneratorBundle\Annotation\Crud::FETCH_AUTO;
     }
 
+    /**
+     * Fields that will be used to display the list of entities.
+     */
     protected function getListingFields(): Fields
     {
         return clone $this->fields->filter(static function (Field $field) {
             return $field->isDisplayedInList();
+        });
+    }
+
+    /**
+     * Fields that will be used to to automatically generate the form in the create / edit actions.
+     */
+    protected function getFormFields(): Fields
+    {
+        return clone $this->fields->filter(static function (Field $field) {
+            return $field->isDisplayedInEdition();
         });
     }
 
@@ -573,15 +659,10 @@ abstract class Crud extends AbstractController
         return $this->filters;
     }
 
-    protected function getFormFields(): Fields
-    {
-        return clone $this->fields->filter(static function (Field $field) {
-            return $field->isDisplayedInEdition();
-        });
-    }
 
     /**
-     * Called only when the controller is active
+     * Called only when the controller is active.
+     * Gets the Class Metadata and creates fields and filters.
      */
     public function load(): void
     {
@@ -594,11 +675,17 @@ abstract class Crud extends AbstractController
         $this->filters = $this->createFilters();
     }
 
+    /**
+     * Creates a Fields object without any field by default
+     */
     protected function createFields(): Fields
     {
         return new Fields($this->metadata, $this->fieldService);
     }
 
+    /**
+     * Creates a Fields object with default fields
+     */
     protected function createFieldsFromMetadata(): Fields
     {
         $fields = new Fields($this->metadata, $this->fieldService);
@@ -617,11 +704,19 @@ abstract class Crud extends AbstractController
         return new Filters($this->metadata, $this->fieldService);
     }
 
+    /**
+     * The icon name that will be used for the menu.
+     * Check https://preview.tabler.io/icons.html
+     */
     public function getIcon(): ?string
     {
         return null;
     }
 
+
+    /**
+     * Gets the filters form
+     */
     public function filterFormAjaxAction(Request $request): Response
     {
         $form = $this->createFilterForm()->getForm();
@@ -632,21 +727,33 @@ abstract class Crud extends AbstractController
         ]);
     }
 
+    /**
+     * The filters form's theme
+     */
     public function filterFormTwig(): string
     {
         return '@ArkounayQuickAdminGenerator/crud/filter_form.html.twig';
     }
 
+    /**
+     * The form's twig, used in edit and create actions.
+     */
     public function formTwig(): string
     {
         return $this->twigLoader->getTwigFormType($this->getRoute(), 'form');
     }
 
+    /**
+     * the list's twig
+     */
     public function listTwig(): string
     {
         return $this->twigLoader->getTwigFormType($this->getRoute(), 'list');
     }
 
+    /**
+     * Builds the filter forms
+     */
     protected function createFilterForm(): FormBuilderInterface
     {
         $builder = $this->container->get('form.factory')->createNamedBuilder('filter', FormType::class, null, [
@@ -663,6 +770,10 @@ abstract class Crud extends AbstractController
         return $builder;
     }
 
+    /**
+     * All the actions that will generate Routes.
+     * Every functions that ends with "Actions" will be considered as an Action and thus, a new route will be automatically created.
+     */
     public function getAllActions(): array
     {
         $res = [];
@@ -676,16 +787,25 @@ abstract class Crud extends AbstractController
         return $res;
     }
 
+    /**
+     * Finds the entity from an id.
+     */
     public function guessEntity()
     {
         return $this->repository->find($this->request->attributes->get('id'));
     }
 
+    /**
+     * A description that will be displayed in the listing page.
+     */
     public function getDescription(): string
     {
         return '';
     }
 
+    /**
+     * The default paginations options. Used to add a default sorting on the listing page.
+     */
     protected function getPaginationOptions(Fields $fields): array
     {
         /** @var Fields|Field[] $fields */
@@ -704,21 +824,36 @@ abstract class Crud extends AbstractController
         return [];
     }
 
+    /**
+     * True by default
+     * If true, the responsive mode will be simplified, there won't be a table but a simple list that will display entity's toString().
+     * This removes batch actions and fields informations.
+     * Return false to use a responsive table instead.
+     */
     protected function simpleResponsiveMode(): bool
     {
         return true;
     }
 
+    /**
+     * Return true if the controller can be loaded and displayed in the menu.
+     */
     public function isEnabled(): bool
     {
         return true;
     }
 
+    /**
+     * Redirects to the list and preserves the referer (with the page number for example)
+     */
     protected function redirectToList(): RedirectResponse
     {
         return $this->redirectToRoute('qag.' . $this->getRoute(), $this->request->get('referer', []));
     }
 
+    /**
+     * Checks if there are actions to display in the page, so the last column can be removed if there are not.
+     */
     protected function hasActions(array $actionEntities): bool
     {
         foreach ($actionEntities as $actions) {
@@ -731,13 +866,18 @@ abstract class Crud extends AbstractController
     }
 
     /**
-     * @return bool
+     * Allows to check if the current entity was filtered out or not through the getListQueryBuilder method, at the cost of one extra request.
+     * This can be useful if the CRUD has conditions to display some entities, with multiple roles or user for example.
+     * False by default
      */
     protected function hasQuickListQueryBuilderSecurity(): bool
     {
         return false;
     }
 
+    /**
+     * Used to check if the entity is a part of the getListQueryBuilder
+     */
     protected function entityIsInList($entity): bool
     {
         return $this->getListQueryBuilder()

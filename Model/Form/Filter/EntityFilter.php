@@ -6,8 +6,6 @@ namespace Arkounay\Bundle\QuickAdminGeneratorBundle\Model\Form\Filter;
 use Arkounay\Bundle\QuickAdminGeneratorBundle\Model\Filter;
 use Arkounay\Bundle\QuickAdminGeneratorBundle\Model\Form\Filter\Type\EntityFilterType;
 use Doctrine\ORM\QueryBuilder;
-use Symfony\Bridge\Doctrine\Form\Type\EntityType;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormInterface;
 

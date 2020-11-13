@@ -2,8 +2,6 @@
 
 namespace Arkounay\Bundle\QuickAdminGeneratorBundle\Model;
 
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-
 
 class Action implements Listable
 {

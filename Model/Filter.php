@@ -3,8 +3,6 @@
 namespace Arkounay\Bundle\QuickAdminGeneratorBundle\Model;
 
 use Arkounay\Bundle\QuickAdminGeneratorBundle\Model\Form\Filter\FilterForm;
-use Arkounay\Bundle\QuickAdminGeneratorBundle\Model\Listable;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 
 class Filter implements Listable

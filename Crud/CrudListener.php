@@ -24,7 +24,7 @@ class CrudListener implements EventSubscriberInterface
         ];
     }
 
-    public function onKernelController(ControllerEvent $event)
+    public function onKernelController(ControllerEvent $event): void
     {
 
         if (!$event->isMasterRequest()) {

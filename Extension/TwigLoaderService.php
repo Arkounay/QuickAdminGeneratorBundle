@@ -2,24 +2,8 @@
 
 namespace Arkounay\Bundle\QuickAdminGeneratorBundle\Extension;
 
-use Arkounay\Bundle\QuickAdminGeneratorBundle\Annotation\HideInEdition;
-use Arkounay\Bundle\QuickAdminGeneratorBundle\Annotation\HideInList;
-use Arkounay\Bundle\QuickAdminGeneratorBundle\Annotation\Ignore;
-use Arkounay\Bundle\QuickAdminGeneratorBundle\Annotation\Sort;
-use Arkounay\Bundle\QuickAdminGeneratorBundle\Model\Field;
-use Arkounay\Bundle\QuickAdminGeneratorBundle\Model\Filter;
-use Arkounay\Bundle\QuickAdminGeneratorBundle\Model\Form\Filter\DateFilter;
-use Arkounay\Bundle\QuickAdminGeneratorBundle\Model\Form\Filter\DateTimeFilter;
-use Arkounay\Bundle\QuickAdminGeneratorBundle\Model\Form\Filter\EntityFilter;
-use Arkounay\Bundle\QuickAdminGeneratorBundle\Model\Form\Filter\IntegerFilter;
-use Arkounay\Bundle\QuickAdminGeneratorBundle\Model\Form\Filter\StringFilter;
-use Doctrine\Common\Annotations\Reader;
-use Doctrine\ORM\Mapping\ClassMetadata;
-use Symfony\Component\EventDispatcher\GenericEvent;
-use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 use Twig\Environment;
 use Twig\Loader\LoaderInterface;
-use function Symfony\Component\String\u;
 
 class TwigLoaderService
 {

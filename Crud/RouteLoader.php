@@ -4,9 +4,9 @@
 namespace Arkounay\Bundle\QuickAdminGeneratorBundle\Crud;
 
 
-use Arkounay\Bundle\QuickAdminGeneratorBundle\Controller\DashboardController;
 use Arkounay\Bundle\QuickAdminGeneratorBundle\Controller\AdminInterface;
 use Arkounay\Bundle\QuickAdminGeneratorBundle\Controller\Crud;
+use Arkounay\Bundle\QuickAdminGeneratorBundle\Controller\DashboardController;
 use Arkounay\Bundle\QuickAdminGeneratorBundle\Model\Action;
 use Symfony\Bundle\FrameworkBundle\Routing\RouteLoaderInterface;
 use Symfony\Component\Routing\Route;
@@ -43,6 +43,7 @@ class RouteLoader implements RouteLoaderInterface
 
         foreach ($this->cruds as $crud) {
             foreach ($crud->getAllActions() as $action) {
+                // create routes from the entity's actions.
                 $suffix = $action;
                 if ($action === 'list') {
                     $suffix = '';

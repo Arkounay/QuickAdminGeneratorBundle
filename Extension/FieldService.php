@@ -5,7 +5,6 @@ namespace Arkounay\Bundle\QuickAdminGeneratorBundle\Extension;
 use Arkounay\Bundle\QuickAdminGeneratorBundle\Annotation\HideInEdition;
 use Arkounay\Bundle\QuickAdminGeneratorBundle\Annotation\HideInList;
 use Arkounay\Bundle\QuickAdminGeneratorBundle\Annotation\Ignore;
-use Arkounay\Bundle\QuickAdminGeneratorBundle\Annotation\Show;
 use Arkounay\Bundle\QuickAdminGeneratorBundle\Annotation\ShowInEdition;
 use Arkounay\Bundle\QuickAdminGeneratorBundle\Annotation\ShowInList;
 use Arkounay\Bundle\QuickAdminGeneratorBundle\Annotation\Sort;
@@ -20,8 +19,6 @@ use Doctrine\Common\Annotations\Reader;
 use Doctrine\ORM\Mapping\ClassMetadata;
 use Symfony\Component\EventDispatcher\GenericEvent;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
-use Twig\Environment;
-use Twig\Loader\LoaderInterface;
 use function Symfony\Component\String\u;
 
 class FieldService
