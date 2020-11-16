@@ -406,10 +406,18 @@ abstract class Crud extends AbstractController
     {
         $fields = $this->metadata->getFieldNames();
 
+        $query = '';
         foreach ($fields as $field) {
-            $queryBuilder->orWhere("e.$field LIKE :search");
+            if ($query !== '') {
+                $query .= ' or ';
+            }
+            $query .= "e.$field LIKE :search";
         }
-        $queryBuilder->setParameter('search', "%$search%");
+
+        if ($query !== '') {
+            $queryBuilder->andWhere($query);
+            $queryBuilder->setParameter('search', "%$search%");
+        }
     }
 
     /**
