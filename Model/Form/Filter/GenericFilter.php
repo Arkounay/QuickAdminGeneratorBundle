@@ -15,7 +15,7 @@ abstract class GenericFilter extends FilterForm
 
     public function addToFormBuilder(FormBuilderInterface $builder, Filter $filter): void
     {
-        $builder->add($filter->getIndex(), $this->getType(), $this->getOptions());
+        $builder->add($filter->getIndex(), $this->getType(), $this->getOptions($filter));
     }
 
     abstract public function addToQueryBuilder(QueryBuilder $builder, FormInterface $form, Filter $filter): QueryBuilder;
@@ -25,15 +25,14 @@ abstract class GenericFilter extends FilterForm
         return TextType::class;
     }
 
-    protected function getOptions(): array
+    protected function getOptions(Filter $filter): array
     {
-        return ['required' => false];
+        return ['required' => false, 'label' => $filter->getLabel()];
     }
 
     public function isEmpty($data): bool
     {
         return empty($data);
     }
-
 
 }
