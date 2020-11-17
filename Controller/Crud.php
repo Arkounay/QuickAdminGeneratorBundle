@@ -461,7 +461,7 @@ abstract class Crud extends AbstractController
             return $this->redirectToList();
         }
 
-        return $this->render($this->formTwig(), [
+        return $this->render($this->formTwig(true), [
             'creation' => true,
             'name' => $this->getName(),
             'plural_name' => $this->getPluralName(),
@@ -499,7 +499,7 @@ abstract class Crud extends AbstractController
             return $this->redirectToList();
         }
 
-        return $this->render($this->formTwig(), [
+        return $this->render($this->formTwig(false), [
             'creation' => false,
             'name' => $this->getName(),
             'plural_name' => $this->getPluralName(),
@@ -746,7 +746,7 @@ abstract class Crud extends AbstractController
     /**
      * The form's twig, used in edit and create actions.
      */
-    public function formTwig(): string
+    public function formTwig(bool $creation): string
     {
         return $this->twigLoader->getTwigFormType($this->getRoute(), 'form');
     }
