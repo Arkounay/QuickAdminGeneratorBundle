@@ -3,6 +3,7 @@
 namespace Arkounay\Bundle\QuickAdminGeneratorBundle\Model;
 
 use Arkounay\Bundle\QuickAdminGeneratorBundle\Model\Form\Filter\FilterForm;
+use function Symfony\Component\String\u;
 
 
 class Filter implements Listable
@@ -23,9 +24,14 @@ class Filter implements Listable
      */
     protected $filterForm;
 
-    public function __construct(string $index)
+    public function __construct(string $index, FilterForm $filterForm, ?string $label = null)
     {
         $this->index = $index;
+        $this->filterForm = $filterForm;
+        $this->label = $label;
+        if ($label === null) {
+            $this->label = u($index)->title()->toString();
+        }
     }
 
     public function getIndex(): string

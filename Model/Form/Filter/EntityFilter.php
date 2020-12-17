@@ -6,7 +6,6 @@ namespace Arkounay\Bundle\QuickAdminGeneratorBundle\Model\Form\Filter;
 use Arkounay\Bundle\QuickAdminGeneratorBundle\Model\Filter;
 use Arkounay\Bundle\QuickAdminGeneratorBundle\Model\Form\Filter\Type\EntityFilterType;
 use Doctrine\ORM\QueryBuilder;
-use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormInterface;
 
 class EntityFilter extends GenericFilter
@@ -17,17 +16,25 @@ class EntityFilter extends GenericFilter
      */
     private $class;
 
-    public function __construct(string $class)
+    /**
+     * @var array
+     */
+    protected $options;
+
+    public function __construct(string $class, array $options = [])
     {
         $this->class = $class;
+        $this->options = $options;
     }
 
-    public function addToFormBuilder(FormBuilderInterface $builder, Filter $filter): void
+    protected function getOptions(Filter $filter): array
     {
-        $builder->add($filter->getIndex(), EntityFilterType::class, [
-            'required' => false,
-            'class' => $this->class
-        ]);
+        return array_merge(parent::getOptions($filter), $this->options, ['class' => $this->class]);
+    }
+
+    protected function getType(): string
+    {
+        return EntityFilterType::class;
     }
 
     public function addToQueryBuilder(QueryBuilder $builder, FormInterface $form, Filter $filter): QueryBuilder

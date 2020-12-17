@@ -145,36 +145,33 @@ class FieldService
 
     public function createFilter(ClassMetadata $metadata, string $filterIndex): Filter
     {
-        $filter = new Filter($filterIndex);
-        $filter->setLabel(u($filterIndex)->title()->toString());
-
-        $filterType = null;
+        $filterForm = null;
         $metadataType = $this->getType($metadata, $filterIndex);
         switch ($metadataType) {
             case 'virtual':
                 throw new \RuntimeException('Filters are not supported for virtual fields');
             case 'date':
-                $filter->setFilterForm(new DateFilter());
+                $filterForm = new DateFilter();
                 break;
             case 'datetime':
-                $filter->setFilterForm(new DateTimeFilter());
+                $filterForm = new DateTimeFilter();
                 break;
             case 'string':
-                $filter->setFilterForm(new StringFilter());
+                $filterForm = new StringFilter();
                 break;
             case 'integer':
-                $filter->setFilterForm(new IntegerFilter());
+                $filterForm = new IntegerFilter();
                 break;
             case 'relation':
-                $filter->setFilterForm(new EntityFilter($metadata->getAssociationTargetClass($filterIndex)));
+                $filterForm = new EntityFilter($metadata->getAssociationTargetClass($filterIndex));
                 break;
         }
 
-        if ($filter->getFilterForm() === null) {
+        if ($filterForm === null) {
             throw new \RuntimeException('Filter not supported for type "'.$metadataType.'". Specify filterType manually.');
         }
 
-        return $filter;
+        return new Filter($filterIndex, $filterForm);
     }
 
 
