@@ -31,8 +31,7 @@
     {% block head_js %}
     {% endblock %}
 
-
-    <title>{% block title block('header_title') %}</title>
+    <title> {% block title block('header_title') ~ ' - ' ~ block('content_title') %}</title>
 </head>
 
 <body class="antialiased {% block body_extra_class '' %}">
