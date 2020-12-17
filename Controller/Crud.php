@@ -269,6 +269,7 @@ abstract class Crud extends AbstractController
         $checked = $this->request->request->get('batch-actions');
         $nbChecked = \count($checked);
         foreach ($checked as $k => $v) {
+            /** @var T $entity */
             $entity = $this->repository->find($k);
             if (!$this->isDeletable($entity)) {
                 throw $this->createAccessDeniedException("Entity {$this->getEntity()} is not removable.");
@@ -477,6 +478,7 @@ abstract class Crud extends AbstractController
 
     /**
      * Edit an entity.
+     * @param T $entity
      */
     public function editAction(Request $request, $entity)
     {
