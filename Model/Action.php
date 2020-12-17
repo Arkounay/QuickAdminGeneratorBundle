@@ -3,6 +3,8 @@
 namespace Arkounay\Bundle\QuickAdminGeneratorBundle\Model;
 
 
+use function Symfony\Component\String\u;
+
 class Action implements Listable
 {
 
@@ -39,7 +41,6 @@ class Action implements Listable
     public function __construct(string $index)
     {
         $this->index = $index;
-        $this->label = $index;
     }
 
     public function getIndex(): string
@@ -49,6 +50,9 @@ class Action implements Listable
 
     public function getLabel(): ?string
     {
+        if ($this->label === null) {
+            return u($this->index)->title()->toString();
+        }
         return $this->label;
     }
 

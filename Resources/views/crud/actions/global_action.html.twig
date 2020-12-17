@@ -11,7 +11,7 @@
     {% if action.icon %}
         {{ icon.tabler_icon(action.icon, 17, 17, 'mr-1') }}
     {% endif %}
-    <span>{{ action.label|humanize|trans }}</span>
+    <span>{{ action.label|trans }}</span>
     {% if is_filter_action_and_active %}
         <span class="badge badge-pill bg-red-lt ml-1">{{ active_filters_nb }}</span>
     {% endif %}
