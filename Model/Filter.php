@@ -51,7 +51,7 @@ class Filter implements Listable
         return $this;
     }
 
-    public function getFilterForm(): ?FilterForm
+    public function getFilterForm(): FilterForm
     {
         return $this->filterForm;
     }
