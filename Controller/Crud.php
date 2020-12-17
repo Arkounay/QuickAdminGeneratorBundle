@@ -290,6 +290,7 @@ abstract class Crud extends AbstractController
 
     /**
      * Removes an entity from the entity manager.
+     * @param T $entity
      */
     protected function removeEntity($entity): void
     {
@@ -298,6 +299,7 @@ abstract class Crud extends AbstractController
 
     /**
      * Checks if an entity can be deleted.
+     * @param T $entity
      */
     public function isDeletable($entity): bool
     {
@@ -314,6 +316,7 @@ abstract class Crud extends AbstractController
 
     /**
      * Checks if an entity can be edited
+     * @param T $entity
      */
     public function isEditable($entity): bool
     {
@@ -512,6 +515,7 @@ abstract class Crud extends AbstractController
 
     /**
      * Calls the entity's constructor. Override this to add default parameters for the said entity.
+     * @return T
      */
     protected function createNew(): object
     {
@@ -530,6 +534,7 @@ abstract class Crud extends AbstractController
 
     /**
      * Creates a form from the entity's Fields
+     * @param T $entity
      */
     protected function buildForm($entity, bool $creation): FormBuilderInterface
     {
@@ -588,6 +593,7 @@ abstract class Crud extends AbstractController
 
     /**
      * Determines the form. If the FormType is overridden, uses this one. Otherwise, uses the FormBuilder.
+     * @param T $entity
      */
     public function getForm($entity, bool $creation): FormInterface
     {
