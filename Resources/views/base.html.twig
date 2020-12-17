@@ -80,7 +80,7 @@
                                 {% block user_menu_dropdown_homepage %}
                                     <a class="dropdown-item" href="/">
                                         {{ _self.tabler_icon('home', 50, 44, 'icon dropdown-item-icon icon-tabler icon-tabler-logout') }}
-                                        Homepage
+                                        {{ 'Homepage'|trans }}
                                     </a>
                                 {% endblock %}
                                 {% block user_menu_dropdown_logout %}
@@ -91,7 +91,7 @@
                                                 <path d="M14 8v-2a2 2 0 0 0 -2 -2h-7a2 2 0 0 0 -2 2v12a2 2 0 0 0 2 2h7a2 2 0 0 0 2 -2v-2" />
                                                 <path d="M7 12h14l-3 -3m0 6l3 -3" />
                                             </svg>
-                                            Logout
+                                            {{ 'Logout'|trans }}
                                         </a>
                                     {% endif %}
                                 {% endblock %}
@@ -109,7 +109,8 @@
                         <li class="nav-item {{ current_route == 'qag.dashboard' ? 'active' }}">
                             {% block menu_items_dashboard %}
                                 <a class="nav-link" href="{{ path('qag.dashboard') }}">
-                                    <span class="nav-link-title"> Dashboard </span>
+                                    {% block menu_items_dashboard_icon '' %}
+                                    <span class="nav-link-title"> {% block menu_items_dashboard_label 'Dashboard'|trans %} </span>
                                 </a>
                             {% endblock %}
                         </li>
