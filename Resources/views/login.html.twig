@@ -1,0 +1,72 @@
+{% extends '@ArkounayQuickAdminGenerator/base.html.twig' %}
+
+{% trans_default_domain 'security' %}
+
+{% block title %}{{ block('header_title') }} -  Login{% endblock %}
+
+{% block body %}
+
+    <form method="post">
+        <div class="container-tight py-6">
+            <div class="card">
+                <div class="card-body text-center p-sm-5">
+                    {% block card_header %}
+                        <h1>{{ 'login.title'|trans }}</h1>
+                        <h2>{{ 'login.subtitle'|trans }}</h2>
+                        {% if app.user %}
+                            <div class="alert alert-info">
+                                {{ 'login.already_connected'|trans({'%username%': app.user})|raw }}, <a href="{% block logout_path '/logout' %}">{{ 'login.disconnect'|trans }}</a>
+                            </div>
+                        {% endif %}
+                    {% endblock %}
+                </div>
+                <div class="hr-text hr-text-center hr-text-spaceless">{{ 'login.please'|trans }}</div>
+                <div class="card-body">
+                    {% block card_body %}
+                        {% if error %}
+                            <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+                        {% endif %}
+                        <div class="mb-3">
+                            {% block username %}
+                                <label class="form-label">{{ 'user'|trans }}</label>
+                                <div class="input-group input-group-flat">
+                                <span class="input-group-text">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-md" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"></path><circle cx="12" cy="7" r="4"></circle><path d="M5.5 21v-2a4 4 0 0 1 4 -4h5a4 4 0 0 1 4 4v2"></path></svg>
+                                </span>
+                                    <input type="text" class="form-control" placeholder="{{ 'user'|trans }}" required="required" id="username" name="{% block username_name 'username' %}" value="{{ last_username }}">
+                                </div>
+                            {% endblock %}
+                        </div>
+                        <div>
+                            {% block password %}
+                                <label class="form-label" for="password">{{ 'password'|trans }}</label>
+                                <div class="input-group input-group-flat">
+                                <span class="input-group-text">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-md" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"></path><rect x="5" y="11" width="14" height="10" rx="2"></rect><circle cx="12" cy="16" r="1"></circle><path d="M8 11v-4a4 4 0 0 1 8 0v4"></path></svg>
+                                </span>
+                                    <input type="password" class="form-control" placeholder="{{ 'password'|trans }}" required="required" id="password" name="{% block password_name 'password' %}">
+                                </div>
+                            {% endblock %}
+                        </div>
+
+                        {% block remember_me_wrapper %}
+                            <div class="mt-2">
+                                <label class="form-check">
+                                    {% block remember_me %}
+                                        <input type="checkbox" id="remember_me" class="form-check-input" name="_remember_me" checked/>
+                                        <label class="form-check-label" for="remember_me">{{ 'remember_me'|trans }}</label>
+                                    {% endblock %}
+                                </label>
+                            </div>
+                        {% endblock %}
+
+                        <div class="text-center">
+                            <button class="btn btn-primary mt-4 px-4 py-2" type="submit">{{ 'login.button'|trans }}</button>
+                        </div>
+                    {% endblock %}
+                </div>
+            </div>
+        </div>
+        <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+    </form>
+{% endblock %}

@@ -1,0 +1,11 @@
+login:
+    title: Admin
+    subtitle: Secured Area
+    already_connected: You are already connected as <strong>%username%</strong>
+    disconnect: disconnect
+    please: Please login
+    button: Login
+
+user: User
+password: Password
+remember_me: Remember me
