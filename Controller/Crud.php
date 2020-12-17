@@ -37,6 +37,7 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
  * Creates a Crud for a given entity managed by Doctrine.
+ * @template T
  */
 abstract class Crud extends AbstractController
 {
@@ -798,6 +799,7 @@ abstract class Crud extends AbstractController
 
     /**
      * Finds the entity from an id.
+     * @return T
      */
     public function guessEntity()
     {
