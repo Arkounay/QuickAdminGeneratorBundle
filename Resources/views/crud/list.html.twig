@@ -107,7 +107,7 @@
         </div>
     {% endif %}
 
-    <div class="{{ is_simple_responsive_mode ? 'd-none' }} d-sm-block table-card table-responsive">
+    <div class="{{ is_simple_responsive_mode ? 'd-none' }} d-sm-block table-card table-responsive" data-controller="position--list">
         {% block table %}
             <table class="table align-middle mb-0">
                 {% do entities.setSortableTemplate('@KnpPaginator/Pagination/twitter_bootstrap_v4_font_awesome_sortable_link.html.twig') %}

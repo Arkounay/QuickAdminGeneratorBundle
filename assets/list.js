@@ -1,8 +1,4 @@
 $(() => {
-    if ($('body').is('.list')) {
-
-    }
-
     const $deleteModal = $('#delete-modal');
     $('.js-delete-item').click(function (e) {
         e.preventDefault();

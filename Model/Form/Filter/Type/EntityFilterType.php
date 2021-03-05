@@ -18,7 +18,6 @@ class EntityFilterType extends AbstractType
             ->add('choice', ChoiceType::class, [
                 'required' => false,
                 'placeholder' => false,
-                'attr' => ['class' => 'vanilla'],
                 'choices' => [
                     'Equal' => '=',
                     'Different' => '!=',
@@ -26,7 +25,6 @@ class EntityFilterType extends AbstractType
             ])
             ->add('entity', EntityType::class, [
                 'required' => false,
-                'attr' => ['class' => 'vanilla'],
                 'class' => $options['class']
             ])
         ;

@@ -1,16 +1,26 @@
 {
   "devDependencies": {
-    "@symfony/webpack-encore": "^0.31.0",
+    "@symfony/stimulus-bridge": "^2.0.0",
+    "@symfony/webpack-encore": "^1.0.0",
     "node-sass": "^4.14.1",
     "sass-loader": "^9.0.1",
+    "core-js": "^3.0.0",
+    "regenerator-runtime": "^0.13.2",
+    "stimulus": "^2.0.0",
     "webpack-notifier": "^1.6.0"
   },
+  "license": "UNLICENSED",
   "dependencies": {
     "@ttskch/select2-bootstrap4-theme": "^1.4.0",
-    "core-js": "^3.6.5",
     "jquery": "^3.5.1",
     "select2": "^4.0.13",
     "symfony-collection": "ninsuo/symfony-collection",
     "tabler": "^1.0.0-alpha.7"
+  },
+  "scripts": {
+    "dev-server": "encore dev-server",
+    "dev": "encore dev",
+    "watch": "encore dev --watch",
+    "build": "encore production --progress"
   }
 }

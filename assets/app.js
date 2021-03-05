@@ -1,10 +1,10 @@
-import '../css/app.scss';
+import './styles/app.scss';
+
+import './bootstrap';
 
 import 'jquery';
 import 'bootstrap';
-import './forms/select2';
 import './forms/collection';
-import './forms/position';
 import './list';
 
 global.$ = global.jQuery = $;

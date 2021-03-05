@@ -10,9 +10,6 @@ const collectionOptions = {
     fade_out: false,
     after_add: function (collection, element) {
         collection.trigger('collection_add', element);
-        $(element).find('select:not(.vanilla)').select2({
-            theme: 'bootstrap4',
-        });
         return true;
     },
     before_remove: function (collection, element) {

@@ -556,7 +556,7 @@ abstract class Crud extends AbstractController
                 continue;
             }
 
-            $options = ['label' => $field->getLabel(), 'required' => $field->isRequired()];
+            $options = ['label' => $field->getLabel(), 'required' => $field->isRequired(), 'attr' => []];
             if ($field->getFormClass() !== null) {
                 $options['attr'] = ['class' => $field->getFormClass()];
             }
@@ -576,6 +576,7 @@ abstract class Crud extends AbstractController
                     ]));
                     break;
                 case 'relation_to_many':
+                    $options['attr']['data-controller'] = 'select2';
                     $builder->add($field->getIndex(), $field->getFormType() ?? EntityType::class, array_merge($options, [
                         'class' => $field->getAssociationMapping(),
                         'multiple' => true,

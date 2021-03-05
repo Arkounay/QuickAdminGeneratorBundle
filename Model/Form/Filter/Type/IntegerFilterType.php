@@ -16,7 +16,7 @@ class IntegerFilterType extends AbstractType
             ->add('choice', ChoiceType::class, [
                 'required' => false,
                 'placeholder' => false,
-                'attr' => ['class' => 'filter-choice vanilla'],
+                'attr' => ['class' => 'filter-choice'],
                 'choices' => [
                     'Equal' => '=',
                     'Different' => '!=',
