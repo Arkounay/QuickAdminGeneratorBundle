@@ -1,0 +1,29 @@
+{% macro action_a(action, entity = null, path = null, extra_classes = [], is_dropdown = false) %}
+    {# action \Arkounay\Bundle\QuickAdminGeneratorBundle\Model\Action #}
+    <a {{ _self.action_attributes(action, entity, path, extra_classes, is_dropdown) }}>
+        {{ action.label|humanize|trans }}
+    </a>
+{% endmacro %}
+
+{% macro action_button(action, entity = null, path = null, extra_classes = [], is_dropdown = false) %}
+    {# action \Arkounay\Bundle\QuickAdminGeneratorBundle\Model\Action #}
+    <button {{ _self.action_attributes(action, entity, path, extra_classes, is_dropdown) }}>
+        {{ action.label|humanize|trans }}
+    </button>
+{% endmacro %}
+
+{% macro action_attributes(action, entity = null, path = null, extra_classes = [], is_dropdown = false) %}
+    {# action \Arkounay\Bundle\QuickAdminGeneratorBundle\Model\Action #}
+    {% if is_dropdown %}
+        {% set classes = action.dropdownClasses|default([])|merge(extra_classes)|join(' ') %}
+    {% else %}
+        {% set classes = action.classes|default([])|merge(extra_classes)|join(' ') %}
+    {% endif %}
+    {% if classes is not empty %}class="{{ classes }}"{% endif %} {% for attrname, attrvalue in action.attributes -%}{{- attrname }}="{{ attrvalue }}"{%- endfor -%} href="{{ path ?? action_href(action, entity) }}" {% if entity %}data-name={{ entity }}{% endif %}
+{% endmacro %}
+
+{% macro batch_action_attributes(action) %}
+    {# action \Arkounay\Bundle\QuickAdminGeneratorBundle\Model\Action #}
+    {% set classes = action.classes|default([])|merge(['batch-form-button'])|join(' ') %}
+    {% if classes is not empty %}class="{{ classes }}"{% endif %} {% for attrname, attrvalue in action.attributes -%}{{- attrname }}="{{ attrvalue }}"{%- endfor -%}
+{% endmacro %}

@@ -1,5 +1,4 @@
 @import '~tabler/scss/tabler-core';
-
 @import "~select2/src/scss/core";
 @import "~@ttskch/select2-bootstrap4-theme/dist/select2-bootstrap4.min.css";
 
@@ -107,4 +106,12 @@
 
 .position input {
   height: 28px;
+}
+
+html, body {
+  height: 100%;
+}
+
+.select2-results__option {
+  min-height: 30px;
 }

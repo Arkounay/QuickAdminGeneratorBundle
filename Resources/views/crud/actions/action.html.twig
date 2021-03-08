@@ -1,3 +1,2 @@
-<a href="{{ action.customHref ?? path(route ~ '_' ~ action.index, {id: entity.id}) }}" {% if action.classes is not empty %} class="{{ action.classes|join(' ') }}" {% endif %}>
-    {{ action.label|humanize|trans }}
-</a>
+{% import '@ArkounayQuickAdminGenerator/crud/actions/_action_renderer.html.twig' as action_renderer %}
+{{ action_renderer.action_a(action) }}

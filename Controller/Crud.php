@@ -168,7 +168,8 @@ abstract class Crud extends AbstractController
 
         if ($this->isPrimary && !$this->getFilters()->isEmpty()) {
             $filterAction = new Action('filter');
-            $filterAction->addClasses('btn', 'btn-white', 'js-filter');
+            $filterAction->addClasses('btn', 'btn-white');
+            $filterAction->setAttributes(['data-controller' => 'filter--modal', 'data-action' => 'filter--modal#open']);
             $filterAction->setIcon('filter');
             $filterAction->setCustomHref('#');
             $res->add($filterAction);
@@ -194,7 +195,7 @@ abstract class Crud extends AbstractController
             $removeAction = new Action('delete');
             $removeAction->addClasses('btn', 'btn-outline-danger');
             $removeAction->addDropDownClass('text-danger');
-            $removeAction->addSharedClasses('js-delete-item');
+            $removeAction->setAttributes(['data-controller' => 'modal-form', 'data-action' => 'modal-form#open', 'data-target' => '#delete-modal']);
             $actions->add($removeAction);
         }
 
@@ -230,7 +231,7 @@ abstract class Crud extends AbstractController
 
         $removeAction = new Action('delete');
         $removeAction->addClasses('btn', 'btn-outline-danger');
-        $removeAction->addSharedClasses('js-delete-items');
+        $removeAction->setAttributes(['data-controller' => 'modal-form', 'data-action' => 'modal-form#open', 'data-target' => '#batch-delete-modal']);
         $actions->add($removeAction);
 
         return $actions;
@@ -575,6 +576,14 @@ abstract class Crud extends AbstractController
                         'widget' => 'single_text',
                     ]));
                     break;
+                case 'relation':
+                    $options['attr']['data-controller'] = 'select2';
+                    $builder->add($field->getIndex(), $field->getFormType() ?? EntityType::class, array_merge($options, [
+                        'class' => $field->getAssociationMapping(),
+                        'multiple' => false,
+                        'required' => false,
+                    ]));
+                    break;
                 case 'relation_to_many':
                     $options['attr']['data-controller'] = 'select2';
                     $builder->add($field->getIndex(), $field->getFormType() ?? EntityType::class, array_merge($options, [
@@ -683,7 +692,7 @@ abstract class Crud extends AbstractController
      * Called only when the controller is active.
      * Gets the Class Metadata and creates fields and filters.
      */
-    public function load(): void
+    public function load(Request $request): void
     {
         if (!$this->isEnabled()) {
             throw $this->createAccessDeniedException();
@@ -692,6 +701,7 @@ abstract class Crud extends AbstractController
         $this->metadata = $this->em->getClassMetadata($this->getEntity());
         $this->fields = $this->createFieldsFromMetadata();
         $this->filters = $this->createFilters();
+        $request->attributes->add(['qag.main_controller_route' => $this->getRoute()]);
     }
 
     /**

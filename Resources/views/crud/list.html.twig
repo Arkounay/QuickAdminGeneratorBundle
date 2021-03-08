@@ -8,6 +8,8 @@
     {{ plural_name|trans }}
 {% endblock %}
 
+{% import '@ArkounayQuickAdminGenerator/crud/actions/_action_renderer.html.twig' as action_renderer %}
+
 {% block global_actions %}
     <div class="global-actions col">
         <div class="d-flex justify-content-end flex-wrap">
@@ -79,10 +81,7 @@
                                                         {% block inner_actions_responsive %}
                                                             {% for action in actions %}
                                                                 {# action \Arkounay\Bundle\QuickAdminGeneratorBundle\Model\Action #}
-                                                                {% set classes = action.dropdownClasses|default([])|merge(['dropdown-item']) %}
-                                                                <a data-name="{{ entity }}" href="{{ action.customHref ?? path(route ~ '_' ~ action.index, {id: entity.id, referer: app.request.query.all}) }}" class="{{ classes|join(' ') }}">
-                                                                    {{ action.label|humanize|trans }}
-                                                                </a>
+                                                                {{ action_renderer.action_a(action, entity, null, ['dropdown-item'], true) }}
                                                             {% endfor %}
                                                         {% endblock %}
                                                     {% endif %}
@@ -91,10 +90,7 @@
                                         </div>
                                     {% elseif actions|length == 1 %}
                                         <div class="col-auto">
-                                            {% set main_action = actions|first %}
-                                            <a href="{{ main_action.customHref ?? path(route ~ '_' ~ main_action.index, {id: entity.id, referer: app.request.query.all}) }}" class="{{ main_action.classes|join(' ') }}">
-                                                {{ main_action.label|humanize|trans }}
-                                            </a>
+                                            {{ action_renderer.action_a(actions|first, entity) }}
                                         </div>
                                     {% endif %}
                                 {% endblock %}
@@ -107,7 +103,7 @@
         </div>
     {% endif %}
 
-    <div class="{{ is_simple_responsive_mode ? 'd-none' }} d-sm-block table-card table-responsive" data-controller="position--list">
+    <div class="{{ is_simple_responsive_mode ? 'd-none' }} d-sm-block table-card table-responsive" data-controller="position--list batch-actions">
         {% block table %}
             <table class="table align-middle mb-0">
                 {% do entities.setSortableTemplate('@KnpPaginator/Pagination/twitter_bootstrap_v4_font_awesome_sortable_link.html.twig') %}
@@ -116,7 +112,7 @@
                         {% if has_batch_actions %}
                             <th class="batch-column">
                                 <label for="batch-actions-select-all">
-                                    <input type="checkbox" class="custom-control-input" id="batch-actions-select-all">
+                                    <input type="checkbox" class="custom-control-input" id="batch-actions-select-all" data-batch-actions-target="selectAllCheckbox" data-action="batch-actions#selectAll">
                                 </label>
                             </th>
                         {% endif %}
@@ -142,7 +138,7 @@
                                     {% block batch_td %}
                                         <td class="batch-column">
                                             <label class="custom-control-label" for="batch-action-{{ entity.id }}">
-                                                <input type="checkbox" class="batch-action custom-control-input" name="batch-actions[{{ entity.id }}]" id="batch-action-{{ entity.id }}" form="batch-form">
+                                                <input type="checkbox" class="batch-action custom-control-input" name="batch-actions[{{ entity.id }}]" id="batch-action-{{ entity.id }}" form="batch-form" data-batch-actions-target="rowCheckbox" data-action="batch-actions#selectOne">
                                             </label>
                                         </td>
                                     {% endblock %}
@@ -159,11 +155,10 @@
                                             {% if actions|length > 1 %}
                                                 <div class="btn-group btn-group-table">
                                                     {% set main_action = actions|first %}
-                                                    <a type="button" class="{{ main_action.classes|default([])|join(' ') }}" href="{{ main_action.customHref ?? path(route ~ '_' ~ main_action.index, {id: entity.id, referer: app.request.query.all}) }}">{{ main_action.label|humanize|trans }}</a>
+                                                    {{ action_renderer.action_a(main_action, entity) }}
                                                     {% if actions|length == 2 and actions.delete is defined %}
                                                         {% set action = actions.delete %}
-                                                        <a data-name="{{ entity }}" href="{{ action.customHref ?? path(route ~ '_' ~ action.index, {id: entity.id, referer: app.request.query.all}) }}" class="{{ action.classes|merge(['btn-sm'])|join(' ') }}"> {{ _self.tabler_icon('x', 12, 12) }}
-                                                        </a>
+                                                        <a {{ action_renderer.action_attributes(action, entity, null, ['btn-sm']) }}> {{ _self.tabler_icon('x', 12, 12) }} </a>
                                                     {% else %}
                                                         <button type="button" class="btn btn-outline-primary dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                                             <span class="sr-only">Toggle Dropdown</span>
@@ -171,17 +166,14 @@
                                                         <div class="dropdown-menu">
                                                             {% for action in actions|filter(a => main_action.index != a.index) %}
                                                                 {# action \Arkounay\Bundle\QuickAdminGeneratorBundle\Model\Action #}
-                                                                {% set classes = action.dropdownClasses|default([])|merge(['dropdown-item']) %}
-                                                                <a data-name="{{ entity }}" href="{{ action.customHref ?? path(route ~ '_' ~ action.index, {id: entity.id, referer: app.request.query.all}) }}" class="{{ classes|join(' ') }}">
-                                                                    {{ action.label|humanize|trans }}
-                                                                </a>
+                                                                {{ action_renderer.action_a(action, entity) }}
                                                             {% endfor %}
                                                         </div>
                                                     {% endif %}
                                                 </div>
                                             {% elseif actions|length == 1 %}
                                                 {% set main_action = actions|first %}
-                                                <a type="button" class="{{ main_action.classes|default([])|join(' ') }}" href="{{ main_action.customHref ?? path(route ~ '_' ~ main_action.index, {id: entity.id, referer: app.request.query.all}) }}">{{ main_action.label|humanize|trans }}</a>
+                                                {{ action_renderer.action_a(main_action, entity) }}
                                             {% endif %}
                                         </td>
                                     {% endif %}
@@ -195,24 +187,21 @@
         {% if entities is empty %}
             <div class="p-3">{{ 'No result'|trans }}</div>
         {% endif %}
-        <form method="post" id="batch-form">
+        <form method="post" id="batch-form" action="{{ path(route ~ '_delete_batch') }}">
             <input type="hidden" name="token" value="{{ csrf_token('batch') }}" />
 
-            <div class="batch-actions-container mx-3 my-2" style="display: none;">
+            <div class="batch-actions-container mx-3 my-2" data-batch-actions-target="actionsContainer" style="display: none;">
                 {% block batch_actions %}
                     {% for action in batch_actions %}
                         {# action \Arkounay\Bundle\QuickAdminGeneratorBundle\Model\Action #}
-                        {% set classes = action.classes|default([])|merge(['batch-form-button']) %}
-                        <button data-action="{{ action.customHref ?? path(route ~ '_' ~ action.index ~ '_batch') }}" class="{{ classes|join(' ') }}">
-                            {{ action.label|humanize|trans }}
-                        </button>
+                        {{ action_renderer.action_button(action) }}
                     {% endfor %}
                     {# Batch delete modal #}
                     <div class="modal fade" tabindex="-1" role="dialog" id="batch-delete-modal">
                         <div class="modal-dialog" role="document">
                             <div class="modal-content">
                                 <div class="modal-header">
-                                    <h5 class="modal-title">{{ 'Search'|trans }}</h5>
+                                    <h5 class="modal-title">{{ 'Delete'|trans }}</h5>
                                     <button type="button" class="close" data-dismiss="modal" aria-label="{{ 'Close'|trans }}">
                                         <span aria-hidden="true">&times;</span>
                                     </button>

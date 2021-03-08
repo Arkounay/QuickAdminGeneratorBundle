@@ -34,6 +34,11 @@ class Action implements Listable
     protected $dropdownClasses = [];
 
     /**
+     * @var string[]
+     */
+    protected $attributes = [];
+
+    /**
      * @var string
      */
     protected $customHref;
@@ -113,6 +118,18 @@ class Action implements Listable
     public function getDropdownClasses(): array
     {
         return $this->dropdownClasses;
+    }
+
+    public function getAttributes(): ?array
+    {
+        return $this->attributes;
+    }
+
+    public function setAttributes(array $attributes): self
+    {
+        $this->attributes = $attributes;
+
+        return $this;
     }
 
     /**

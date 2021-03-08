@@ -117,6 +117,9 @@ class FieldService
                 }
                 break;
             case 'relation':
+                if ($metadata && $metadata->hasAssociation($fieldIndex)) {
+                    $field->setAssociationMapping($metadata->getAssociationMapping($fieldIndex)['targetEntity']);
+                }
                 $field->setSortable(true);
                 $field->setSortQuery("{$field->getIndex()}.id");
                 break;

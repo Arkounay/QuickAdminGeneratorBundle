@@ -41,7 +41,7 @@ class CrudListener implements EventSubscriberInterface
 
         if ($controller instanceof Crud) {
             $this->activeCrud = $controller;
-            $controller->load();
+            $controller->load($event->getRequest());
         }
 
     }

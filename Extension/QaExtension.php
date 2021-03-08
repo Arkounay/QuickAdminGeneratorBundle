@@ -3,9 +3,14 @@
 namespace Arkounay\Bundle\QuickAdminGeneratorBundle\Extension;
 
 use Arkounay\Bundle\QuickAdminGeneratorBundle\Controller\Crud;
+use Arkounay\Bundle\QuickAdminGeneratorBundle\Model\Action;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\RequestStack;
+use Symfony\Component\Routing\RouterInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Twig\Extension\AbstractExtension;
 use Twig\Extension\GlobalsInterface;
+use Twig\TwigFunction;
 
 class QaExtension extends AbstractExtension implements GlobalsInterface
 {
@@ -25,12 +30,24 @@ class QaExtension extends AbstractExtension implements GlobalsInterface
      */
     private $translator;
 
-    public function __construct(iterable $cruds, array $config, TranslatorInterface $translator)
+    /**
+     * @var RouterInterface
+     */
+    private $router;
+
+    /**
+     * @var RequestStack
+     */
+    private $requestStack;
+
+    public function __construct(iterable $cruds, array $config, TranslatorInterface $translator, RouterInterface $router, RequestStack $requestStack)
     {
 
         $this->cruds = $cruds;
         $this->config = $config;
         $this->translator = $translator;
+        $this->router = $router;
+        $this->requestStack = $requestStack;
     }
 
     private function getMenuItems():array
@@ -71,6 +88,33 @@ class QaExtension extends AbstractExtension implements GlobalsInterface
         }
 
         return $items;
+    }
+
+    public function getActionHref(Action $action, $entity = null): string
+    {
+        if ($action->getCustomHref() !== null) {
+            return $action->getCustomHref();
+        }
+
+        /** @var Request $request */
+        $request = $this->requestStack->getCurrentRequest();
+        $route = $request->attributes->get('qag.main_controller_route');
+
+        try {
+            $params = ['referer' => $request->query->all()];
+            if ($entity !== null) {
+                $params['id'] = $entity->getId();
+            }
+            /** @noinspection PhpRouteMissingInspection */
+            return $this->router->generate("qag.{$route}_{$action->getIndex()}", $params);
+        } catch (\Exception $ignored) {}
+
+        return '#';
+    }
+
+    public function getFunctions(): array
+    {
+        return [new TwigFunction('action_href', [$this, 'getActionHref'])];
     }
 
     public function getGlobals(): array

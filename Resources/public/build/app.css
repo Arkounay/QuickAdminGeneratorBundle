@@ -15783,3 +15783,11 @@ Antialiasing
   height: 28px;
 }
 
+html, body {
+  height: 100%;
+}
+
+.select2-results__option {
+  min-height: 30px;
+}
+

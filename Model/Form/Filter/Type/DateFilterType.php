@@ -16,7 +16,7 @@ class DateFilterType extends AbstractType
             ->add('choice', ChoiceType::class, [
                 'required' => false,
                 'placeholder' => false,
-                'attr' => ['class' => 'filter-choice'],
+                'attr' => ['class' => 'filter-choice', 'data-controller' => 'filter--choice', 'data-action' => 'filter--choice#change'],
                 'choices' => [
                     'Before' => '<',
                     'After' => '>',

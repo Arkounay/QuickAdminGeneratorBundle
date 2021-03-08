@@ -1,4 +1,5 @@
 {% import '@ArkounayQuickAdminGenerator/base.html.twig' as icon %}
+{% import '@ArkounayQuickAdminGenerator/crud/actions/_action_renderer.html.twig' as action_renderer %}
 
 {% set is_filter_action_and_active = action.index == 'filter' and has_active_filters %}
 
@@ -7,7 +8,8 @@
 {% endif %}
 
 {# action \Arkounay\Bundle\QuickAdminGeneratorBundle\Model\Action #}
-<a href="{{ action.customHref ?? path(route ~ '_' ~ action.index) }}" {% if action.classes is not empty %} class="{{ action.classes|join(' ') }}" {% endif %}>
+{#<a {{ action_renderer.action_attributes(action, action.customHref ?? path(route ~ '_' ~ action.index)) }}>#}
+<a {{ action_renderer.action_attributes(action) }}>
     {% if action.icon %}
         {{ icon.tabler_icon(action.icon, 17, 17, 'mr-1') }}
     {% endif %}
