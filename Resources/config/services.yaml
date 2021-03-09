@@ -27,7 +27,7 @@ services:
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
 
-    Arkounay\Bundle\QuickAdminGeneratorBundle\Extension\QaExtension:
+    Arkounay\Bundle\QuickAdminGeneratorBundle\Extension\QagExtension:
         arguments:
             $cruds: !tagged_iterator quickadmin.crud
             $config: '%quick_admin_generator%'

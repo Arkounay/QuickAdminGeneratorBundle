@@ -12,11 +12,11 @@
   "license": "UNLICENSED",
   "dependencies": {
     "@hotwired/turbo": "^7.0.0-beta.4",
+    "@tabler/core": "^1.0.0-beta",
     "@ttskch/select2-bootstrap4-theme": "^1.4.0",
     "jquery": "^3.5.1",
     "select2": "^4.0.13",
-    "symfony-collection": "ninsuo/symfony-collection",
-    "tabler": "^1.0.0-alpha.7"
+    "symfony-collection": "ninsuo/symfony-collection"
   },
   "scripts": {
     "dev-server": "encore dev-server",

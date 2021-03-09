@@ -12,7 +12,7 @@ use Twig\Extension\AbstractExtension;
 use Twig\Extension\GlobalsInterface;
 use Twig\TwigFunction;
 
-class QaExtension extends AbstractExtension implements GlobalsInterface
+class QagExtension extends AbstractExtension implements GlobalsInterface
 {
 
     /**
@@ -101,7 +101,7 @@ class QaExtension extends AbstractExtension implements GlobalsInterface
         $route = $request->attributes->get('qag.main_controller_route');
 
         try {
-            $params = ['referer' => $request->query->all()];
+            $params = ['referer' => $_GET]; /* use $_GET instead of $request->query->all() to avoid knp pagination's change of query attributes */
             if ($entity !== null) {
                 $params['id'] = $entity->getId();
             }

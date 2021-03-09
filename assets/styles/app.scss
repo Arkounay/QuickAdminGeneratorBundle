@@ -1,4 +1,5 @@
-@import '~tabler/scss/tabler-core';
+$enable-dark-mode: false;
+@import '~@tabler/core';
 @import "~select2/src/scss/core";
 @import "~@ttskch/select2-bootstrap4-theme/dist/select2-bootstrap4.min.css";
 
@@ -53,7 +54,7 @@
   }
 }
 
-@include media-breakpoint-down(xs) {
+@include media-breakpoint-down(sm) {
 
   .table-card > table.table {
 
@@ -93,7 +94,7 @@
   top: 0;
 }
 .btn-collection {
-  @extend .close;
+  @extend .btn-close;
   width: 32px;
   height: 32px;
   padding: 0;
@@ -105,6 +106,10 @@
 }
 
 .position input {
+  padding: 12px;
+  @-moz-document url-prefix() {
+    padding: 12px 0 12px 12px;
+  }
   height: 28px;
 }
 
@@ -114,4 +119,30 @@ html, body {
 
 .select2-results__option {
   min-height: 30px;
+}
+
+// tmp fix :
+.card-footer {
+  background-color: #FFFFFF;
+}
+
+.table > thead > tr > th {
+  background-color: #fbfcff;
+}
+
+.mb-3-5 {
+  margin-bottom: 1.25rem;
+}
+
+tr.highlighted {
+  animation: highlighted-row-refresh 0.4s ease-in-out forwards;
+}
+
+@keyframes highlighted-row-refresh {
+  from {
+    background-color: #ffffa5;
+  }
+  to {
+    background-color: none;
+  }
 }

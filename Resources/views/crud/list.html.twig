@@ -24,7 +24,7 @@
                 </form>
             {% endif %}
             {% for global_action in global_actions|reverse %}
-                <div class="ml-1 ml-sm-2 mt-1 mt-sm-0">
+                <div class="ms-1 ms-sm-2 mt-1 mt-sm-0 mb-sm-1">
                     {% include '@ArkounayQuickAdminGenerator/crud/actions/global_action.html.twig' with {action: global_action} %}
                 </div>
             {% endfor %}
@@ -47,6 +47,8 @@
         </div>
     {% endif %}
 
+    {% set highlighted_row = app.session.flashbag.get('highlighted_row_id')|first|default() %}
+
     {% if is_simple_responsive_mode %}
         <div class="d-block d-sm-none">
             {% for i, entity in entities %}
@@ -56,7 +58,7 @@
                         <div class="col">
                             {% block simple_responsive_item %}
                                 {% if fields['id'] is defined %}
-                                    <span class="text-secondary mr-1">#{{ entity.id }}</span>
+                                    <span class="text-secondary me-1">#{{ entity.id }}</span>
                                 {% endif %}
 
                                 {% if entity.__toString is defined %}
@@ -71,7 +73,7 @@
                                 {% block actions_responsive %}
                                     {% if actions|length > 1 %}
                                         <div class="col-auto dropleft open">
-                                            <button class="btn btn-pill btn-table-dropdown btn-icon text-secondary text-xs" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                            <button class="btn btn-pill btn-table-dropdown btn-icon text-secondary text-xs border-0" type="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                                 {{ _self.tabler_icon('dots-vertical') }}
                                             </button>
                                             <div class="dropdown-menu">
@@ -112,7 +114,7 @@
                         {% if has_batch_actions %}
                             <th class="batch-column">
                                 <label for="batch-actions-select-all">
-                                    <input type="checkbox" class="custom-control-input" id="batch-actions-select-all" data-batch-actions-target="selectAllCheckbox" data-action="batch-actions#selectAll">
+                                    <input type="checkbox" class="form-check-input" id="batch-actions-select-all" data-batch-actions-target="selectAllCheckbox" data-action="batch-actions#selectAll">
                                 </label>
                             </th>
                         {% endif %}
@@ -126,19 +128,20 @@
                             {% endif %}
                         {% endfor %}
                         {% if has_actions %}
-                            <th class="text-right">Actions</th>
+                            <th class="text-end">Actions</th>
                         {% endif %}
                     </tr>
                 </thead>
                 <tbody>
                     {% block tbody %}
                         {% for i, entity in entities %}
-                            <tr>
+                            {% set actions = actions_entities[i]|default([]) %}
+                            <tr  {{ entity.id == highlighted_row ? 'class="highlighted"' }}>
                                 {% if has_batch_actions %}
                                     {% block batch_td %}
                                         <td class="batch-column">
                                             <label class="custom-control-label" for="batch-action-{{ entity.id }}">
-                                                <input type="checkbox" class="batch-action custom-control-input" name="batch-actions[{{ entity.id }}]" id="batch-action-{{ entity.id }}" form="batch-form" data-batch-actions-target="rowCheckbox" data-action="batch-actions#selectOne">
+                                                <input type="checkbox" class="batch-action form-check-input" name="batch-actions[{{ entity.id }}]" id="batch-action-{{ entity.id }}" form="batch-form" data-batch-actions-target="rowCheckbox" data-action="batch-actions#selectOne">
                                             </label>
                                         </td>
                                     {% endblock %}
@@ -149,9 +152,8 @@
                                     {% endblock %}
                                 {% endfor %}
                                 {% block actions %}
-                                    {% if actions_entities[i] is defined and actions_entities[i] is not empty %}
-                                        {% set actions = actions_entities[i] %}
-                                        <td class="text-right">
+                                    {% if actions is not empty %}
+                                        <td class="text-end">
                                             {% if actions|length > 1 %}
                                                 <div class="btn-group btn-group-table">
                                                     {% set main_action = actions|first %}
@@ -160,13 +162,13 @@
                                                         {% set action = actions.delete %}
                                                         <a {{ action_renderer.action_attributes(action, entity, null, ['btn-sm']) }}> {{ _self.tabler_icon('x', 12, 12) }} </a>
                                                     {% else %}
-                                                        <button type="button" class="btn btn-outline-primary dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                            <span class="sr-only">Toggle Dropdown</span>
+                                                        <button type="button" data-controller="modal-fix" class="btn btn-outline-primary dropdown-toggle dropdown-toggle-split" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                            <span class="visually-hidden">Toggle Dropdown</span>
                                                         </button>
                                                         <div class="dropdown-menu">
                                                             {% for action in actions|filter(a => main_action.index != a.index) %}
                                                                 {# action \Arkounay\Bundle\QuickAdminGeneratorBundle\Model\Action #}
-                                                                {{ action_renderer.action_a(action, entity) }}
+                                                                {{ action_renderer.action_a(action, entity, null, ['dropdown-item'], true) }}
                                                             {% endfor %}
                                                         </div>
                                                     {% endif %}
@@ -202,15 +204,13 @@
                             <div class="modal-content">
                                 <div class="modal-header">
                                     <h5 class="modal-title">{{ 'Delete'|trans }}</h5>
-                                    <button type="button" class="close" data-dismiss="modal" aria-label="{{ 'Close'|trans }}">
-                                        <span aria-hidden="true">&times;</span>
-                                    </button>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="{{ 'Close'|trans }}"></button>
                                 </div>
                                 <div class="modal-body">
                                     <p>{{ 'are_you_sure_batch'|trans|raw }}</p>
                                 </div>
                                 <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">{{ 'Cancel'|trans }}</button>
+                                    <button type="button" class="btn" data-bs-dismiss="modal">{{ 'Cancel'|trans }}</button>
                                     <button type="submit" class="btn btn-danger">{{ 'Delete'|trans }}</button>
                                 </div>
                             </div>
@@ -235,16 +235,14 @@
                         <input type="hidden" name="token" value="{{ csrf_token('delete') }}" />
                         <div class="modal-header">
                             <h5 class="modal-title">{{ 'Remove'|trans }} {{ name }}</h5>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="{{ 'Close'|trans }}">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="{{ 'Close'|trans }}"></button>
                         </div>
                         <div class="modal-body">
                             <strong class="js-entity-to-string"></strong>
                             <p>{{ 'are_you_sure'|trans|raw }}</p>
                         </div>
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">{{ 'Cancel'|trans }}</button>
+                            <button type="button" class="btn" data-bs-dismiss="modal">{{ 'Cancel'|trans }}</button>
                             <button type="submit" class="btn btn-danger">{{ 'Delete'|trans }}</button>
                         </div>
                     </form>
@@ -259,9 +257,7 @@
                         <form action="{{ path(route) }}" method="get">
                             <div class="modal-header">
                                 <h5 class="modal-title">{{ 'Filter'|trans }}</h5>
-                                <button type="button" class="close" data-dismiss="modal" aria-label="{{ 'Close' |trans }}">
-                                    <span aria-hidden="true">&times;</span>
-                                </button>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="{{ 'Close' |trans }}"></button>
                             </div>
                             <div class="modal-body">
                                 <div id="filter-form">
@@ -274,7 +270,7 @@
                                 {% if has_active_filters %}
                                     <a class="btn btn-danger" href="{{ path(current_route) }}">{{ 'Reset'|trans }}</a>
                                 {% endif %}
-                                <button type="button" class="btn btn-secondary" data-dismiss="modal">{{ 'Cancel'|trans }}</button>
+                                <button type="button" class="btn" data-bs-dismiss="modal">{{ 'Cancel'|trans }}</button>
                                 <button type="submit" class="btn btn-primary btn-submit">{{ 'Search'|trans }}</button>
                             </div>
                         </form>

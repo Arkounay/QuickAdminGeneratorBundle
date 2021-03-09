@@ -12,7 +12,7 @@
         {% block breadcrumb_wrapper %}
             <nav class="breadcrumb">
                 {% block breadcrumb %}
-                    <a class="breadcrumb-item" href="{{ back }}">{{ plural_name|trans }}</a>
+                    <a class="breadcrumb-item" href="{{ list ?? back }}">{{ plural_name|trans }}</a>
                     <span class="breadcrumb-item active">{{ action_name }} {{ name|trans }}</span>
                 {% endblock %}
             </nav>
@@ -30,16 +30,16 @@
     <div class="card">
         {% block card %}
             {% block card_body %}
-                <div class="card-body">
+                <div class="card-body px-4 pt-4">
                     {% block form_content %}
                         {{ form_rest(form) }}
                     {% endblock %}
                 </div>
             {% endblock %}
             {% block card_footer %}
-                <div class="card-footer">
-                    <a class="btn btn-secondary" href="{{ back }}">{{ _self.tabler_icon('arrow-narrow-left')}} {{ 'Back'|trans }}</a>
-                    <button type="submit" class="btn btn-primary float-right">{{ 'Save'|trans }}</button>
+                <div class="card-footer px-4">
+                    <a class="btn btn-link" href="{{ back }}">{{ _self.tabler_icon('arrow-narrow-left', 18, 18)}} {{ 'Back'|trans }}</a>
+                    <button type="submit" class="btn btn-primary float-end">{{ 'Save'|trans }}</button>
                 </div>
             {% endblock %}
         {% endblock %}

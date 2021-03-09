@@ -1,0 +1,14 @@
+{% import '@ArkounayQuickAdminGenerator/base.html.twig' as icon_renderer %}
+
+{% if actions.edit is defined %}
+    {# Editable : display switch #}
+    <label class="form-check form-switch">
+        <input class="form-check-input" data-controller="ajax-switch" data-action="ajax-switch#toggle" type="checkbox" data-url="{{ path(route ~ '_toggle_boolean_post', {id: entity.id}) }}" data-index="{{ field.index }}" {{ value ? 'checked' }}>
+    </label>
+{% else %}
+    {% if value %}
+        {{ icon_renderer.tabler_icon('check', 30 ,20, 'text-teal') }}
+    {% else %}
+        {{ icon_renderer.tabler_icon('x', 30 , 20, 'text-pink') }}
+    {% endif %}
+{% endif %}

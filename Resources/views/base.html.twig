@@ -22,6 +22,7 @@
     <meta name="HandheldFriendly" content="True"/>
     <meta name="MobileOptimized" content="320"/>
     <meta name="robots" content="noindex,nofollow,noarchive"/>
+    <meta name="turbo-root" content="{% block url_turbo_root_prefix '/admin' %}">
 
     {% block css %}
         <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin>
@@ -29,6 +30,7 @@
     {% endblock %}
 
     {% block head_js %}
+        <script src="{{ asset('bundles/arkounayquickadmingenerator/build/app.js') }}"></script>
     {% endblock %}
 
     <title> {% block title block('header_title') ~ ' - ' ~ block('content_title') %}</title>
@@ -39,7 +41,7 @@
     {% if menu_vertical %}
     <aside class="navbar navbar-vertical navbar-expand-lg navbar-dark">
         <div class="container">
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-menu">
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar-menu">
                 <span class="navbar-toggler-icon"></span>
             </button>
 
@@ -54,13 +56,13 @@
 
                 {% block user_menu %}
                     <div class="nav-item dropdown">
-                        <a href="#" class="nav-link d-flex lh-1 text-reset p-0" data-toggle="dropdown">
+                        <a href="#" class="nav-link d-flex lh-1 text-reset p-0" data-bs-toggle="dropdown">
                             {% block user_menu_username %}
                                 {% if app.user is not null %}
                                     {% if app.user.username is defined %}
-                                        <span class="avatar">{{ app.user.username[:1] }}</span>
+                                        <span class="avatar avatar-sm">{{ app.user.username[:1] }}</span>
                                     {% endif %}
-                                    <div class="d-none d-xl-block pl-2">
+                                    <div class="d-none d-xl-block ps-2">
                                         {% if app.user.username is defined %}
                                             <div>{{ app.user.username|title }}</div>
                                         {% else %}
@@ -75,7 +77,7 @@
                                 {% endif %}
                             {% endblock %}
                         </a>
-                        <div class="dropdown-menu dropdown-menu-right">
+                        <div class="dropdown-menu dropdown-menu-end">
                             {% block user_menu_dropdown %}
                                 {% block user_menu_dropdown_homepage %}
                                     <a class="dropdown-item" href="/">
@@ -105,7 +107,7 @@
             <div class="collapse navbar-collapse" id="navbar-menu">
                 <ul class="navbar-nav pt-lg-3">
                     {% block menu_items %}
-                        {% set icon_class = menu_vertical ? 'mr-2' : 'mr-1' %}
+                        {% set icon_class = menu_vertical ? 'me-2' : 'me-1' %}
                         <li class="nav-item {{ current_route == 'qag.dashboard' ? 'active' }}">
                             {% block menu_items_dashboard %}
                                 <a class="nav-link" href="{{ path('qag.dashboard') }}">
@@ -129,7 +131,7 @@
                                 {% endfor %}
                                 {% if has_children %}
                                     <li class="nav-item dropdown {{ active ? 'active' }}">
-                                        <a class="nav-link dropdown-toggle show" href="#" data-toggle="dropdown" role="button" aria-expanded="true">
+                                        <a class="nav-link dropdown-toggle show" href="#" data-bs-toggle="dropdown" role="button" aria-expanded="true">
                                             <span class="nav-link-title">{{ k }}</span>
                                         </a>
                                         <ul class="dropdown-menu {{ active and menu_vertical ? 'show' }}">
@@ -178,10 +180,10 @@
     <header class="navbar navbar-expand-md navbar-light {% if menu_vertical %}d-none d-lg-flex{% endif %}">
         <div class="container-xl">
             {% if menu_horizontal %}
-                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-menu">
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar-menu">
                     <span class="navbar-toggler-icon"></span>
                 </button>
-                <a href="{{ path('qag.dashboard') }}" class="navbar-brand navbar-brand-autodark d-none-navbar-horizontal pr-0 pr-md-3">
+                <a href="{{ path('qag.dashboard') }}" class="navbar-brand navbar-brand-autodark d-none-navbar-horizontal pe-0 pe-md-3">
                     {{ block('header_title') }}
                 </a>
             {% else %}
@@ -209,48 +211,40 @@
 
 
     {% if menu_vertical %}
-    <div class="page">
-        {% endif %}
-        <div class="content">
-            <div class="container-xl">
-                <div class="page-header">
-                    <div class="row align-items-start align-items-sm-center justify-content-between">
-                        <div class="col-auto">
-                            {% block content_title_wrapper %}
-                                <h2 class="page-title">
-                                    {% block content_title block('title') %}
-                                </h2>
-                            {% endblock %}
-                        </div>
-                        {% block help_text %}{% endblock %}
-                        {% block global_actions %}{% endblock %}
-                    </div>
-                </div>
-
-                {% block flash_messages %}
-                    {% for label, messages in app.flashes(['danger', 'success', 'warning', 'info']) %}
-                        {% for message in messages %}
-                            <div class="alert alert-{{ label}} alert-dismissible in" role="alert">
-                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                    <span aria-hidden="true">&times;</span>
-                                </button>
-                                {{ message|raw }}
-                            </div>
-                        {% endfor %}
-                    {% endfor %}
-                {% endblock %}
-                {% block content %}{% endblock %}
-            </div>
-        </div>
-        {% if menu_vertical %}
-    </div>
+        <div class="page">
     {% endif %}
+    <div class="content">
+        <div class="container-xl">
+            <div class="page-header">
+                <div class="row align-items-start align-items-sm-center justify-content-between">
+                    <div class="col-auto">
+                        {% block content_title_wrapper %}
+                            <h2 class="page-title">
+                                {% block content_title block('title') %}
+                            </h2>
+                        {% endblock %}
+                    </div>
+                    {% block help_text %}{% endblock %}
+                    {% block global_actions %}{% endblock %}
+                </div>
+            </div>
 
-    <!-- Optional JavaScript -->
-{% block js %}
-    {# jQuery doesn't work with defer, will move to head_js when jQuery is removed #}
-    <script src="{{ asset('bundles/arkounayquickadmingenerator/build/app.js') }}"></script>
-{% endblock %}
+            {% block flash_messages %}
+                {% for label, messages in app.flashes(['danger', 'success', 'warning', 'info']) %}
+                    {% for message in messages %}
+                        <div class="alert alert-{{ label}} alert-dismissible in" role="alert">
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                            {{ message|raw }}
+                        </div>
+                    {% endfor %}
+                {% endfor %}
+            {% endblock %}
+            {% block content %}{% endblock %}
+        </div>
+    </div>
+    {% if menu_vertical %}
+        </div>
+    {% endif %}
 
 {% endblock %}
 </body>

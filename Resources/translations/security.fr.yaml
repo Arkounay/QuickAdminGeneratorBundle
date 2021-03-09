@@ -1,11 +1,10 @@
 login:
     title: Admin
-    subtitle: Espace sécurisé
     already_connected: Vous êtes déjà connecté en tant que <strong>%username%</strong>
     disconnect: se déconnecter
     please: Veuillez vous connecter
     button: Connexion
 
-user: Utilisateur
+username: Utilisateur
 password: Mot de passe
 remember_me: Se souvenir de moi

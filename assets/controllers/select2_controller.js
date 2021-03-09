@@ -7,8 +7,6 @@ export default class extends Controller {
         this.select.select2({
             theme: 'bootstrap4',
         });
-        console.log(1);
-
     }
 
     disconnect() {

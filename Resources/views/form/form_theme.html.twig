@@ -8,7 +8,7 @@
     {%- if help is not empty -%}
         {%- set widget_attr = {attr: {'aria-describedby': id ~"_help"}} -%}
     {%- endif -%}
-    <{{ element|default('div') }}{% with {attr: row_attr|merge({class: (row_attr.class|default('') ~ ' form-group mb-3')|trim})} %}{{ block('attributes') }}{% endwith %}>
+    <{{ element|default('div') }}{% with {attr: row_attr|merge({class: (row_attr.class|default('') ~ ' form-group mb-3-5')|trim})} %}{{ block('attributes') }}{% endwith %}>
     {{- form_label(form) -}}
     {{- form_widget(form, widget_attr) -}}
     {{- form_help(form) -}}

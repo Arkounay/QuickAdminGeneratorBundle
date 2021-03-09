@@ -10,10 +10,6 @@ export default class extends Controller {
 
     static targets = ['selectAllCheckbox', 'rowCheckbox', 'actionsContainer']
 
-    connect() {
-        console.log("batch actions");
-    }
-
     selectAll(event) {
         let allAreSelected = this.allAreSelected;
 

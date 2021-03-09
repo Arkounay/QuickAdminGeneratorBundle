@@ -26,10 +26,12 @@ use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormInterface;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\PropertyAccess\PropertyAccess;
 use Symfony\Component\String\Inflector\EnglishInflector;
 use Symfony\Component\String\Inflector\InflectorInterface;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
@@ -290,6 +292,29 @@ abstract class Crud extends AbstractController
         return $this->redirectToList();
     }
 
+    public function toggleBooleanPostAction(Request $request, $entity): Response
+    {
+        if (!$this->isEditable($entity)) {
+            throw $this->createAccessDeniedException("Entity {$this->getEntity()} cannot be edited.");
+        }
+        if ($this->hasQuickListQueryBuilderSecurity() && !$this->entityIsInList($entity)) {
+            throw $this->createAccessDeniedException("Entity {$this->getEntity()} #{$entity->getId()} is filtered out.");
+        }
+
+        $index = $request->request->get('index');
+        $value = $request->request->getBoolean('checked');
+        $propertyAccessor = PropertyAccess::createPropertyAccessor();
+        try {
+            $propertyAccessor->setValue($entity, $index, $value);
+        } catch (\Exception $e) {
+            throw $this->createAccessDeniedException("Entity {$this->getEntity()}'s property $index cannot be read or written");
+        }
+
+        $this->em->flush();
+
+        return new JsonResponse();
+    }
+
     /**
      * Removes an entity from the entity manager.
      * @param T $entity
@@ -464,6 +489,7 @@ abstract class Crud extends AbstractController
 
             $event = new GenericEvent($entity);
             $this->eventDispatcher->dispatch($event, 'qag.events.post_create');
+            $this->addFlash('highlighted_row_id', $entity->getId());
 
             return $this->redirectToList();
         }
@@ -503,6 +529,7 @@ abstract class Crud extends AbstractController
 
             $event = new GenericEvent($entity);
             $this->eventDispatcher->dispatch($event, 'qag.events.post_edit');
+            $this->addFlash('highlighted_row_id', $entity->getId());
 
             return $this->redirectToList();
         }
@@ -512,6 +539,7 @@ abstract class Crud extends AbstractController
             'name' => $this->getName(),
             'plural_name' => $this->getPluralName(),
             'form' => $form->createView(),
+            'list' => $this->generateUrl('qag.' . $this->getRoute()),
             'back' => $this->generateUrl('qag.' . $this->getRoute(), $request->get('referer', []))
         ]);
     }
