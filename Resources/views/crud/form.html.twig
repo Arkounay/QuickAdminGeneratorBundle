@@ -13,7 +13,13 @@
             <nav class="breadcrumb">
                 {% block breadcrumb %}
                     <a class="breadcrumb-item" href="{{ list ?? back }}">{{ plural_name|trans }}</a>
-                    <span class="breadcrumb-item active">{{ action_name }} {{ name|trans }}</span>
+                    <span class="breadcrumb-item active">
+                        {% if action_name == 'Create' %}
+                            {{ 'create'|trans({'%entity_name%': name|trans}) }}
+                        {% else %}
+                            {{ action_name }} {{ name|trans }}
+                        {% endif %}
+                    </span>
                 {% endblock %}
             </nav>
         {% endblock %}

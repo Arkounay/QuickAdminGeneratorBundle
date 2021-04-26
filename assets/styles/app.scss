@@ -94,7 +94,7 @@ $enable-dark-mode: false;
   top: 0;
 }
 .btn-collection {
-  @extend .btn-close;
+  border: 0;
   width: 32px;
   height: 32px;
   padding: 0;
@@ -144,5 +144,26 @@ tr.highlighted {
   }
   to {
     background-color: none;
+  }
+}
+
+.position input {
+  max-width: 55px;
+}
+
+.position .btn {
+  max-width: 30px;
+  padding: 5px;
+}
+
+.card-fieldset {
+  @extend .card;
+  @extend .px-4;
+
+  .card-fieldset-legend {
+    @extend .w-auto;
+    @extend .px-1;
+    @extend .h2;
+    @extend .float-none;
   }
 }

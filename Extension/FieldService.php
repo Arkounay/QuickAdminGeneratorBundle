@@ -20,6 +20,7 @@ use Doctrine\ORM\Mapping\ClassMetadata;
 use Symfony\Component\EventDispatcher\GenericEvent;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 use function Symfony\Component\String\u;
+use Symfony\Component\Form\FormRenderer;
 
 class FieldService
 {
@@ -104,7 +105,7 @@ class FieldService
             }
         }
 
-        $field->setLabel($annotationField !== null ? $annotationField->label : u($fieldIndex)->title()->toString());
+        $field->setLabel($annotationField !== null ? $annotationField->label : [FormRenderer::class, 'humanize']($fieldIndex));
         $field->setType($metadata ? $this->getType($metadata, $fieldIndex) : 'virtual');
         $field->setTwig($this->twigLoader->getTwigPartialByFieldType($field->getType(), $annotationField !== null ? $annotationField->twigName : null));
 

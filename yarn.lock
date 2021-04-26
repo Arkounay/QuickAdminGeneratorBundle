@@ -1780,7 +1780,7 @@ boolbase@^1.0.0, boolbase@~1.0.0:
   resolved "https://registry.yarnpkg.com/boolbase/-/boolbase-1.0.0.tgz#68dff5fbe60c51eb37725ea9e3ed310dcc1e776e"
   integrity sha1-aN/1++YMUes3cl6p4+0xDcwed24=
 
-"bootstrap@github:twbs/bootstrap#5c32767e0e0dbac2d934bcdee03719a65d3f1187":
+bootstrap@twbs/bootstrap#5c32767e0e0dbac2d934bcdee03719a65d3f1187:
   version "5.0.0-beta2"
   resolved "https://codeload.github.com/twbs/bootstrap/tar.gz/5c32767e0e0dbac2d934bcdee03719a65d3f1187"
 

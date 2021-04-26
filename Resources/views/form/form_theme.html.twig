@@ -71,6 +71,7 @@
         {% set attr = attr|merge({'data-allow-remove': allow_delete ? 1 : 0 }) %}
         {% set attr = attr|merge({'data-name-prefix': full_name}) %}
         {% set attr = attr|merge({'class': attr.class|default('collection')}) %}
+        {% set attr = attr|merge({'data-controller': attr['data-controller']|default('collection')}) %}
         {% set attr = attr|merge({'data-add-label': (attr['data-add-label']|default('Add'))|trans}) %}
         {% set attr = attr|merge({'data-remove-label': (attr['data-remove-label']|default('Remove'))|trans}) %}
         {{ block('form_widget') }}
@@ -80,7 +81,7 @@
 {% block collection_entry_row %}
     {% import '@ArkounayQuickAdminGenerator/base.html.twig' as icon_renderer %}
 
-    <div class="card p-3">
+    <div class="card p-3 mb-3">
         <div class="btn-collection-container">
             <a href="#" class="collection-up btn btn-collection">{{ icon_renderer.tabler_icon('arrow-up') }}</a>
             <a href="#" class="collection-down btn btn-collection">{{ icon_renderer.tabler_icon('arrow-down') }}</a>
