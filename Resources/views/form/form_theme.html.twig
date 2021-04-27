@@ -1,6 +1,5 @@
 {% extends 'bootstrap_4_layout.html.twig' %}
 
-
 {%- block form_start -%}
     {# Disable Turbo by default when submitting a form (until symfony 5.3 renders proper HTTP status) #}
     {% set attr = attr|merge({'data-turbo': attr['data-turbo']|default('false')}) %}
@@ -18,6 +17,7 @@
     <{{ element|default('div') }}{% with {attr: row_attr|merge({class: (row_attr.class|default('') ~ ' form-group mb-3-5')|trim})} %}{{ block('attributes') }}{% endwith %}>
     {{- form_label(form) -}}
     {{- form_widget(form, widget_attr) -}}
+    {{- form_errors(form) -}}
     {{- form_help(form) -}}
     </{{ element|default('div') }}>
 {%- endblock form_row %}
@@ -58,13 +58,7 @@
                 {{- label|trans(label_translation_parameters, translation_domain)|raw -}}
             {%- endif -%}
         {%- endif -%}
-        {% block form_label_errors %}{{- form_errors(form) -}}{% endblock form_label_errors %}</{{ element|default('label') }}>
-    {%- else -%}
-        {%- if errors|length > 0 -%}
-            <div id="{{ id }}_errors" class="mb-2">
-                {{- form_errors(form) -}}
-            </div>
-        {%- endif -%}
+        </{{ element|default('label') }}>
     {%- endif -%}
 {%- endblock form_label %}
 
@@ -99,3 +93,13 @@
         {{ form_rest(form) }}
     </div>
 {% endblock %}
+
+{% block form_errors -%}
+    {%- if errors|length > 0 -%}
+        <span class="{% if form is not rootform %}invalid-feedback{% else %}alert alert-danger{% endif %} d-block">
+            {%- for error in errors -%}
+                <span class="invalid-feedback">{{ 'Error'|trans({}, 'validators') }}</span> <span class="form-error-message">{{ error.message }}</span>
+            {%- endfor -%}
+        </span>
+    {%- endif %}
+{%- endblock form_errors %}
