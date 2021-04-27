@@ -873,13 +873,13 @@ abstract class Crud extends AbstractController
                 return ['defaultSortFieldName' => 'e.' . $field->getIndex(), 'defaultSortDirection' => $field->getDefaultSortDirection()];
             }
         }
-        if (isset($fields['position'])) {
+        if ($this->metadata->hasField('position')) {
             return ['defaultSortFieldName' => 'e.position', 'defaultSortDirection' => 'asc'];
         }
-        if (isset($fields['createdAt'])) {
+        if ($this->metadata->hasField('createdAt')) {
             return ['defaultSortFieldName' => 'e.createdAt', 'defaultSortDirection' => 'desc'];
         }
-        if (isset($fields['id'])) {
+        if ($this->metadata->hasField('id')) {
             return ['defaultSortFieldName' => 'e.id', 'defaultSortDirection' => 'desc'];
         }
 
