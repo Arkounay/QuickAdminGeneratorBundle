@@ -2,10 +2,10 @@
 
 namespace Arkounay\Bundle\QuickAdminGeneratorBundle\Extension;
 
-use Arkounay\Bundle\QuickAdminGeneratorBundle\Annotation\HideInEdition;
+use Arkounay\Bundle\QuickAdminGeneratorBundle\Annotation\HideInForm;
 use Arkounay\Bundle\QuickAdminGeneratorBundle\Annotation\HideInList;
 use Arkounay\Bundle\QuickAdminGeneratorBundle\Annotation\Ignore;
-use Arkounay\Bundle\QuickAdminGeneratorBundle\Annotation\ShowInEdition;
+use Arkounay\Bundle\QuickAdminGeneratorBundle\Annotation\ShowInForm;
 use Arkounay\Bundle\QuickAdminGeneratorBundle\Annotation\ShowInList;
 use Arkounay\Bundle\QuickAdminGeneratorBundle\Annotation\Sort;
 use Arkounay\Bundle\QuickAdminGeneratorBundle\Model\Field;
@@ -51,7 +51,7 @@ class FieldService
     {
         $field = new Field($fieldIndex);
         if ($fieldIndex === 'id') {
-            $field->setDisplayedInEdition(false);
+            $field->setDisplayedInForm(false);
         }
 
         /** @var \Arkounay\Bundle\QuickAdminGeneratorBundle\Annotation\Field $annotationField */
@@ -68,9 +68,9 @@ class FieldService
                         if ($ignore !== null) {
                             return null;
                         }
-                        $hideInEdition = $this->reader->getPropertyAnnotation($reflectionProperty, HideInEdition::class);
-                        if ($hideInEdition !== null) {
-                            $field->setDisplayedInEdition(false);
+                        $hideInForm = $this->reader->getPropertyAnnotation($reflectionProperty, HideInForm::class);
+                        if ($hideInForm !== null) {
+                            $field->setDisplayedInForm(false);
                         }
                         $hideInList = $this->reader->getPropertyAnnotation($reflectionProperty, HideInList::class);
                         if ($hideInList !== null) {
@@ -78,11 +78,11 @@ class FieldService
                         }
 
                         // handle show annotations for manual fetch mode
-                        $showInEdition = $this->reader->getPropertyAnnotation($reflectionProperty, ShowInEdition::class);
+                        $showInForm = $this->reader->getPropertyAnnotation($reflectionProperty, ShowInForm::class);
                         $showInList = $this->reader->getPropertyAnnotation($reflectionProperty, ShowInList::class);
-                        if ($showInEdition === null && $showInList !== null) {
-                            $field->setDisplayedInEdition(false);
-                        } elseif ($showInEdition !== null && $showInList === null) {
+                        if ($showInForm === null && $showInList !== null) {
+                            $field->setDisplayedInForm(false);
+                        } elseif ($showInForm !== null && $showInList === null) {
                             $field->setDisplayedInList(false);
                         }
                     }

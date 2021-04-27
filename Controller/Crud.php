@@ -707,7 +707,7 @@ abstract class Crud extends AbstractController
     protected function getFormFields(): Fields
     {
         return clone $this->fields->filter(static function (Field $field) {
-            return $field->isDisplayedInEdition();
+            return $field->isDisplayedInForm();
         });
     }
 

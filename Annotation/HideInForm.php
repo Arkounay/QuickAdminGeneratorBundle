@@ -5,7 +5,7 @@ namespace Arkounay\Bundle\QuickAdminGeneratorBundle\Annotation;
 /**
  * @Annotation
  */
-class HideInEdition
+class HideInForm
 {
 
 }

@@ -53,7 +53,7 @@ class Field implements Listable
     /**
      * @var bool
      */
-    protected $displayedInEdition = true;
+    protected $displayedInForm = true;
 
     /**
      * @var string - null if not sorted by default
@@ -170,14 +170,14 @@ class Field implements Listable
         return $this;
     }
 
-    public function isDisplayedInEdition(): bool
+    public function isDisplayedInForm(): bool
     {
-        return $this->displayedInEdition;
+        return $this->displayedInForm;
     }
 
-    public function setDisplayedInEdition(bool $displayedInEdition): self
+    public function setDisplayedInForm(bool $displayedInEdition): self
     {
-        $this->displayedInEdition = $displayedInEdition;
+        $this->displayedInForm = $displayedInEdition;
 
         return $this;
     }

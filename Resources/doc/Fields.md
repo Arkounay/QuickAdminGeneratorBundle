@@ -2,7 +2,7 @@
 
 * [Configure Fields by Annotations](#configure-fields-by-annotations)
   - [@GAQ\Field](#gaqfield)
-  - [@GAQ\HideInEdition](#gaqhideinedition)
+  - [@GAQ\HideInForm](#gaqhideinform)
   - [@GAQ\HideInList](#gaqhideinlist)
   - [@GAQ\Ignore](#gaqignore)
   - [@GAQ\Sort](#gaqsort)
@@ -68,14 +68,14 @@ use Arkounay\Bundle\QuickAdminGeneratorBundle\Annotation as QAG;
 There are **9** annotations available:
 
 - @GAQ\Field
-- @GAQ\HideInEdition
+- @GAQ\HideInForm
 - @GAQ\HideInList
 - @GAQ\Ignore
 - @GAQ\Sort
 - @GAQ\Crud *(class-level)*
 - @GAQ\Show (only in manual fetch mode)
 - @GAQ\ShowInList (only in manual fetch mode)
-- @GAQ\ShowInEdition (only in manual fetch mode)
+- @GAQ\ShowInForm (only in manual fetch mode)
 
 
 #### @GAQ\Field
@@ -88,7 +88,7 @@ The twig filed needs to be located at `templates/bundles/ArkounayQuickAdminGener
 - `formType` is the Form Type that will be used when rendering the form. For example, if you have an email field, you can use `Symfony\Component\Form\Extension\Core\Type\EmailType` to quickly set the type to Email. Note that it should be used only for simple Types as you can't pass options. For anything more advanced, consider overriding the form through PHP.
 -  `required` defines if the form's field is required when editing or creating. If not specified, will automatically try to guess it with doctrine's metadata.
 
-#### @GAQ\HideInEdition
+#### @GAQ\HideInForm
 Allows you to hide a field in both creation and edition.
 
 #### @GAQ\HideInList
@@ -118,12 +118,12 @@ Has 1 attribute, `fetchMode`.
 
 By default, any property added in a doctrine class will be converted into a Field.
 You can change that by specifying a manual Fetch Mode.
-In manual mode, you'll have to add @QAG\Show, @QAG\ShowInList and @QAG\ShowInEdition to make them appear, otherwise fields will be ignored.
+In manual mode, you'll have to add @QAG\Show, @QAG\ShowInList and @QAG\ShowInForm to make them appear, otherwise fields will be ignored.
 
 #### @GAQ\Show (only in manual fetch mode)
 Will show the field both in listing, creation and edition.
 
-#### @GAQ\ShowInEdition (only in manual fetch mode)
+#### @GAQ\ShowInForm (only in manual fetch mode)
 Will show the field both in creation and edition only
 
 #### @GAQ\ShowInList (only in manual fetch mode)
