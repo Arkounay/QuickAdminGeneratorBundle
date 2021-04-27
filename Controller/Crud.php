@@ -876,6 +876,9 @@ abstract class Crud extends AbstractController
         if (isset($fields['position'])) {
             return ['defaultSortFieldName' => 'e.position', 'defaultSortDirection' => 'asc'];
         }
+        if (isset($fields['createdAt'])) {
+            return ['defaultSortFieldName' => 'e.createdAt', 'defaultSortDirection' => 'desc'];
+        }
         if (isset($fields['id'])) {
             return ['defaultSortFieldName' => 'e.id', 'defaultSortDirection' => 'desc'];
         }
