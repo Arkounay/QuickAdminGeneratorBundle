@@ -70,6 +70,11 @@ class Field implements Listable
      */
     protected $formClass;
 
+    /**
+     * @var string
+     */
+    protected $placeholder;
+
 
     public function __construct(string $index)
     {
@@ -219,6 +224,18 @@ class Field implements Listable
     public function setRequired(bool $required): self
     {
         $this->required = $required;
+
+        return $this;
+    }
+
+    public function getPlaceholder(): ?string
+    {
+        return $this->placeholder;
+    }
+
+    public function setPlaceholder(?string $placeholder): self
+    {
+        $this->placeholder = $placeholder;
 
         return $this;
     }

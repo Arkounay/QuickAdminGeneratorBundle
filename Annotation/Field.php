@@ -38,4 +38,9 @@ class Field
      */
     public $required = null;
 
+    /**
+     * @var string
+     */
+    public $placeholder;
+
 }

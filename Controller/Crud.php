@@ -589,6 +589,9 @@ abstract class Crud extends AbstractController
             if ($field->getFormClass() !== null) {
                 $options['attr'] = ['class' => $field->getFormClass()];
             }
+            if ($field->getPlaceholder() !== null) {
+                $options['placeholder'] = $field->getPlaceholder();
+            }
 
             switch ($field->getType()) {
                 case 'decimal':
@@ -609,7 +612,6 @@ abstract class Crud extends AbstractController
                     $builder->add($field->getIndex(), $field->getFormType() ?? EntityType::class, array_merge($options, [
                         'class' => $field->getAssociationMapping(),
                         'multiple' => false,
-                        'required' => false,
                     ]));
                     break;
                 case 'relation_to_many':
@@ -617,7 +619,6 @@ abstract class Crud extends AbstractController
                     $builder->add($field->getIndex(), $field->getFormType() ?? EntityType::class, array_merge($options, [
                         'class' => $field->getAssociationMapping(),
                         'multiple' => true,
-                        'required' => false,
                         'by_reference' => false,
                     ]));
                     break;
@@ -939,10 +940,10 @@ abstract class Crud extends AbstractController
     protected function entityIsInList($entity): bool
     {
         return $this->getListQueryBuilder()
-            ->andWhere('e.id = :id')
-            ->setParameter('id', $entity->getId())
-            ->getQuery()
-            ->getOneOrNullResult() !== null;
+                ->andWhere('e.id = :id')
+                ->setParameter('id', $entity->getId())
+                ->getQuery()
+                ->getOneOrNullResult() !== null;
     }
 
 }

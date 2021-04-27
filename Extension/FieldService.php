@@ -101,6 +101,7 @@ class FieldService
                         $nullable = true;
                     }
                     $field->setRequired(!$nullable);
+                } else {
                 }
             }
         }
@@ -119,7 +120,10 @@ class FieldService
                 break;
             case 'relation':
                 if ($metadata && $metadata->hasAssociation($fieldIndex)) {
-                    $field->setAssociationMapping($metadata->getAssociationMapping($fieldIndex)['targetEntity']);
+                    $associationMapping = $metadata->getAssociationMapping($fieldIndex);
+                    $field->setAssociationMapping($associationMapping['targetEntity']);
+                    $nullable = $associationMapping['joinColumns'][0]['nullable'] ?? true;
+                    $field->setRequired(!$nullable);
                 }
                 $field->setSortable(true);
                 $field->setSortQuery("{$field->getIndex()}.id");
@@ -139,6 +143,7 @@ class FieldService
             }
             $field->setFormClass($annotationField->formClass);
             $field->setFormType($annotationField->formType);
+            $field->setPlaceholder($annotationField->placeholder);
         }
 
         $event = new GenericEvent($field, ['metadata' => $metadata]);
