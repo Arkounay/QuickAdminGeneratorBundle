@@ -158,7 +158,7 @@
                                                 <div class="btn-group btn-group-table">
                                                     {% set main_action = actions|first %}
                                                     {{ action_renderer.action_a(main_action, entity) }}
-                                                    {% if actions|length == 2 and actions.delete is defined %}
+                                                    {% if actions|length == 2 and actions.delete is defined and actions|last == actions.delete %}
                                                         {% set action = actions.delete %}
                                                         <a {{ action_renderer.action_attributes(action, entity, null, ['btn-sm']) }}> {{ _self.tabler_icon('x', 12, 12) }} </a>
                                                     {% else %}
