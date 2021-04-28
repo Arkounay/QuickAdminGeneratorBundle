@@ -33,6 +33,11 @@ export default class extends Controller {
         if (min > 0) {
             options = Object.assign({}, options, {min: min})
         }
+        let dragDrop = $element.attr('data-drag-drop');
+        if (dragDrop !== undefined) {
+            dragDrop = !(dragDrop === 'false' || dragDrop === '0');
+            options = Object.assign({}, options, {drag_drop: dragDrop})
+        }
         const addLabel = $element.attr('data-add-label');
         options = Object.assign({}, options, {add: '<a href="#" class="btn btn-outline-secondary"><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-md" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"></path><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg> ' + addLabel + '</a>'})
 
