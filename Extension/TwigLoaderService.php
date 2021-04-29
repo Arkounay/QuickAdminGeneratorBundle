@@ -39,7 +39,7 @@ class TwigLoaderService
         return '@ArkounayQuickAdminGenerator/crud/fields/_default.html.twig';
     }
 
-    public function getTwigFormType(string $route, string $name): string
+    public function guessTwigFilePath(string $route, string $name): string
     {
         $route = preg_replace('/\.{2,}/', '.', $route);
 

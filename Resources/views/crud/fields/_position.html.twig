@@ -2,9 +2,14 @@
 {# Not used by default but can be useful #}
 
 {% import '@ArkounayQuickAdminGenerator/base.html.twig' as icon %}
-<form method="post" action="{{ path(route ~ '_move_post', {id: entity.id, referer: app.request.query.all}) }}">
-    <div class="input-group position rounded-0" data-controller="position--item">
-        <input type="number" class="form-control form-control-sm" min="1" value="{{ value + 1 }}" name="position" data-position--list-target="input" data-position--item-target="input" data-action="position--list#changePosition position--item#changePosition">
-        <button class="btn btn-primary invisible" data-position--item-target="button" type="submit">{{ icon.tabler_icon('device-floppy') }} </button>
-    </div>
-</form>
+
+{% if current_action_name == 'list' %}
+    <form method="post" action="{{ path(route ~ '_move_post', {id: entity.id, referer: app.request.query.all}) }}">
+        <div class="input-group position rounded-0" data-controller="position--item">
+            <input type="number" class="form-control form-control-sm" min="1" value="{{ value + 1 }}" name="position" data-position--list-target="input" data-position--item-target="input" data-action="position--list#changePosition position--item#changePosition">
+            <button class="btn btn-primary invisible" data-position--item-target="button" type="submit">{{ icon.tabler_icon('device-floppy') }} </button>
+        </div>
+    </form>
+{% else %}
+    {{ value + 1 }}
+{% endif %}

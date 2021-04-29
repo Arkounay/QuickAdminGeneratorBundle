@@ -131,6 +131,7 @@ There are multiple functions that can be overridden to configure permissions:
 - `isEditable($entity)` checks if an element can be edited. If false, will prevent the user from going to the "edit" route and remove the "Edit" action.
 - `isDeletable($entity)` checks if an element can be deleted. If false, will also remove the "Delete" action and the "Delete" batch action.
 - `isSearchable` checks if an element can be searched. If false, will prevent text search and remove the search bar (filters can still be applied if they exist).
+- `isViewable` checks if an element can be viewed. False by default, if true will add a "View" action that displays an entity's detail.
 
 
 Example:

@@ -1,0 +1,21 @@
+<div class="modal fade" tabindex="-1" role="dialog" id="delete-modal">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <form action="" method="post">
+                <input type="hidden" name="token" value="{{ csrf_token('delete') }}" />
+                <div class="modal-header">
+                    <h5 class="modal-title">{{ 'Remove'|trans }} {{ name }}</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="{{ 'Close'|trans }}"></button>
+                </div>
+                <div class="modal-body">
+                    <strong class="js-entity-to-string"></strong>
+                    <p>{{ 'are_you_sure'|trans|raw }}</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn" data-bs-dismiss="modal">{{ 'Cancel'|trans }}</button>
+                    <button type="submit" class="btn btn-danger">{{ 'Delete'|trans }}</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

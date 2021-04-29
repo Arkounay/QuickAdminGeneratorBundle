@@ -29,6 +29,7 @@ After: Après
 Between: Entre
 Not in: Hors
 and: et
+View: Voir
 
 pagination:
     num_of_result: '<strong> %total_count% </strong> résultats'

@@ -104,6 +104,9 @@ class QagExtension extends AbstractExtension implements GlobalsInterface
             $params = ['referer' => $_GET]; /* use $_GET instead of $request->query->all() to avoid knp pagination's change of query attributes */
             if ($entity !== null) {
                 $params['id'] = $entity->getId();
+                if ($request->attributes->get('qag.from') === 'view') {
+                    $params['from'] = 'view';
+                }
             }
             /** @noinspection PhpRouteMissingInspection */
             return $this->router->generate("qag.{$route}_{$action->getIndex()}", $params);

@@ -19,7 +19,6 @@ use Doctrine\Common\Annotations\Reader;
 use Doctrine\ORM\Mapping\ClassMetadata;
 use Symfony\Component\EventDispatcher\GenericEvent;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
-use function Symfony\Component\String\u;
 use Symfony\Component\Form\FormRenderer;
 
 class FieldService
@@ -76,7 +75,7 @@ class FieldService
                         if ($hideInList !== null) {
                             $field->setDisplayedInList(false);
                         }
-
+                    } else {
                         // handle show annotations for manual fetch mode
                         $showInForm = $this->reader->getPropertyAnnotation($reflectionProperty, ShowInForm::class);
                         $showInList = $this->reader->getPropertyAnnotation($reflectionProperty, ShowInList::class);

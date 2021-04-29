@@ -1,0 +1,46 @@
+{% extends '@ArkounayQuickAdminGenerator/base.html.twig' %}
+
+{% block action_name (action_name|trans)|default ~ ' ' ~ name|trans %}
+
+{% block content_title block('action_name') %}
+
+{% block content_title_wrapper %}
+    <div class="d-flex flex-column">
+        {{ parent() }}
+        {% block breadcrumb_wrapper %}
+            <nav class="breadcrumb">
+                {% block breadcrumb %}
+                    <a class="breadcrumb-item" href="{{ list ?? back }}">{{ plural_name|trans }}</a>
+                    <span class="breadcrumb-item active">
+                        {{ block('action_name') }}
+                    </span>
+                {% endblock %}
+            </nav>
+        {% endblock %}
+    </div>
+{% endblock %}
+
+{% block content %}
+    <div class="card">
+        {% block card %}
+            {% block card_body %}
+                <div class="card-body">
+                    {% block card_body_content '' %}
+                </div>
+            {% endblock %}
+            {% block card_footer %}
+                <div class="card-footer px-4">
+                    {% block card_footer_content %}
+                        <a class="btn btn-link" href="
+                            {%- if app.request.get('from') == 'view' and entity is defined -%}
+                                {{ path('qag.' ~ app.request.attributes.get('qag.main_controller_route') ~ '_view', {id: entity.id}) }}
+                            {%- else -%}
+                                {{ from ?? back }}
+                            {%- endif -%}
+                        ">{{ _self.tabler_icon('arrow-narrow-left', 18, 18)}} {{ 'Back'|trans }}</a>
+                    {% endblock %}
+                </div>
+            {% endblock %}
+        {% endblock %}
+    </div>
+{% endblock %}

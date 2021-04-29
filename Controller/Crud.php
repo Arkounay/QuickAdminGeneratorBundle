@@ -187,6 +187,12 @@ abstract class Crud extends AbstractController
     {
         $actions = new Actions();
 
+        if ($this->isViewable($entity)) {
+            $editAction = new Action('view');
+            $editAction->addClasses('btn', 'btn-outline-primary');
+            $actions->add($editAction);
+        }
+
         if ($this->isEditable($entity)) {
             $editAction = new Action('edit');
             $editAction->addClasses('btn', 'btn-outline-primary');
@@ -351,6 +357,15 @@ abstract class Crud extends AbstractController
     }
 
     /**
+     * Checks if an entity can be shown
+     * @param T $entity
+     */
+    public function isViewable($entity): bool
+    {
+        return false;
+    }
+
+    /**
      * Checks if an entity is searchable
      */
     public function isSearchable(): bool
@@ -469,6 +484,35 @@ abstract class Crud extends AbstractController
     }
 
     /**
+     * View an entity.
+     * @param T $entity
+     */
+    public function viewAction(Request $request, $entity): Response
+    {
+        if (!$this->isViewable($entity)) {
+            throw $this->createAccessDeniedException("Entity {$this->getEntity()} cannot be viewed.");
+        }
+        if ($this->hasQuickListQueryBuilderSecurity() && !$this->entityIsInList($entity)) {
+            throw $this->createAccessDeniedException("Entity {$this->getEntity()} #{$entity->getId()} is filtered out.");
+        }
+        if ($entity === null) {
+            throw $this->createNotFoundException("No {$this->getName()} found with id #{$request->attributes->get('id')}");
+        }
+        $request->attributes->add(['qag.from' => 'view']);
+
+        return $this->render($this->viewTwig(), [
+            'name' => $this->getName(),
+            'plural_name' => $this->getPluralName(),
+            'action_name' => 'View',
+            'list' => $this->generateUrl('qag.' . $this->getRoute()),
+            'back' => $this->generateUrl('qag.' . $this->getRoute(), $request->get('referer', [])),
+            'fields' => $this->getListingFields(),
+            'entity' => $entity,
+            'actions' => $this->getActions($entity)
+        ]);
+    }
+
+    /**
      * Create a new entity
      */
     public function createAction(Request $request): Response
@@ -499,7 +543,8 @@ abstract class Crud extends AbstractController
             'name' => $this->getName(),
             'plural_name' => $this->getPluralName(),
             'form' => $form->createView(),
-            'back' => $this->generateUrl('qag.' . $this->getRoute())
+            'back' => $this->generateUrl('qag.' . $this->getRoute()),
+            'action_name' => 'View'
         ]);
     }
 
@@ -538,9 +583,11 @@ abstract class Crud extends AbstractController
             'creation' => false,
             'name' => $this->getName(),
             'plural_name' => $this->getPluralName(),
+            'entity' => $entity,
             'form' => $form->createView(),
             'list' => $this->generateUrl('qag.' . $this->getRoute()),
-            'back' => $this->generateUrl('qag.' . $this->getRoute(), $request->get('referer', []))
+            'back' => $this->generateUrl('qag.' . $this->getRoute(), $request->get('referer', [])),
+            'action_name' => 'Edit'
         ]);
     }
 
@@ -702,6 +749,14 @@ abstract class Crud extends AbstractController
     }
 
     /**
+     * Fields that will be used to display the detail of an entity.
+     */
+    protected function getViewFields(): Fields
+    {
+        return $this->getListingFields();
+    }
+
+    /**
      * Fields that will be used to to automatically generate the form in the create / edit actions.
      */
     protected function getFormFields(): Fields
@@ -731,6 +786,9 @@ abstract class Crud extends AbstractController
         $this->fields = $this->createFieldsFromMetadata();
         $this->filters = $this->createFilters();
         $request->attributes->add(['qag.main_controller_route' => $this->getRoute()]);
+        if (!method_exists($this->getEntity(), '__toString')) {
+            throw new \RuntimeException("Entity {$this->getEntity()} must implement __toString.");
+        }
     }
 
     /**
@@ -794,11 +852,19 @@ abstract class Crud extends AbstractController
     }
 
     /**
+     * The view's twig, used in view actions.
+     */
+    public function viewTwig(): string
+    {
+        return $this->twigLoader->guessTwigFilePath($this->getRoute(), 'view');
+    }
+
+    /**
      * The form's twig, used in edit and create actions.
      */
     public function formTwig(bool $creation): string
     {
-        return $this->twigLoader->getTwigFormType($this->getRoute(), 'form');
+        return $this->twigLoader->guessTwigFilePath($this->getRoute(), 'form');
     }
 
     /**
@@ -806,7 +872,7 @@ abstract class Crud extends AbstractController
      */
     public function listTwig(): string
     {
-        return $this->twigLoader->getTwigFormType($this->getRoute(), 'list');
+        return $this->twigLoader->guessTwigFilePath($this->getRoute(), 'list');
     }
 
     /**

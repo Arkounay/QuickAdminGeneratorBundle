@@ -1,0 +1,37 @@
+{% extends '@ArkounayQuickAdminGenerator/crud/base_detail_layout.html.twig' %}
+{% import '@ArkounayQuickAdminGenerator/crud/actions/_action_renderer.html.twig' as action_renderer %}
+
+{% block card_body_content %}
+    {% set current_action_name = 'view' %}
+    <table class="table table-view">
+        <tbody>
+            {% block fields %}
+                {% for field in fields %}
+                    <tr>
+                        <th>{{ field.label|trans }}</th>
+                        <td>{% include field.twig with {value: attribute(entity, field.index)|default()} %}</td>
+                    </tr>
+                {% endfor %}
+            {% endblock %}
+        </tbody>
+    </table>
+{% endblock %}
+
+{% block card_footer_content %}
+    {{ parent() }}
+    {% block actions %}
+        {% if actions|length > 0 %}
+            <div class="float-end">
+                {% for action in actions %}
+                    {% block action %}
+                        {% if action.index != 'view' %}
+                            {{ action_renderer.action_a(action, entity) }}
+                        {% elseif action.index == 'delete' %}
+                            {% include '@ArkounayQuickAdminGenerator/crud/actions/_delete_modal.html.twig' %}
+                        {% endif %}
+                    {% endblock %}
+                {% endfor %}
+            </div>
+        {% endif %}
+    {% endblock %}
+{% endblock %}
