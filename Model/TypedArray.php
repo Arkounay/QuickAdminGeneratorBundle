@@ -108,16 +108,20 @@ abstract class TypedArray implements \IteratorAggregate, \ArrayAccess, \Countabl
         return \count($this->items);
     }
 
-    public function moveToLastPosition(string $index): void
+    public function moveToLastPosition(string $index): self
     {
         $tmp = $this->items[$index];
         unset($this->items[$index]);
         $this->items[$index] = $tmp;
+
+        return $this;
     }
 
-    public function moveToFirstPosition(string $index): void
+    public function moveToFirstPosition(string $index): self
     {
         $this->items = array_merge([$index => $this->items[$index]], $this->items);
+
+        return $this;
     }
 
     public function contains(string $index): bool
