@@ -32,11 +32,9 @@
     "autoload": {
         "psr-4": {
             "Arkounay\\Bundle\\QuickAdminGeneratorBundle\\": ""
-        }
-    },
-    "autoload-dev": {
-        "psr-4": {
-            "Artgris\\Bundle\\FileManagerBundle\\Tests\\": "/Tests/"
-        }
+        },
+        "exclude-from-classmap": [
+            "/Tests/"
+        ]
     }
 }

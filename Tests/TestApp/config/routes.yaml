@@ -1,0 +1,9 @@
+qa_routes:
+    resource: 'Arkounay\Bundle\QuickAdminGeneratorBundle\Crud\RouteLoader'
+    type: service
+    prefix: '/admin'
+
+# config/routes.yaml
+logout:
+    path: /logout
+    methods: GET
