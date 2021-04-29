@@ -36,7 +36,7 @@
     <title> {% block title block('header_title') ~ ' - ' ~ block('content_title') %}</title>
 </head>
 
-<body class="antialiased {% block body_extra_class '' %}">
+<body class="antialiased {% block body_extra_class '' %}" {% block body_attributes '' %}>
 {% block body %}
     {% if menu_vertical %}
     <aside class="navbar navbar-vertical navbar-expand-lg navbar-dark">
