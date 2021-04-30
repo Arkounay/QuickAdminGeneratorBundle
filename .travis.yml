@@ -1,6 +1,4 @@
 language: php
-sudo: false
-services: sqlite
 cache:
     directories:
         - $HOME/.composer/cache/files
