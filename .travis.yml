@@ -22,4 +22,7 @@ install:
     - composer update $COMPOSER_FLAGS --no-interaction
 
 script:
-    - phpunit --coverage-clover build/logs/clover.xml
+    - phpunit --coverage-clover coverage.xml
+
+after_success:
+    - bash <(curl -s https://codecov.io/bash)
