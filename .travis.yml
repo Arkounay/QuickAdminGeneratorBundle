@@ -3,6 +3,10 @@ cache:
     directories:
         - $HOME/.composer/cache/files
 
+env:
+    global:
+        - XDEBUG_MODE=coverage
+
 matrix:
     fast_finish: true
     include:
@@ -18,4 +22,4 @@ install:
     - composer update $COMPOSER_FLAGS --no-interaction
 
 script:
-    - phpunit
+    - phpunit --coverage-clover build/logs/clover.xml
