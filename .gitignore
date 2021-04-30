@@ -1,1 +1,7 @@
 node_modules
+composer.lock
+.phpunit.result.cache
+/phpunit.xml
+vendor/*
+npm-debug.log
+yarn-error.log

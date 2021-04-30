@@ -27,7 +27,14 @@
         "symfony/framework-bundle": ">=5.1.0",
         "symfony/intl": ">=5.1.0",
         "symfony/property-info": ">=5.1.0",
-        "symfony/yaml": ">=5.1.0"
+        "symfony/yaml": ">=5.1.0",
+        "symfony/twig-pack": "*",
+        "sensio/framework-extra-bundle": ">=5.1",
+        "symfony/orm-pack": "*",
+        "symfony/expression-language": ">=5.1",
+        "symfony/asset": ">=5.1",
+        "symfony/security-bundle": ">=5.1",
+        "symfony/validator": ">=5.1"
     },
     "autoload": {
         "psr-4": {
@@ -36,5 +43,8 @@
         "exclude-from-classmap": [
             "/Tests/"
         ]
+    },
+    "require-dev": {
+        "symfony/test-pack": "^1.0"
     }
 }

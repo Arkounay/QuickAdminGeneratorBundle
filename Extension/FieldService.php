@@ -2,6 +2,7 @@
 
 namespace Arkounay\Bundle\QuickAdminGeneratorBundle\Extension;
 
+use Arkounay\Bundle\QuickAdminGeneratorBundle\Annotation\Crud;
 use Arkounay\Bundle\QuickAdminGeneratorBundle\Annotation\HideInForm;
 use Arkounay\Bundle\QuickAdminGeneratorBundle\Annotation\HideInList;
 use Arkounay\Bundle\QuickAdminGeneratorBundle\Annotation\Ignore;
@@ -46,7 +47,7 @@ class FieldService
         $this->reader = $reader;
     }
 
-    public function createField(ClassMetadata $metadata, string $fieldIndex, bool $automatic = false): ?Field
+    public function createField(ClassMetadata $metadata, string $fieldIndex, bool $automatic = false, string $fetchMode = Crud::FETCH_AUTO): ?Field
     {
         $field = new Field($fieldIndex);
         if ($fieldIndex === 'id') {
@@ -75,7 +76,9 @@ class FieldService
                         if ($hideInList !== null) {
                             $field->setDisplayedInList(false);
                         }
-                    } else {
+                    }
+                    if ($fetchMode === Crud::FETCH_MANUAL) {
+
                         // handle show annotations for manual fetch mode
                         $showInForm = $this->reader->getPropertyAnnotation($reflectionProperty, ShowInForm::class);
                         $showInList = $this->reader->getPropertyAnnotation($reflectionProperty, ShowInList::class);

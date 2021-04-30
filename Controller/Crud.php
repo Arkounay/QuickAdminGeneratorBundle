@@ -112,6 +112,12 @@ abstract class Crud extends AbstractController
     protected $isPrimary = false;
 
     /**
+     * @var string
+     * @internal
+     */
+    private $_cachedFetchMode;
+
+    /**
      * @internal
      * Used to set the dependencies.
      * We don't get them through a constructor to make it easier to override it custom dependencies.
@@ -729,13 +735,18 @@ abstract class Crud extends AbstractController
      */
     protected function getFieldFetchMode(): string
     {
-        $reflectionClass = $this->metadata->getReflectionClass();
-        $crudAnnotation = $this->reader->getClassAnnotation($reflectionClass, \Arkounay\Bundle\QuickAdminGeneratorBundle\Annotation\Crud::class);
-        if ($crudAnnotation !== null) {
-            /** @var \Arkounay\Bundle\QuickAdminGeneratorBundle\Annotation\Crud $crudAnnotation */
-            return $crudAnnotation->fetchMode;
+        if ($this->_cachedFetchMode === null) {
+            $reflectionClass = $this->metadata->getReflectionClass();
+            $crudAnnotation = $this->reader->getClassAnnotation($reflectionClass, \Arkounay\Bundle\QuickAdminGeneratorBundle\Annotation\Crud::class);
+            if ($crudAnnotation !== null) {
+                /** @var \Arkounay\Bundle\QuickAdminGeneratorBundle\Annotation\Crud $crudAnnotation */
+                $this->_cachedFetchMode = $crudAnnotation->fetchMode;
+            } else {
+                $this->_cachedFetchMode = \Arkounay\Bundle\QuickAdminGeneratorBundle\Annotation\Crud::FETCH_AUTO;
+            }
         }
-        return \Arkounay\Bundle\QuickAdminGeneratorBundle\Annotation\Crud::FETCH_AUTO;
+
+        return $this->_cachedFetchMode;
     }
 
     /**
@@ -806,7 +817,7 @@ abstract class Crud extends AbstractController
     {
         $fields = new Fields($this->metadata, $this->fieldService);
         foreach ($this->getAllEntityFields() as $fieldIndex) {
-            $field = $this->fieldService->createField($this->metadata, $fieldIndex, true);
+            $field = $this->fieldService->createField($this->metadata, $fieldIndex, true, $this->getFieldFetchMode());
             if ($field !== null) {
                 $fields->add($field);
             }

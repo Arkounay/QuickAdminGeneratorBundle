@@ -46,7 +46,8 @@ class TestKernel extends BaseKernel
 
     private function createTmpDir(string $type): string
     {
-        $dir = sys_get_temp_dir() . '/qag_bundle/' . uniqid($type . '_', true);
+
+        $dir = sys_get_temp_dir().'/qag_bundle_tests/' . $type;
 
         if (!file_exists($dir)) {
             mkdir($dir, 0777, true);

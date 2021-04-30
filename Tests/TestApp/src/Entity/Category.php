@@ -7,7 +7,6 @@ use Arkounay\Bundle\QuickAdminGeneratorBundle\Annotation as QAG;
 
 /**
  * @ORM\Entity()
- * @QAG\Crud(fetchMode="manual")
  */
 class Category
 {
@@ -21,13 +20,8 @@ class Category
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @QAG\ShowInList()
      */
     private $name;
-
-    public function __construct()
-    {
-    }
 
     public function getId(): ?int
     {
@@ -45,7 +39,6 @@ class Category
 
         return $this;
     }
-
 
     public function __toString()
     {
