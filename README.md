@@ -1,5 +1,9 @@
 # QAG - Quick Admin Generator Bundle for Symfony 5
 
+[![Build Status](https://travis-ci.org/Arkounay/QuickAdminGeneratorBundle.svg?branch=master)](https://travis-ci.org/Arkounay/QuickAdminGeneratorBundle) [![codecov](https://codecov.io/gh/Arkounay/QuickAdminGeneratorBundle/branch/master/graph/badge.svg?token=8HOIPA6PMI)](https://codecov.io/gh/Arkounay/QuickAdminGeneratorBundle)
+
+
+
 QAG is a bundle that allows quick and simple administration backends generation for Symfony applications using Doctrine.
 
 The theme used is [Tabler](github.com/tabler/tabler).
@@ -89,4 +93,7 @@ See :
 4) [Forms](Resources/doc/Forms.md)
 5) [Configuring menu items and their position](Resources/doc/Menu.md)
 6) [Overriding the rest of the twigs](Resources/doc/Twig.md)
+
+To do:
 7) Demo (coming soon)
+8) PHP 8 support (waiting for php8 doctrine attributes)

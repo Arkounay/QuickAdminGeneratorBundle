@@ -4,6 +4,7 @@
 * [Overriding creation and edition](#overriding-creation-and-edition)
 * [Overriding lists](#overriding-lists)
 * [Overriding the Dashboard](#overriding-the-dashboard)
+* [Adding custom JavaScript](#adding-custom-javascript)
 
 ---
 
@@ -76,8 +77,38 @@ class DashboardController extends \Arkounay\Bundle\QuickAdminGeneratorBundle\Con
 }
 ```
 Make sure the new route has more priority than the previous route.
-```
+```yaml
 dashboard_annotations:
     resource: 'App\Controller\DashboardController'
     type: annotation
 ```
+
+### Adding custom JavaScript
+
+Override `base.html.twig` and add your custom js there.
+e.g: 
+
+
+```
+{% block head_js %}
+    {{ parent() }}
+
+    {{ encore_entry_script_tags('admin', null, 'admin') }}
+{% endblock %}
+```
+
+By default, this project uses Turbo, so you should use <a href="https://github.com/symfony/stimulus-bridge">stimulus</a>.
+
+If you don't use stimulus and need to trigger javascript at page load, it's possible to append js at the end of <body>, this way it'll be reloaded and executed upon each page load, but beware of memory leaks / global document listeners.
+
+```
+{% block body %}
+    {{ parent() }}
+    <script>
+    // ...
+    </script>
+{% endblock %}
+```
+
+You can disable turbo by override the whole's bundle's js (you can use the sources at `assets/app.js` to override them), or by adding `data-turbo="false"` to the body attribute for example : `{% block body_attributes 'data-turbo="false"' %}`
+
