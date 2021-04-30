@@ -5,3 +5,4 @@ composer.lock
 vendor/*
 npm-debug.log
 yarn-error.log
+build

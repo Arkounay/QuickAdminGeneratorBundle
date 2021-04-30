@@ -24,7 +24,11 @@
 
     <filter>
         <whitelist processUncoveredFilesFromWhitelist="true">
-            <directory suffix=".php">src</directory>
+            <directory suffix=".php">Annotation</directory>
+            <directory suffix=".php">Controller</directory>
+            <directory suffix=".php">Crud</directory>
+            <directory suffix=".php">Extension</directory>
+            <directory suffix=".php">Model</directory>
         </whitelist>
     </filter>
 
