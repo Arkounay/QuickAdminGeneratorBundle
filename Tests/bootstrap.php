@@ -33,4 +33,13 @@ $application->run($input, $nullOutput);
 $input = new ArrayInput(['command' => 'doctrine:schema:update', '--force' => true]);
 $application->run($input, $nullOutput);
 
-unset($input, $nullOutput, $application);
+$em = $application->getKernel()->getContainer()->get('doctrine.orm.default_entity_manager');
+for ($i = 0; $i < 24; $i++) {
+    $article = new \Arkounay\Bundle\QuickAdminGeneratorBundle\Tests\TestApp\src\Entity\Article();
+    $article->setName('Lorem ' . $i);
+    $article->setPublished($i % 2 === 0);
+    $em->persist($article);
+}
+$em->flush();
+
+unset($input, $nullOutput, $application, $em);

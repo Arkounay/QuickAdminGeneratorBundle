@@ -19,7 +19,7 @@
     {% else %}
         {% set classes = action.classes|default([])|merge(extra_classes)|join(' ') %}
     {% endif %}
-    {% if classes is not empty %}class="{{ classes }}"{% endif %} {% for attrname, attrvalue in action.attributes -%}{{- attrname }}="{{ attrvalue }}"{%- endfor -%} href="{{ path ?? action_href(action, entity) }}" {% if entity %}data-name={{ entity }}{% endif %}
+    {% if classes is not empty %}class="{{ classes }}"{% endif %} {% for attrname, attrvalue in action.attributes -%}{{- attrname }}="{{ attrvalue }}"{%- endfor -%} href="{{ path ?? action_href(action, entity) }}" {% if entity %}data-name="{{ entity }}"{% endif %}
 {% endmacro %}
 
 {% macro batch_action_attributes(action) %}

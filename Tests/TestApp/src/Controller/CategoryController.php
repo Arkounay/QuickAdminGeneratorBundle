@@ -9,6 +9,9 @@ use Arkounay\Bundle\QuickAdminGeneratorBundle\Tests\TestApp\src\Entity\Category;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
+/**
+ * Most basic Crud
+ */
 class CategoryController extends Crud
 {
 

@@ -3,13 +3,13 @@
 
 namespace Arkounay\Bundle\QuickAdminGeneratorBundle\Tests;
 
+use Arkounay\Bundle\QuickAdminGeneratorBundle\Tests\TestApp\src\Entity\Category;
 use Arkounay\Bundle\QuickAdminGeneratorBundle\Tests\TestApp\src\TestKernel;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Output\BufferedOutput;
-use Symfony\Component\Console\Output\ConsoleOutput;
-use Symfony\Component\Console\Output\NullOutput;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 class CrudControllerTest extends WebTestCase
 {
@@ -24,11 +24,11 @@ class CrudControllerTest extends WebTestCase
         $input = new ArrayInput(['command' => 'debug:router']);
         $application->run($input, $bufferedOutput);
         $res = $bufferedOutput->fetch();
-        self::assertStringContainsString('qag.category                       ANY      ANY      ANY    /admin/category/', $res);
-        self::assertStringContainsString('qag.category_create                ANY      ANY      ANY    /admin/category/create', $res);
-        self::assertStringContainsString('qag.category_edit                  ANY      ANY      ANY    /admin/category/edit/{id}/', $res);
-        self::assertStringContainsString('qag.category_delete_batch          ANY      ANY      ANY    /admin/category/deleteBatch', $res);
-        self::assertStringContainsString('qag.category_toggle_boolean_post   POST     ANY      ANY    /admin/category/toggleBooleanPost/{id}/', $res);
+        self::assertStringContainsString('qag.category', $res);
+        self::assertStringContainsString('qag.category_create', $res);
+        self::assertStringContainsString('qag.category_edit', $res);
+        self::assertStringContainsString('qag.category_delete_batch', $res);
+        self::assertStringContainsString('qag.category_toggle_boolean_post', $res);
 
         $client->request('GET', '/admin/');
         self::assertResponseIsSuccessful();
@@ -104,6 +104,53 @@ class CrudControllerTest extends WebTestCase
         self::assertResponseIsSuccessful();
         self::assertStringContainsString('successfully deleted', $client->getResponse()->getContent());
         self::assertStringContainsString('No result', $client->getResponse()->getContent());
+    }
+
+    public function testActions(): void
+    {
+        $client = self::createClient();
+
+        $client->request('GET', '/admin/category-extra-actions/create');
+        self::assertResponseStatusCodeSame(404);
+
+        $client->request('GET', '/admin/category-extra-actions/');
+        self::assertResponseIsSuccessful();
+        self::assertSelectorExists('.custom-global-action');
+    }
+
+    public function testFilters(): void
+    {
+        $client = self::createClient();
+        $client->request('GET', '/admin/article-filters/filterFormAjax');
+        self::assertResponseIsSuccessful();
+
+        self::assertSelectorExists('input[name="filter[name]"]');
+        self::assertSelectorExists('select[name="filter[published]"]');
+
+        $client->request('GET', '/admin/article-filters/');
+        self::assertSelectorTextContains('.table-pagination strong', 24);
+
+        $client->request('GET', '/admin/article-filters/', [
+            'filter' => [
+                'published' => 1,
+                'createdAt' => [
+                    "choice" => '<',
+                    "date_start" => null,
+                    "date_end" => null,
+                    "date" => null,
+                  ],
+                'name' => null
+            ]
+        ]);
+        self::assertResponseIsSuccessful();
+        self::assertSelectorTextContains('.table-pagination strong', 12);
+    }
+
+    public function testRights(): void
+    {
+        $client = self::createClient();
+        $client->request('GET', '/admin/category-extra-actions/create');
+        self::assertResponseStatusCodeSame(404);
     }
 
     protected static function getKernelClass(): string

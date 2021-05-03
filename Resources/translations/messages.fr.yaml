@@ -30,6 +30,9 @@ Between: Entre
 Not in: Hors
 and: et
 View: Voir
+Yes: Oui
+No: Non
+All: Tous
 
 pagination:
     num_of_result: '<strong> %total_count% </strong> résultats'

@@ -11,6 +11,7 @@ use Arkounay\Bundle\QuickAdminGeneratorBundle\Annotation\ShowInList;
 use Arkounay\Bundle\QuickAdminGeneratorBundle\Annotation\Sort;
 use Arkounay\Bundle\QuickAdminGeneratorBundle\Model\Field;
 use Arkounay\Bundle\QuickAdminGeneratorBundle\Model\Filter;
+use Arkounay\Bundle\QuickAdminGeneratorBundle\Model\Form\Filter\BooleanFilter;
 use Arkounay\Bundle\QuickAdminGeneratorBundle\Model\Form\Filter\DateFilter;
 use Arkounay\Bundle\QuickAdminGeneratorBundle\Model\Form\Filter\DateTimeFilter;
 use Arkounay\Bundle\QuickAdminGeneratorBundle\Model\Form\Filter\EntityFilter;
@@ -169,6 +170,9 @@ class FieldService
                 break;
             case 'string':
                 $filterForm = new StringFilter();
+                break;
+            case 'boolean':
+                $filterForm = new BooleanFilter();
                 break;
             case 'integer':
                 $filterForm = new IntegerFilter();
