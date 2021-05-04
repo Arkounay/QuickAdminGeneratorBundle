@@ -2,18 +2,28 @@ import { Controller } from 'stimulus';
 import 'select2';
 
 export default class extends Controller {
-    $deleteModal;
+    $filterModal;
     $filterForm;
 
     connect() {
-        this.$deleteModal = $('#filter-modal');
-        this.$filterForm = this.$deleteModal.find('#filter-form');
+        this.$filterModal = $('#filter-modal');
+        this.$filterForm = this.$filterModal.find('#filter-form');
+
+        if (this.$filterForm.find('.is-invalid').length) {
+            setTimeout(() => this.open(null), 0)
+        }
+
+        this.$filterModal.find('form').on('submit', () => {
+            this.$filterModal.modal('hide');
+        })
     }
 
     open(event) {
-        event.preventDefault();
+        if (event !== null) {
+            event.preventDefault();
+        }
         const $filterForm = this.$filterForm;
-        this.$deleteModal.modal('show');
+        this.$filterModal.modal('show');
         if ($filterForm.html().trim() === '') {
             $.ajax({
                 url: ajaxFilterUrl,
