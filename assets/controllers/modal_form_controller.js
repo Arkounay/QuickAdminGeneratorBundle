@@ -13,7 +13,6 @@ export default class extends Controller {
         if (name) {
             this.$targetModal.find('.js-entity-to-string').text(name);
         }
-        console.log(this.element.href);
         this.$targetModal.modal('show');
         this.$targetModal.find('form').attr('action', this.element.href);
     }

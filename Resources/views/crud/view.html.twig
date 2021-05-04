@@ -3,18 +3,20 @@
 
 {% block card_body_content %}
     {% set current_action_name = 'view' %}
-    <table class="table table-view">
-        <tbody>
-            {% block fields %}
-                {% for field in fields %}
-                    <tr>
-                        <th>{{ field.label|trans }}</th>
-                        <td>{% include field.twig with {value: attribute(entity, field.index)|default()} %}</td>
-                    </tr>
-                {% endfor %}
-            {% endblock %}
-        </tbody>
-    </table>
+    <div class="table-responsive">
+        <table class="table table-view">
+            <tbody>
+                {% block fields %}
+                    {% for field in fields %}
+                        <tr>
+                            <th>{{ field.label|trans }}</th>
+                            <td>{% include field.twig with {value: attribute(entity, field.index)|default()} %}</td>
+                        </tr>
+                    {% endfor %}
+                {% endblock %}
+            </tbody>
+        </table>
+    </div>
 {% endblock %}
 
 {% block card_footer_content %}
@@ -26,8 +28,9 @@
                     {% block action %}
                         {% if action.index != 'view' %}
                             {{ action_renderer.action_a(action, entity) }}
-                        {% elseif action.index == 'delete' %}
-                            {% include '@ArkounayQuickAdminGenerator/crud/actions/_delete_modal.html.twig' %}
+                            {% if action.index == 'delete' %}
+                                {% include '@ArkounayQuickAdminGenerator/crud/actions/_delete_modal.html.twig' %}
+                            {% endif %}
                         {% endif %}
                     {% endblock %}
                 {% endfor %}

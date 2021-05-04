@@ -37,7 +37,6 @@ export default class extends Controller {
         });
 
         if (hasAtLeastOneSelected) {
-            console.log("oui");
             this.actionsContainerTarget.style.display = '';
         } else {
             this.actionsContainerTarget.style.display = 'none';
