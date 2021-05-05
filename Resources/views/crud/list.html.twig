@@ -262,10 +262,3 @@
 
 {% endblock %}
 
-{% block head_js %}
-    <script>
-        var ajaxFilterUrl = '{{ path(current_route ~ '_filter_form_ajax') }}';
-    </script>
-    {{ parent() }}
-{% endblock %}
-

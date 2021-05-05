@@ -4,10 +4,13 @@ import 'select2';
 export default class extends Controller {
     $filterModal;
     $filterForm;
+    ajaxFilterUrl;
 
     connect() {
         this.$filterModal = $('#filter-modal');
         this.$filterForm = this.$filterModal.find('#filter-form');
+        this.ajaxFilterUrl = this.element.dataset.ajaxRoute;
+        console.log(this.ajaxFilterUrl);
 
         if (this.$filterForm.find('.is-invalid').length) {
             setTimeout(() => this.open(null), 0)
@@ -26,7 +29,7 @@ export default class extends Controller {
         this.$filterModal.modal('show');
         if ($filterForm.html().trim() === '') {
             $.ajax({
-                url: ajaxFilterUrl,
+                url: this.ajaxFilterUrl,
                 type: "GET",
                 success: function (res) {
                     $filterForm.html(res);

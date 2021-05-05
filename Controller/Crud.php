@@ -177,7 +177,7 @@ abstract class Crud extends AbstractController
         if ($this->isPrimary && !$this->getFilters()->isEmpty()) {
             $filterAction = new Action('filter');
             $filterAction->addClasses('btn', 'btn-white');
-            $filterAction->setAttributes(['data-controller' => 'filter--modal', 'data-action' => 'filter--modal#open']);
+            $filterAction->setAttributes(['data-controller' => 'filter--modal', 'data-action' => 'filter--modal#open', 'data-ajax-route' => $this->generateUrl("qag.{$this->getRoute()}_filter_form_ajax")]);
             $filterAction->setIcon('filter');
             $filterAction->setCustomHref('#');
             $res->add($filterAction);
