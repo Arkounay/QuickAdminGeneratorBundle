@@ -20,6 +20,7 @@ use Arkounay\Bundle\QuickAdminGeneratorBundle\Model\Form\Filter\StringFilter;
 use Doctrine\Common\Annotations\Reader;
 use Doctrine\ORM\Mapping\ClassMetadata;
 use Symfony\Component\EventDispatcher\GenericEvent;
+use Symfony\Component\Form\FormRendererInterface;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Form\FormRenderer;
 
@@ -41,11 +42,17 @@ class FieldService
      */
     private $reader;
 
-    public function __construct(TwigLoaderService $twigLoader, EventDispatcherInterface $dispatcher, Reader $reader)
+    /**
+     * @var FormRendererInterface
+     */
+    private $formRenderer;
+
+    public function __construct(TwigLoaderService $twigLoader, EventDispatcherInterface $dispatcher, Reader $reader, FormRenderer $formRenderer)
     {
         $this->twigLoader = $twigLoader;
         $this->dispatcher = $dispatcher;
         $this->reader = $reader;
+        $this->formRenderer = $formRenderer;
     }
 
     public function createField(ClassMetadata $metadata, string $fieldIndex, bool $automatic = false, string $fetchMode = Crud::FETCH_AUTO): ?Field
@@ -109,7 +116,7 @@ class FieldService
             }
         }
 
-        $field->setLabel($annotationField !== null ? $annotationField->label : [FormRenderer::class, 'humanize']($fieldIndex));
+        $field->setLabel($annotationField !== null ? $annotationField->label : $this->formRenderer->humanize($fieldIndex));
         $field->setType($metadata ? $this->getType($metadata, $fieldIndex) : 'virtual');
         $field->setTwig($this->twigLoader->getTwigPartialByFieldType($field->getType(), $annotationField !== null ? $annotationField->twigName : null));
 

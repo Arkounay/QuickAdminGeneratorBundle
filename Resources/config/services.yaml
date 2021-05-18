@@ -12,6 +12,8 @@ services:
 
     Arkounay\Bundle\QuickAdminGeneratorBundle\Extension\FieldService:
         autowire: true
+        arguments:
+            $formRenderer: '@twig.form.renderer'
 
     Arkounay\Bundle\QuickAdminGeneratorBundle\Extension\TwigLoaderService:
         autowire: true
