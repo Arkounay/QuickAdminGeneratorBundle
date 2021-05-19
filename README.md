@@ -8,7 +8,7 @@ QAG is a bundle that allows quick and simple administration backends generation 
 
 The theme used is [Tabler](github.com/tabler/tabler).
 
-Disclaimer: this is primarily made for fun and for my specific use cases :sweat_smile: there will be functional tests in the demo repo.
+Disclaimer: this is primarily made for my specific use cases :sweat_smile:
 
 ![Quick Admin Generator Preview](https://raw.githubusercontent.com/Arkounay/QuickAdminGeneratorBundle/master/Resources/doc/images/menu-horizontal.png)
 
@@ -93,7 +93,3 @@ See :
 4) [Forms](Resources/doc/Forms.md)
 5) [Configuring menu items and their position](Resources/doc/Menu.md)
 6) [Overriding the rest of the twigs](Resources/doc/Twig.md)
-
-To do:
-7) Demo (coming soon)
-8) PHP 8 support (waiting for php8 doctrine attributes)
