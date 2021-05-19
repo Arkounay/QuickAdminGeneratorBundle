@@ -5,6 +5,7 @@ namespace Arkounay\Bundle\QuickAdminGeneratorBundle\Annotation;
 /**
  * @Annotation
  */
+#[\Attribute(\Attribute::TARGET_CLASS)]
 class Crud
 {
 

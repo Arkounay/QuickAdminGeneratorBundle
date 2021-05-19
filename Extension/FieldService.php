@@ -20,9 +20,9 @@ use Arkounay\Bundle\QuickAdminGeneratorBundle\Model\Form\Filter\StringFilter;
 use Doctrine\Common\Annotations\Reader;
 use Doctrine\ORM\Mapping\ClassMetadata;
 use Symfony\Component\EventDispatcher\GenericEvent;
+use Symfony\Component\Form\FormRenderer;
 use Symfony\Component\Form\FormRendererInterface;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
-use Symfony\Component\Form\FormRenderer;
 
 class FieldService
 {
@@ -72,15 +72,15 @@ class FieldService
                 if ($reflectionProperty) {
 
                     if ($automatic) {
-                        $ignore = $this->reader->getPropertyAnnotation($reflectionProperty, Ignore::class);
+                        $ignore = $this->getAttribute($reflectionProperty, Ignore::class);
                         if ($ignore !== null) {
                             return null;
                         }
-                        $hideInForm = $this->reader->getPropertyAnnotation($reflectionProperty, HideInForm::class);
+                        $hideInForm = $this->getAttribute($reflectionProperty, HideInForm::class);
                         if ($hideInForm !== null) {
                             $field->setDisplayedInForm(false);
                         }
-                        $hideInList = $this->reader->getPropertyAnnotation($reflectionProperty, HideInList::class);
+                        $hideInList = $this->getAttribute($reflectionProperty, HideInList::class);
                         if ($hideInList !== null) {
                             $field->setDisplayedInList(false);
                         }
@@ -88,8 +88,8 @@ class FieldService
                     if ($fetchMode === Crud::FETCH_MANUAL) {
 
                         // handle show annotations for manual fetch mode
-                        $showInForm = $this->reader->getPropertyAnnotation($reflectionProperty, ShowInForm::class);
-                        $showInList = $this->reader->getPropertyAnnotation($reflectionProperty, ShowInList::class);
+                        $showInForm = $this->getAttribute($reflectionProperty, ShowInForm::class);
+                        $showInList = $this->getAttribute($reflectionProperty, ShowInList::class);
                         if ($showInForm === null && $showInList !== null) {
                             $field->setDisplayedInForm(false);
                         } elseif ($showInForm !== null && $showInList === null) {
@@ -97,11 +97,11 @@ class FieldService
                         }
                     }
                     /** @var Sort $sort */
-                    $sort = $this->reader->getPropertyAnnotation($reflectionProperty, Sort::class);
+                    $sort = $this->getAttribute($reflectionProperty, Sort::class);
                     if ($sort !== null) {
                         $field->setDefaultSortDirection($sort->direction);
                     }
-                    $annotationField = $this->reader->getPropertyAnnotation($reflectionProperty, \Arkounay\Bundle\QuickAdminGeneratorBundle\Annotation\Field::class);
+                    $annotationField = $this->getAttribute($reflectionProperty, \Arkounay\Bundle\QuickAdminGeneratorBundle\Annotation\Field::class);
                 }
 
                 if ($hasField) {
@@ -212,6 +212,19 @@ class FieldService
         }
 
         return $type;
+    }
+
+    protected function getAttribute(\ReflectionProperty $reflectionProperty, $class)
+    {
+        $res = $this->reader->getPropertyAnnotation($reflectionProperty, $class);
+        if ($res === null && PHP_VERSION_ID >= 80000) {
+            $attributes = $reflectionProperty->getAttributes($class);
+            if (!empty($attributes)) {
+                $res = $attributes[0]->newInstance();
+            }
+        }
+
+        return $res;
     }
 
 }
