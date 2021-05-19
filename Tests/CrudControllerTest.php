@@ -3,13 +3,11 @@
 
 namespace Arkounay\Bundle\QuickAdminGeneratorBundle\Tests;
 
-use Arkounay\Bundle\QuickAdminGeneratorBundle\Tests\TestApp\src\Entity\Category;
 use Arkounay\Bundle\QuickAdminGeneratorBundle\Tests\TestApp\src\TestKernel;
-use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
+use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Output\BufferedOutput;
-use Symfony\Component\DependencyInjection\ContainerInterface;
 
 class CrudControllerTest extends WebTestCase
 {
@@ -90,6 +88,19 @@ class CrudControllerTest extends WebTestCase
         self::assertTrue($client->getResponse()->isNotFound());
     }
 
+    public function testActions(): void
+    {
+        $client = self::createClient();
+
+        $client->request('GET', '/admin/category-extra-actions/create');
+        self::assertResponseStatusCodeSame(404);
+
+        $client->request('GET', '/admin/category-extra-actions/');
+        self::assertResponseIsSuccessful();
+        self::assertSelectorExists('.custom-global-action');
+        self::assertStringContainsString('My custom action label', $client->getResponse()->getContent());
+    }
+
     public function testDeletion(): void
     {
         $client = self::createClient();
@@ -106,16 +117,12 @@ class CrudControllerTest extends WebTestCase
         self::assertStringContainsString('No result', $client->getResponse()->getContent());
     }
 
-    public function testActions(): void
+    public function testAnnotations(): void
     {
         $client = self::createClient();
-
-        $client->request('GET', '/admin/category-extra-actions/create');
-        self::assertResponseStatusCodeSame(404);
-
-        $client->request('GET', '/admin/category-extra-actions/');
+        $client->request('GET', '/admin/article-filters/');
         self::assertResponseIsSuccessful();
-        self::assertSelectorExists('.custom-global-action');
+        self::assertStringContainsString('Date of creation', $client->getResponse()->getContent());
     }
 
     public function testFilters(): void

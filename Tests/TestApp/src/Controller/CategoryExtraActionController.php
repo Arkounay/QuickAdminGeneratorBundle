@@ -29,12 +29,20 @@ class CategoryExtraActionController extends Crud
 
     public function getActions($entity): ?Actions
     {
-        return parent::getActions($entity)->add('custom');
+        $res = parent::getActions($entity)->add('custom');
+        if ($res->contains('custom')) {
+            $res['custom']->setLabel('My custom action');
+        }
+        return $res;
     }
 
     public function getGlobalActions(): ?Actions
     {
-        return parent::getGlobalActions()->add((new Action('export'))->addClass('custom-global-action'));
+        return parent::getGlobalActions()
+            ->add((new Action('export'))->addClass('custom-global-action'))
+            ->add((new Action('export 2'))->setLabel('My custom action label'))
+            ->moveToFirstPosition('export 2')
+        ;
     }
 
     public function exportAction(): Response

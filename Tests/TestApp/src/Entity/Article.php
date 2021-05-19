@@ -22,6 +22,7 @@ class Article
     /**
      * @var \DateTime
      * @ORM\Column(type="datetime")
+     * @QAG\Field(label="Date of creation")
      */
     private $createdAt;
 

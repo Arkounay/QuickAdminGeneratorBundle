@@ -22,3 +22,5 @@ services:
     Arkounay\Bundle\QuickAdminGeneratorBundle\Tests\TestApp\src\Controller\:
         resource: '../src/Controller'
         tags: ['controller.service_arguments']
+
+    logger: '@Psr\Log\NullLogger'
