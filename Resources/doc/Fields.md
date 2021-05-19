@@ -7,6 +7,7 @@
   - [@QAG\Ignore](#gaqignore)
   - [@QAG\Sort](#gaqsort)
   - [@QAG\Crud](#gaqcrud)
+* [Configure Fields by Attributes](#configure-fields-by-attributes)
 * [Configure Fields by overriding controllers](#configure-fields-by-overriding-controllers)
 * [Configure Fields by using Listeners](#configure-fields-by-using-listeners)
   
@@ -128,6 +129,26 @@ Will show the field both in creation and edition only
 
 #### @QAG\ShowInList (only in manual fetch mode)
 Will show the field both in listing only
+
+
+## Configure Fields by Attributes
+PHP 8 Attributes are also supported. It's good if your doctrine mapping is configured to use Attributes, e.g:
+```php
+#[ORM\Entity(repositoryClass: RabbitRepository::class)]
+class Rabbit
+{
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(type: 'integer')]
+    private int $id;
+
+    #[ORM\Column(type: 'string', length: 600)]
+    #[QAG\Field(label: 'Rabbit name')]
+    private string $name;
+
+    // ...
+}
+```
 
 
 ## Configure Fields by overriding controllers
