@@ -1,1 +1,3 @@
-{{ value|format_date('short') }}
+{% if value %}
+    {{ value|format_date('short') }}
+{% endif %}
