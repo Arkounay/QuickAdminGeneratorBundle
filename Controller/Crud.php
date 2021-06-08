@@ -168,7 +168,7 @@ abstract class Crud extends AbstractController
 
         if ($this->isCreatable()) {
             $createAction = new Action('create');
-            $createAction->setLabel($this->translator->trans('create', ['%entity_name%' => $this->translator->trans($this->getName())]));
+            $createAction->setLabel($this->translator->trans('Create') . ' ' . $this->translator->trans($this->getName()));
             $createAction->setIcon('plus');
             $createAction->addClasses('btn', 'btn-primary');
             $res->add($createAction);
@@ -550,7 +550,7 @@ abstract class Crud extends AbstractController
             'plural_name' => $this->getPluralName(),
             'form' => $form->createView(),
             'back' => $this->generateUrl('qag.' . $this->getRoute()),
-            'action_name' => 'View'
+            'action_name' => 'Create'
         ]);
     }
 

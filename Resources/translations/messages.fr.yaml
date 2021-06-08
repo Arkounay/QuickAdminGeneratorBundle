@@ -4,7 +4,7 @@ multiple_entity_deleted: '<strong>%count%</strong> éléments ont été supprim�
 are_you_sure: 'Êtes-vous sûr de vouloir supprimer cet élément ? <br> Cette opération est irréversible.'
 are_you_sure_batch: 'Êtes-vous sûr de vouloir supprimer ces éléments ? <br> Cette opération est irréversible.'
 
-create: Créer %entity_name%
+Create: Créer
 Entities: Entités
 Edit: Modifier
 Delete: Supprimer
