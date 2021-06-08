@@ -638,7 +638,7 @@ abstract class Crud extends AbstractController
                 continue;
             }
 
-            $options = ['label' => $field->getLabel(), 'required' => $field->isRequired(), 'attr' => []];
+            $options = ['label' => $field->getLabel(), 'required' => $field->isRequired()];
             if ($field->getFormClass() !== null) {
                 $options['attr'] = ['class' => $field->getFormClass()];
             }
