@@ -190,7 +190,7 @@
         {% if entities is empty %}
             <div class="p-3">{{ 'No result'|trans }}</div>
         {% endif %}
-        <form method="post" id="batch-form" action="{{ path(route ~ '_delete_batch') }}">
+        <form method="post" data-turbo="false" id="batch-form" action="{{ path(route ~ '_delete_batch') }}">
             <input type="hidden" name="token" value="{{ csrf_token('batch') }}" />
 
             <div class="batch-actions-container mx-3 my-2" data-batch-actions-target="actionsContainer" style="display: none;">

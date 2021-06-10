@@ -131,10 +131,10 @@
                                 {% endfor %}
                                 {% if has_children %}
                                     <li class="nav-item dropdown {{ active ? 'active' }}">
-                                        <a class="nav-link dropdown-toggle show" href="#" data-bs-toggle="dropdown" role="button" aria-expanded="true">
+                                        <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown" role="button" aria-expanded="true">
                                             <span class="nav-link-title">{{ k }}</span>
                                         </a>
-                                        <ul class="dropdown-menu {{ active and menu_vertical ? 'show' }}">
+                                        <ul class="dropdown-menu">
                                             {% for menu_item in items %}
                                                 {% block menu_item_children %}
                                                     {% if menu_item.enabled %}
