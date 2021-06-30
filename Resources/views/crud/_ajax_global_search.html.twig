@@ -1,0 +1,17 @@
+{% for result in results %}
+    <div>
+        <div class="list-group-header">{{ result.entity }} ({{ result.count }})</div>
+        <div class="list-group">
+            {% for item in result.items %}
+                <a href="{{ item.url }}" class="list-group-item list-group-item-action" data-action="mouseover->global-search#hover" data-global-search-target="resultItem">
+                    {% block item item.entity %}
+                </a>
+            {% endfor %}
+        </div>
+    </div>
+{% endfor %}
+{% if results is empty %}
+    <div class="p-3">
+        {{ 'No result'|trans }}
+    </div>
+{% endif %}

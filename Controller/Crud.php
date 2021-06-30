@@ -455,7 +455,7 @@ abstract class Crud extends AbstractController
     /**
      * Quick search through a string
      */
-    protected function search(QueryBuilder $queryBuilder, string $search): void
+    public function search(QueryBuilder $queryBuilder, string $search): void
     {
         $fields = $this->metadata->getFieldNames();
 
@@ -477,7 +477,7 @@ abstract class Crud extends AbstractController
      * Filters a list of entity through the query builder.
      * Can also be called to check if the entity was filtered out for quick security (if $this->hasQuickListQueryBuilderSecurity() returns true)
      */
-    protected function getListQueryBuilder(): QueryBuilder
+    public function getListQueryBuilder(): QueryBuilder
     {
         $associations = $this->metadata->getAssociationNames();
 

@@ -203,6 +203,20 @@
                     <ul class="navbar-nav">
                         {{ block('menu_items') }}
                     </ul>
+                    {% block global_search %}
+                        <div class="my-2 my-md-0 flex-grow-1 flex-md-grow-0 order-first order-md-last">
+                            <form action="{{ path('qag.global_search') }}" method="get" data-controller="global-search" data-global-search-index-value="0">
+                                <div class="input-icon">
+                                    <span class="input-icon-addon">
+                                        {{ _self.tabler_icon('search', 20, 20) }}
+                                    </span>
+                                    <input type="search" autocomplete="off" name="q" data-action="keyup->global-search#search keydown->global-search#navigate" class="form-control" placeholder="{{ 'Global search'|trans }}" value="{{ current_route == 'qag.global_search' ? app.request.query.get('q') }}"/>
+                                    <div class="search-box d-none" data-global-search-target="resultBox"></div>
+                                </div>
+                            </form>
+                        </div>
+                    {% endblock %}
+
                 </div>
             </div>
         </div>
