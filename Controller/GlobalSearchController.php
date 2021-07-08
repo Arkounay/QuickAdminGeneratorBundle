@@ -101,7 +101,7 @@ class GlobalSearchController extends AbstractController
                                 'url' => $this->generateUrl("qag.{$crud->getRoute()}", ['search' => $query])
                             ];
                         }
-                        $event = new GenericEvent($entity, ['search_result' => $items]);
+                        $event = new GenericEvent($crud, ['search_result' => $items, 'count' => $count]);
                         $this->eventDispatcher->dispatch($event, 'qag.events.quick_search_crud');
                         if ($event->hasArgument('search_result_override')) {
                             $searchResult[] = $event->getArgument('search_result_override');
