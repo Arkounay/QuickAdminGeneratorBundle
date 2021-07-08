@@ -6,3 +6,5 @@ are_you_sure_batch: 'Are you sure you want to delete these elements ? <br> This 
 pagination:
     num_of_result: '<strong> %total_count% </strong> results'
 create: Create %entity_name%
+no_result_for: No result for "%query%".
+search_for: 'Search "%query%"'

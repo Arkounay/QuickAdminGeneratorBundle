@@ -5,6 +5,7 @@
 * [Overriding the menu through twig](#overriding-the-menu-through-twig)
 * [Changing the menu orientation](#changing-the-menu-orientation)
 * [Changing the title](#changing-the-title)
+* [Enabling global search](#enabling-global-search)
 
 ---
 
@@ -107,3 +108,14 @@ arkounay_quick_admin_generator:
     title: 'Custom Title'
 ```
 or override the twig block `main_title` for more control.
+
+## Enabling global search
+
+You can enable global search by setting `arkounay_quick_admin_generator.global_search` to `true`
+
+```yaml
+arkounay_quick_admin_generator:
+    global_search: true
+```
+
+You can modify the results with the `qag.events.quick_search_item` and `qag.events.quick_search_crud` events.
