@@ -53,6 +53,25 @@
 
             <div class="navbar-nav flex-row d-lg-none">
                 {% block user_menu %}
+                    {% if menu_horizontal %}
+                        <div class="d-none d-md-block">
+                            {% block global_search %}
+                                {% if qag.config.global_search %}
+                                    <div class="global-search-item me-2 {{ menu_horizontal ? 'mt-2' }}">
+                                        <form action="{{ path('qag.global_search') }}" method="get" data-controller="global-search" data-global-search-index-value="0">
+                                            <div class="input-icon">
+                                                <span class="input-icon-addon">
+                                                    {{ _self.tabler_icon('search', 20, 20) }}
+                                                </span>
+                                                <input type="search" autocomplete="off" name="q" data-action="keyup->global-search#search keydown->global-search#navigate" class="form-control" placeholder="{{ 'Global search'|trans }}" value="{{ current_route == 'qag.global_search' ? app.request.query.get('q') }}"/>
+                                                <div class="search-box text-secondary d-none" data-global-search-target="resultBox"></div>
+                                            </div>
+                                        </form>
+                                    </div>
+                                {% endif %}
+                            {% endblock %}
+                        </div>
+                    {% endif %}
                     <div class="nav-item dropdown">
                         <a href="#" class="nav-link d-flex lh-1 text-reset p-0" data-bs-toggle="dropdown">
                             {% block user_menu_username %}
@@ -107,7 +126,7 @@
                     {% block menu_items %}
                         {% set icon_class = menu_vertical ? 'me-2' : 'me-1' %}
                         {% if menu_vertical %}
-                            <li class="nav-item">
+                            <li class="nav-item d-md-none">
                                 {{ block('global_search') }}
                             </li>
                         {% endif %}
@@ -182,6 +201,9 @@
 
     <header class="navbar navbar-expand-md navbar-light {% if menu_vertical %}d-none d-lg-flex{% endif %}">
         <div class="container-xl">
+            {% if menu_vertical %}
+                {{ block('global_search') }}
+            {% endif %}
             {% if menu_horizontal %}
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar-menu">
                     <span class="navbar-toggler-icon"></span>
@@ -203,24 +225,12 @@
         <div class="collapse navbar-collapse" id="navbar-menu">
             <div class="navbar navbar-light">
                 <div class="container-xl">
+                    <div class="d-md-none">
+                        {{ block('global_search') }}
+                    </div>
                     <ul class="navbar-nav">
                         {{ block('menu_items') }}
                     </ul>
-                    {% block global_search %}
-                        {% if qag.config.global_search %}
-                            <div class="my-2 my-md-0 flex-grow-1 flex-md-grow-0 order-first order-md-last global-search-item">
-                                <form action="{{ path('qag.global_search') }}" method="get" data-controller="global-search" data-global-search-index-value="0">
-                                    <div class="input-icon">
-                                        <span class="input-icon-addon">
-                                            {{ _self.tabler_icon('search', 20, 20) }}
-                                        </span>
-                                        <input type="search" autocomplete="off" name="q" data-action="keyup->global-search#search keydown->global-search#navigate" class="form-control" placeholder="{{ 'Global search'|trans }}" value="{{ current_route == 'qag.global_search' ? app.request.query.get('q') }}"/>
-                                        <div class="search-box text-secondary d-none" data-global-search-target="resultBox"></div>
-                                    </div>
-                                </form>
-                            </div>
-                        {% endif %}
-                    {% endblock %}
                 </div>
             </div>
         </div>

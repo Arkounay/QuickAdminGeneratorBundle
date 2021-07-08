@@ -8,3 +8,4 @@ pagination:
 create: Create %entity_name%
 no_result_for: No result for "%query%".
 search_for: 'Search "%query%"'
+search_entity: Search %entity_name%

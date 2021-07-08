@@ -5,6 +5,7 @@ are_you_sure: 'Êtes-vous sûr de vouloir supprimer cet élément ? <br> Cette o
 are_you_sure_batch: 'Êtes-vous sûr de vouloir supprimer ces éléments ? <br> Cette opération est irréversible.'
 no_result_for: 'Aucun résultat pour « %query% ».'
 search_for: 'Recherche de « %query% »'
+search_entity: Rechercher %entity_name%
 
 Create: Créer
 Entities: Entités

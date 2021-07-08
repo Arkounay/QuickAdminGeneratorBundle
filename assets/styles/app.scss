@@ -200,3 +200,12 @@ tr.highlighted {
     }
   }
 }
+
+.global-search-item {
+  input {
+    border: none;
+  }
+  .input-icon-addon {
+    color: #dcdcdc !important;
+  }
+}
