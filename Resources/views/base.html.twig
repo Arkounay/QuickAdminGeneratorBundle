@@ -278,8 +278,7 @@
 {% block body_js %}
     {% if app.request.query.get('highlight') %}
     <script>
-        const highlight = '{{ app.request.query.get('highlight')|e }}';
-        window.find(highlight);
+        window.find('{{ app.request.query.get('highlight')|e }}');
     </script>
     {% endif %}
 {% endblock %}
