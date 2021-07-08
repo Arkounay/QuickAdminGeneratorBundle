@@ -15,12 +15,12 @@
                 <div class="mb-3">
                     <h3>
                         {% set result_title %}
-                            {{ result.entity }} ({{ result.count }})
+                            {{ result.entity|trans }} ({{ result.count }})
                         {% endset %}
                         {% if result.crud_url %}
                             <a href="{{ result.crud_url }}">{{ result_title }}</a>
                         {% else %}
-                            {{ result_title }}
+                            {{ result_title|trans }}
                         {% endif %}
                     </h3>
                     <ul>
