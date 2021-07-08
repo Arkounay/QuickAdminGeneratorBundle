@@ -16,7 +16,7 @@
             {% if is_searchable %}
                 <form action="{{ path(route) }}" method="get" class="w-100 w-sm-auto">
                     <div class="input-group">
-                        <input type="text" class="form-control" name="search" placeholder="{{ 'search_entity'|trans({'%entity_name%': name}) }}" value="{{ search }}">
+                        <input type="text" class="form-control" name="search" placeholder="{{ 'search_entity'|trans({'%entity_name%': name|trans}) }}" value="{{ search }}">
                         <button type="submit" class="btn btn-white">
                             {{ _self.tabler_icon('search') }}
                         </button>
