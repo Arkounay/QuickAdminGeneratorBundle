@@ -16,8 +16,6 @@ export default class extends Controller {
         };
 
         this.search = debounce(this.search);
-
-        this.search();
     }
 
     search(e) {

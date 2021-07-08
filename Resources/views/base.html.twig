@@ -274,6 +274,16 @@
     {% endif %}
 
 {% endblock %}
+
+{% block body_js %}
+    {% if app.request.query.get('highlight') %}
+    <script>
+        const highlight = '{{ app.request.query.get('highlight')|e }}';
+        window.find(highlight);
+    </script>
+    {% endif %}
+{% endblock %}
+
 </body>
 </html>
 

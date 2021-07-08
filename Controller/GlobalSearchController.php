@@ -77,9 +77,9 @@ class GlobalSearchController extends AbstractController
                             if (\count($actions) > 0) {
                                 $url = null;
                                 if ($crud->isViewable($entity)) {
-                                    $url = $this->generateUrl("qag.{$crud->getRoute()}_view", ['id' => $entity->getId()]);
+                                    $url = $this->generateUrl("qag.{$crud->getRoute()}_view", ['id' => $entity->getId(), 'highlight' => $query]);
                                 } elseif ($crud->isEditable($entity)) {
-                                    $url = $this->generateUrl("qag.{$crud->getRoute()}_edit", ['id' => $entity->getId()]);
+                                    $url = $this->generateUrl("qag.{$crud->getRoute()}_edit", ['id' => $entity->getId(), 'highlight' => $query]);
                                 }
 
                                 if ($url !== null) {
@@ -108,7 +108,7 @@ class GlobalSearchController extends AbstractController
                         } else {
                             $searchResult[] = [
                                 'entity' => $crud->getPluralName(),
-                                'crud_url' => $this->generateUrl("qag.{$crud->getRoute()}"),
+                                'crud_url' => $this->generateUrl("qag.{$crud->getRoute()}", ['search' => $query]),
                                 'items' => $items,
                                 'count' => $count,
                             ];
