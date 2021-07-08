@@ -278,7 +278,9 @@
 {% block body_js %}
     {% if app.request.query.get('highlight') %}
     <script>
-        window.find('{{ app.request.query.get('highlight')|e }}');
+        setTimeout(function() {
+            window.find('{{ app.request.query.get('highlight')|e }}');
+        }, 10);
     </script>
     {% endif %}
 {% endblock %}
