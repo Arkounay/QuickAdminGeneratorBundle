@@ -7,6 +7,7 @@ namespace Arkounay\Bundle\QuickAdminGeneratorBundle\Crud;
 use Arkounay\Bundle\QuickAdminGeneratorBundle\Controller\AdminInterface;
 use Arkounay\Bundle\QuickAdminGeneratorBundle\Controller\Crud;
 use Arkounay\Bundle\QuickAdminGeneratorBundle\Controller\DashboardController;
+use Arkounay\Bundle\QuickAdminGeneratorBundle\Controller\GlobalSearchController;
 use Arkounay\Bundle\QuickAdminGeneratorBundle\Model\Action;
 use Symfony\Bundle\FrameworkBundle\Routing\RouteLoaderInterface;
 use Symfony\Component\Routing\Route;
@@ -31,10 +32,16 @@ class RouteLoader implements RouteLoaderInterface
      */
     private $admin;
 
-    public function __construct(iterable $cruds, AdminInterface $admin)
+    /**
+     * @var array
+     */
+    private $config;
+
+    public function __construct(iterable $cruds, AdminInterface $admin, array $config)
     {
         $this->cruds = $cruds;
         $this->admin = $admin;
+        $this->config = $config;
     }
 
     public function __invoke($resource, string $type = null)
@@ -80,6 +87,9 @@ class RouteLoader implements RouteLoaderInterface
         }
 
         $routes->add('qag.dashboard', new Route('/', ['_controller' => get_class($this->admin) . "::dashboard"]));
+        if ($this->config['global_search']) {
+            $routes->add('qag.global_search', new Route('/global-search', ['_controller' => GlobalSearchController::class . "::search"]));
+        }
 
         return $routes;
     }

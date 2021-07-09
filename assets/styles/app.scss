@@ -175,3 +175,37 @@ tr.highlighted {
 .bg-gray-ultra-light {
   background-color: #fcfcfc;
 }
+
+.search-box {
+  @extend .position-absolute, .bg-white, .w-100, .border;
+  border-top: none;
+  max-height: 500px;
+  z-index: 100;
+  margin-top: -1px;
+  overflow-y: auto;
+
+  .list-group {
+    border-radius: 0;
+
+    .list-group-item {
+      border-left: none;
+      border-right: none;
+      &.active {
+        @extend .bg-blue-lt;
+        border-color: lighten($blue, 40%);
+      }
+      &:hover {
+        @extend .bg-white;
+      }
+    }
+  }
+}
+
+.global-search-item {
+  input {
+    border: none;
+  }
+  .input-icon-addon {
+    color: #dcdcdc !important;
+  }
+}

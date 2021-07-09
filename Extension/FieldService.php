@@ -111,7 +111,6 @@ class FieldService
                         $nullable = true;
                     }
                     $field->setRequired(!$nullable);
-                } else {
                 }
             }
         }

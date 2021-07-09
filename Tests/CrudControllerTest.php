@@ -64,8 +64,12 @@ class CrudControllerTest extends WebTestCase
 
         $client->request('GET', '/admin/category/?search=New');
         self::assertResponseIsSuccessful();
-
         self::assertStringContainsString('One result', $client->getResponse()->getContent());
+
+        $client->request('GET', '/admin/global-search?q=Lorem%200');
+        self::assertResponseIsSuccessful();
+        self::assertStringContainsString('<a href="/admin/article-filters/edit/1/">', $client->getResponse()->getContent());
+        self::assertStringNotContainsString('<a href="/admin/article-filters/edit/2/">', $client->getResponse()->getContent());
     }
 
     public function testEdition(): void

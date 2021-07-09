@@ -1,0 +1,44 @@
+{% extends '@ArkounayQuickAdminGenerator/base.html.twig' %}
+
+{% block title %}
+    {% if app.request.query.get('q') %}
+        {{ 'search_for'|trans({'%query%': app.request.query.get('q')}) }}
+    {% else %}
+        {{ 'Search'|trans }}
+    {% endif %}
+{% endblock %}
+
+{% block content %}
+    <div class="card">
+        <div class="card-body">
+            {% for result in results %}
+                <div class="mb-3">
+                    <h3>
+                        {% set result_title %}
+                            {{ result.entity|trans }} ({{ result.count }})
+                        {% endset %}
+                        {% if result.crud_url %}
+                            <a href="{{ result.crud_url }}">{{ result_title }}</a>
+                        {% else %}
+                            {{ result_title|trans }}
+                        {% endif %}
+                    </h3>
+                    <ul>
+                        {% for item in result.items %}
+                            <li>
+                                <a href="{{ item.url }}">
+                                    {% block item item.entity %}
+                                </a>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            {% endfor %}
+            {% if results is empty %}
+                <div class="p-3">
+                    {{ 'no_result_for'|trans({'%query%': app.request.query.get('q')}) }}
+                </div>
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}

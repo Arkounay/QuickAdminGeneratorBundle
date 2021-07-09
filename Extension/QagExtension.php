@@ -108,7 +108,6 @@ class QagExtension extends AbstractExtension implements GlobalsInterface
                     $params['from'] = 'view';
                 }
             }
-            /** @noinspection PhpRouteMissingInspection */
             return $this->router->generate("qag.{$route}_{$action->getIndex()}", $params);
         } catch (\Exception $ignored) {}
 

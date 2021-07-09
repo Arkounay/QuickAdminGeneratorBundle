@@ -1,38 +1,29 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
 <!-- https://phpunit.readthedocs.io/en/latest/configuration.html -->
-<phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:noNamespaceSchemaLocation="bin/.phpunit/phpunit.xsd"
-         backupGlobals="false"
-         colors="true"
-         bootstrap="Tests/bootstrap.php"
->
-    <php>
-        <ini name="error_reporting" value="-1" />
-        <server name="APP_ENV" value="test" force="true" />
-        <server name="SHELL_VERBOSITY" value="-1" />
-        <server name="SYMFONY_PHPUNIT_REMOVE" value="" />
-        <server name="SYMFONY_PHPUNIT_VERSION" value="7.5" />
-        <env name="SYMFONY_DEPRECATIONS_HELPER" value="weak" />
-    </php>
-
-    <testsuites>
-        <testsuite name="Project Test Suite">
-            <directory>Tests</directory>
-        </testsuite>
-    </testsuites>
-
-    <filter>
-        <whitelist processUncoveredFilesFromWhitelist="true">
-            <directory suffix=".php">Annotation</directory>
-            <directory suffix=".php">Controller</directory>
-            <directory suffix=".php">Crud</directory>
-            <directory suffix=".php">Extension</directory>
-            <directory suffix=".php">Model</directory>
-        </whitelist>
-    </filter>
-
-    <listeners>
-        <listener class="Symfony\Bridge\PhpUnit\SymfonyTestsListener" />
-    </listeners>
+<phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/9.3/phpunit.xsd" backupGlobals="false" colors="true" bootstrap="Tests/bootstrap.php">
+  <coverage processUncoveredFiles="true">
+    <include>
+      <directory suffix=".php">Annotation</directory>
+      <directory suffix=".php">Controller</directory>
+      <directory suffix=".php">Crud</directory>
+      <directory suffix=".php">Extension</directory>
+      <directory suffix=".php">Model</directory>
+    </include>
+  </coverage>
+  <php>
+    <ini name="error_reporting" value="-1"/>
+    <server name="APP_ENV" value="test" force="true"/>
+    <server name="SHELL_VERBOSITY" value="-1"/>
+    <server name="SYMFONY_PHPUNIT_REMOVE" value=""/>
+    <server name="SYMFONY_PHPUNIT_VERSION" value="7.5"/>
+    <env name="SYMFONY_DEPRECATIONS_HELPER" value="weak"/>
+  </php>
+  <testsuites>
+    <testsuite name="Project Test Suite">
+      <directory>Tests</directory>
+    </testsuite>
+  </testsuites>
+  <listeners>
+    <listener class="Symfony\Bridge\PhpUnit\SymfonyTestsListener"/>
+  </listeners>
 </phpunit>

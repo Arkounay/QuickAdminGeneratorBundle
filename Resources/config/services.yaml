@@ -26,6 +26,11 @@ services:
     Arkounay\Bundle\QuickAdminGeneratorBundle\Controller\DashboardController:
         tags: ['controller.service_arguments']
 
+    Arkounay\Bundle\QuickAdminGeneratorBundle\Controller\GlobalSearchController:
+        arguments:
+            $cruds: !tagged_iterator quickadmin.crud
+        tags: ['controller.service_arguments']
+
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
 
@@ -40,6 +45,7 @@ services:
         arguments:
             - !tagged_iterator quickadmin.crud
             - '@qag.admin'
+            - '%quick_admin_generator%'
 
     qag.admin:
         class: Arkounay\Bundle\QuickAdminGeneratorBundle\Controller\DashboardController
