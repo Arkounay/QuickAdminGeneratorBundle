@@ -510,8 +510,8 @@ abstract class Crud extends AbstractController
             'name' => $this->getName(),
             'plural_name' => $this->getPluralName(),
             'action_name' => 'View',
-            'list' => $this->generateUrl('qag.' . $this->getRoute()),
-            'back' => $this->generateUrl('qag.' . $this->getRoute(), $request->get('referer', [])),
+            'list' => $this->backUrl(),
+            'back' => $this->backUrl(),
             'fields' => $this->getListingFields(),
             'entity' => $entity,
             'actions' => $this->getActions($entity)
@@ -549,7 +549,7 @@ abstract class Crud extends AbstractController
             'name' => $this->getName(),
             'plural_name' => $this->getPluralName(),
             'form' => $form->createView(),
-            'back' => $this->generateUrl('qag.' . $this->getRoute()),
+            'back' => $this->backUrl(),
             'action_name' => 'Create'
         ]);
     }
@@ -591,8 +591,8 @@ abstract class Crud extends AbstractController
             'plural_name' => $this->getPluralName(),
             'entity' => $entity,
             'form' => $form->createView(),
-            'list' => $this->generateUrl('qag.' . $this->getRoute()),
-            'back' => $this->generateUrl('qag.' . $this->getRoute(), $request->get('referer', [])),
+            'list' => $this->backUrl(),
+            'back' => $this->backUrl(),
             'action_name' => 'Edit'
         ]);
     }
@@ -893,7 +893,7 @@ abstract class Crud extends AbstractController
     {
         $builder = $this->container->get('form.factory')->createNamedBuilder('filter', FormType::class, null, [
             'method' => 'GET',
-            'action' => $this->generateUrl('qag.' . $this->getRoute()),
+            'action' => $this->backUrl(),
             'csrf_protection' => false,
         ]);
 
@@ -987,7 +987,19 @@ abstract class Crud extends AbstractController
      */
     protected function redirectToList(): RedirectResponse
     {
-        return $this->redirectToRoute('qag.' . $this->getRoute(), $this->request->get('referer', []));
+        return $this->redirectToRoute('qag.' . $this->getRoute(), $this->getListRouteParams());
+    }
+
+    protected function backUrl(): string
+    {
+        return $this->generateUrl('qag.' . $this->getRoute(), $this->getListRouteParams());
+    }
+
+    protected function getListRouteParams(): array
+    {
+        $params = array_merge($this->request->query->all(), $this->request->get('referer', []));
+        unset($params['highlight'], $params['referer']);
+        return $params;
     }
 
     /**
