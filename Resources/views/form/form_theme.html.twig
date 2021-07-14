@@ -103,3 +103,11 @@
         </span>
     {%- endif %}
 {%- endblock form_errors %}
+
+{% block time_widget %}
+    <div class="d-flex">
+        {{ form_widget(form.hour, {label: false, attr: {class: 'w-auto'}}) }}
+        <div class="m-2">:</div>
+        {{ form_widget(form.minute, {label: false, attr: {class: 'w-auto'}}) }}
+    </div>
+{% endblock %}
