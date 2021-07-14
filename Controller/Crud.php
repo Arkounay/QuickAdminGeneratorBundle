@@ -267,6 +267,10 @@ abstract class Crud extends AbstractController
         }
         $this->removeEntity($entity);
         $this->em->flush();
+
+        $event = new GenericEvent($entity);
+        $this->eventDispatcher->dispatch($event, 'qag.events.post_delete');
+
         $this->addFlash('success', $this->translator->trans('entity_deleted', ['%entity%' => $entity]));
 
         return $this->redirectToList();
@@ -295,6 +299,10 @@ abstract class Crud extends AbstractController
             $this->removeEntity($entity);
         }
         $this->em->flush();
+
+        $event = new GenericEvent($this->getEntity());
+        $this->eventDispatcher->dispatch($event, 'qag.events.post_delete_batch');
+
         if ($nbChecked === 1) {
             $this->addFlash('success', $this->translator->trans('one_entity_deleted', ['%entity_name%' => $this->getName()]));
         } else {
@@ -570,6 +578,10 @@ abstract class Crud extends AbstractController
         if ($entity === null) {
             throw $this->createNotFoundException("No {$this->getName()} found with id #{$request->attributes->get('id')}");
         }
+
+        $event = new GenericEvent($entity);
+        $this->eventDispatcher->dispatch($event, 'qag.events.pre_edit');
+
         $form = $this->getForm($entity, false);
         $form->handleRequest($this->request);
 
