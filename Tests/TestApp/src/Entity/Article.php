@@ -35,6 +35,7 @@ class Article
     /**
      * @ORM\Column(type="string", length=255)
      * @Assert\NotBlank()
+     * @QAG\Field(help="The name of the Article.")
      */
     private $name;
 

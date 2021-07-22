@@ -115,7 +115,7 @@ class FieldService
             }
         }
 
-        $field->setLabel($annotationField !== null ? $annotationField->label : $this->formRenderer->humanize($fieldIndex));
+        $field->setLabel($annotationField !== null && $annotationField->label ? $annotationField->label : $this->formRenderer->humanize($fieldIndex));
         $field->setType($metadata ? $this->getType($metadata, $fieldIndex) : 'virtual');
         $field->setTwig($this->twigLoader->getTwigPartialByFieldType($field->getType(), $annotationField !== null ? $annotationField->twigName : null));
 
@@ -153,6 +153,7 @@ class FieldService
             $field->setFormClass($annotationField->formClass);
             $field->setFormType($annotationField->formType);
             $field->setPlaceholder($annotationField->placeholder);
+            $field->setHelp($annotationField->help);
         }
 
         $event = new GenericEvent($field, ['metadata' => $metadata]);

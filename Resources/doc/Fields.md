@@ -88,6 +88,7 @@ The twig filed needs to be located at `templates/bundles/ArkounayQuickAdminGener
 - `formClass` is an additional class that will be added to the form's field, when creating and editing. To add multiple classes, just add a space.
 - `formType` is the Form Type that will be used when rendering the form. For example, if you have an email field, you can use `Symfony\Component\Form\Extension\Core\Type\EmailType` to quickly set the type to Email. Note that it should be used only for simple Types as you can't pass options. For anything more advanced, consider overriding the form through PHP.
 -  `required` defines if the form's field is required when editing or creating. If not specified, will automatically try to guess it with doctrine's metadata.
+- `help` and `placeholder` will change the corresponding form attribute when creating / editing.
 
 #### @QAG\HideInForm
 Allows you to hide a field in both creation and edition.

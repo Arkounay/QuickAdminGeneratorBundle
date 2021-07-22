@@ -657,6 +657,9 @@ abstract class Crud extends AbstractController
             if ($field->getPlaceholder() !== null) {
                 $options['placeholder'] = $field->getPlaceholder();
             }
+            if ($field->getHelp() !== null) {
+                $options['help'] = $field->getHelp();
+            }
 
             switch ($field->getType()) {
                 case 'decimal':

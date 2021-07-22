@@ -127,6 +127,9 @@ class CrudControllerTest extends WebTestCase
         $client->request('GET', '/admin/article-filters/');
         self::assertResponseIsSuccessful();
         self::assertStringContainsString('Date of creation', $client->getResponse()->getContent());
+
+        $client->request('GET', '/admin/article-filters/create');
+        self::assertStringContainsString('The name of the Article.', $client->getResponse()->getContent());
     }
 
     public function testFilters(): void

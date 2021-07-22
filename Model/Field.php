@@ -75,6 +75,10 @@ class Field implements Listable
      */
     protected $placeholder;
 
+    /**
+     * @var string
+     */
+    protected $help;
 
     public function __construct(string $index)
     {
@@ -238,6 +242,16 @@ class Field implements Listable
         $this->placeholder = $placeholder;
 
         return $this;
+    }
+
+    public function getHelp(): ?string
+    {
+        return $this->help;
+    }
+
+    public function setHelp(?string $help): void
+    {
+        $this->help = $help;
     }
 
 }
