@@ -30,7 +30,7 @@ class CrudControllerTest extends WebTestCase
 
         $client->request('GET', '/admin/');
         self::assertResponseIsSuccessful();
-        self::assertSelectorTextContains('.content', 'Welcome');
+        self::assertSelectorTextContains('.page-wrapper', 'Welcome');
         self::assertStringContainsString('Categories', $client->getResponse()->getContent());
 
         $client->request('GET', '/admin/category/');
