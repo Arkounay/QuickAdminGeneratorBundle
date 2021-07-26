@@ -240,7 +240,7 @@
     {% if menu_vertical %}
         <div class="page">
     {% endif %}
-    <div class="content">
+    <div class="page-wrapper">
         <div class="container-xl">
             <div class="page-header">
                 <div class="row align-items-start align-items-sm-center justify-content-between">
@@ -256,17 +256,19 @@
                 </div>
             </div>
 
-            {% block flash_messages %}
-                {% for label, messages in app.flashes(['danger', 'success', 'warning', 'info']) %}
-                    {% for message in messages %}
-                        <div class="alert alert-{{ label}} alert-dismissible in" role="alert">
-                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                            {{ message|raw }}
-                        </div>
+            <div class="page-body">
+                {% block flash_messages %}
+                    {% for label, messages in app.flashes(['danger', 'success', 'warning', 'info']) %}
+                        {% for message in messages %}
+                            <div class="alert alert-{{ label}} alert-dismissible in" role="alert">
+                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                {{ message|raw }}
+                            </div>
+                        {% endfor %}
                     {% endfor %}
-                {% endfor %}
-            {% endblock %}
-            {% block content %}{% endblock %}
+                {% endblock %}
+                {% block content %}{% endblock %}
+            </div>
         </div>
     </div>
     {% if menu_vertical %}

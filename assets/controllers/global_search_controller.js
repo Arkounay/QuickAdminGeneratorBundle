@@ -16,6 +16,18 @@ export default class extends Controller {
         };
 
         this.search = debounce(this.search);
+
+        document.addEventListener('click', this.close.bind(this));
+    }
+
+    close(event) {
+        const clickInside = this.element.contains(event.target);
+
+        if (!clickInside) {
+            this.resultBoxTarget.classList.add('d-none');
+        } else {
+            this.resultBoxTarget.classList.remove('d-none');
+        }
     }
 
     search(e) {
@@ -85,6 +97,10 @@ export default class extends Controller {
 
     get currentSelectedResultItem() {
         return this.resultItemTargets[this.indexValue - 1];
+    }
+
+    disconnect() {
+        document.removeEventListener('click', this.close);
     }
 
 }
