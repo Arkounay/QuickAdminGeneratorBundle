@@ -32,6 +32,11 @@ class MenuItem
      */
     protected $children;
 
+    /**
+     * @var string[]
+     */
+    protected $attributes= [];
+
     public function __construct(string $label)
     {
         $this->label = $label;
@@ -88,6 +93,20 @@ class MenuItem
     public function setChildren(?array $children): void
     {
         $this->children = $children;
+    }
+
+    public function getAttributes(): array
+    {
+        return $this->attributes;
+    }
+
+    public function addAttribute(string $key, string $value): void
+    {
+        if (!isset($this->attributes[$key])) {
+            $this->attributes[$key] = $value;
+        } else {
+            $this->attributes[$key] .= ' ' . $value;
+        }
     }
 
 }

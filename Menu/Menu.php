@@ -73,7 +73,16 @@ class Menu implements MenuInterface
                 }
             }
             ksort($cruds);
-            $items = $cruds;
+            $items = [];
+            foreach ($cruds as $crud) {
+                $items[get_class($crud)] = $crud;
+            }
+            foreach ($items as $class => $crud) {
+                $menuItem = $this->createMenuItem($items, $class, $request);
+                if ($menuItem !== null) {
+                    $menuItems[] = $menuItem;
+                }
+            }
         } elseif (is_iterable($this->config['menu']['items'])) {
             // Create menu from yaml
             $items = $this->getCrudAsKArrayWithClassKeys($this->cruds);
@@ -82,14 +91,6 @@ class Menu implements MenuInterface
                 if ($menuItem !== null) {
                     $menuItems[] = $menuItem;
                 }
-            }
-            return $menuItems;
-        }
-
-        foreach ($cruds as $crud) {
-            $menuItem = $this->createMenuItem($items, $crud, $request);
-            if ($menuItem !== null) {
-                $menuItems[] = $menuItem;
             }
         }
 
@@ -113,31 +114,58 @@ class Menu implements MenuInterface
     protected function createMenuItem(array $cruds, $node, Request $request): ?MenuItem
     {
         if (is_string($node)) {
+            if ($node === 'divider') {
+                return new MenuItem('__divider__');
+            }
             if (!isset($cruds[$node])) {
-                throw new InvalidConfigurationException("Class '$node' not found in Crud list");
+                throw new InvalidConfigurationException("'$node' not found in Crud list");
             }
             $crud = $cruds[$node];
-            if (!$crud->isEnabled()) {
-                return null;
-            }
-            $route = $this->router->generate('qag.' . $crud->getRoute());
-            $menuItem = new MenuItem($crud->getPluralName());
-            $menuItem->setUrl($route);
-            if ($request->attributes->get('_route') !== 'qag.dashboard' && strpos($route, $request->getPathInfo()) !== false) {
-                $menuItem->setActive($route);
-            }
+            $menuItem = $this->createMenuItemFromCrud($crud, $request);
         } else {
-            if (!isset($node['label'])) {
+            if (!isset($node['label']) && !isset($node['crud'])) {
                 throw new InvalidConfigurationException('Menu item needs to be a Crud class or have a label key');
             }
-            $menuItem = new MenuItem($node['label']);
+            if (isset($node['crud'])) {
+                $crud = $cruds[$node['crud']];
+                $menuItem = $this->createMenuItemFromCrud($crud, $request);
+                if ($menuItem === null) {
+                    return null;
+                }
+                if (isset($node['label'])) {
+                    $menuItem->setLabel($node['label']);
+                }
+            } else {
+                $menuItem = new MenuItem($node['label']);
+            }
+            if (isset($node['url']) && isset($node['route'])) {
+                throw new InvalidConfigurationException('Menu item cannot have both url and route parameters');
+            }
             if (isset($node['url'])) {
                 $menuItem->setUrl($node['url']);
+            }
+            if (isset($node['route'])) {
+                $routeParams = [];
+                if (isset($node['route_params'])) {
+                    $routeParams = $node['route_params'];
+                }
+                $menuItem->setUrl($this->router->generate($node['route'], $routeParams));
+            }
+            if (isset($node['icon'])) {
+                $menuItem->setIcon($node['icon']);
+            }
+            if (isset($node['attr'])) {
+                foreach ($node['attr'] as $k => $v) {
+                    $menuItem->addAttribute($k, $v);
+                }
             }
             if (isset($node['children'])) {
                 $children = [];
                 foreach ($node['children'] as $childNode) {
                     $child = $this->createMenuItem($cruds, $childNode, $request);
+                    if ($child === null) {
+                        continue;
+                    }
                     if ($child->isActive()) {
                         $menuItem->setActive(true);
                     }
@@ -147,6 +175,20 @@ class Menu implements MenuInterface
             }
         }
 
+        return $menuItem;
+    }
+
+    protected function createMenuItemFromCrud(Crud $crud, Request $request): ?MenuItem
+    {
+        if (!$crud->isEnabled()) {
+            return null;
+        }
+        $route = $this->router->generate('qag.' . $crud->getRoute());
+        $menuItem = new MenuItem($crud->getPluralName());
+        $menuItem->setUrl($route);
+        if ($request->attributes->get('_route') !== 'qag.dashboard' && strpos($request->getPathInfo(), $route) !== false) {
+            $menuItem->setActive($route);
+        }
         return $menuItem;
     }
 

@@ -1,2 +1,9 @@
 arkounay_quick_admin_generator:
     global_search: true
+    menu:
+        items:
+              - Arkounay\Bundle\QuickAdminGeneratorBundle\Tests\TestApp\src\Controller\ArticleController
+              - label: 'Submenu'
+                children:
+                    - Arkounay\Bundle\QuickAdminGeneratorBundle\Tests\TestApp\src\Controller\CategoryController
+                    - Arkounay\Bundle\QuickAdminGeneratorBundle\Tests\TestApp\src\Controller\CategoryDisabledController

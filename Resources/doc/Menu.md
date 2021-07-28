@@ -24,54 +24,60 @@ arkounay_quick_admin_generator:
         items:
             - App\Controller\NewsController
             - App\Controller\CategoryController
+            - crud: App\Controller\Admin\AgencyController
+              label: 'Item with subitems'
+              children:
+                - App\Controller\UserController
+                - { label: 'google', url: 'https://www.google.com', target: '_blank' }
             # etc...
 ```
 
-This allows you to specify a custom order for the menu items. 
-They will still be hidden when their controller's `isEnabled` returns false, and still behave as usual.
-This is useful if you want a simple and quick customization.
+- Items specifying a crud controller will still be hidden when their controller's `isEnabled` returns false, and still behave as usual.
+- If a `crud` isn't specified, you can specifiy how an item is renderer through the `label`, `url`, `route`, `route_params`, `target` and `attr` attributes
+- The `children` attribute allows adding submenu items.
+
+![Menu](https://raw.githubusercontent.com/Arkounay/QuickAdminGeneratorBundle/master/Resources/doc/images/menu-subitems.png)
+
 
 ## Overriding the menu by service
 
-Create a class with an `_invoke` method
+Create a class that implements `MenuInterface` (or extends `Menu`).
+The easiest way is to extend `Menu`, and add the proper configuration in services.yaml
+
+```yaml
+    Arkounay\Bundle\QuickAdminGeneratorBundle\Menu\MenuInterface: '@App\Admin\Menu'
+
+    App\Admin\Menu:
+        arguments:
+            $cruds: !tagged_iterator quickadmin.crud
+            $config: '%quick_admin_generator%'
+```
+
 ```php
-namespace App\Twig;
+namespace App\Admin;
 
+use Arkounay\Bundle\QuickAdminGeneratorBundle\Menu\Menu as BaseMenu;
+use Arkounay\Bundle\QuickAdminGeneratorBundle\Menu\MenuItem;
+use Symfony\Component\HttpFoundation\Request;
 
-use App\Controller\CategoryController;
-use App\Controller\NewsController;
-use App\Controller\ProductController;
-
-class MenuExtension
+class Menu extends BaseMenu
 {
 
-    public function __invoke(iterable $cruds)
+    protected function createMenuItem(array $cruds, $node, Request $request): ?MenuItem
     {
-        return [
-            $cruds[NewsController::class],
-            'Products' => [
-                $cruds[ProductController::class],
-                $cruds[CategoryController::class]
-            ]
-        ];
+        $menuItem = parent::createMenuItem($cruds, $node, $request);
+        // $node will be a crud class or will contain what's in the arkounay_quick_admin_generator.menu.items yaml definition
+        return $menuItem;
+    }
+    
+    protected function createDashboardMenuItem(Request $request): ?MenuItem
+    {
+        // returning Null will remove the Dashboard item
+        return null;
     }
 
 }
 ```
-
-then in `config/qag.yaml` (if there is no file, create one), add the following:
-
-```yaml
-arkounay_quick_admin_generator:
-    menu:
-        items: 'App\Twig\MenuExtension'
-```
-
-this allows you to have subitems in a menu.
-
-![Menu](https://raw.githubusercontent.com/Arkounay/QuickAdminGeneratorBundle/master/Resources/doc/images/menu-subitems.png)
-
-However, there is no dependency injection.
 
 ## Overriding the menu through twig
 

@@ -37,6 +37,17 @@ class CrudControllerTest extends WebTestCase
         self::assertResponseIsSuccessful();
     }
 
+    public function testMenu(): void
+    {
+        $client = self::createClient();
+
+        $client->request('GET', '/admin/');
+        self::assertResponseIsSuccessful();
+        self::assertSelectorTextContains('#navbar-menu', 'Submenu');
+        self::assertSelectorTextContains('#navbar-menu', 'Categories');
+        self::assertSelectorTextNotContains('#navbar-menu', 'Category disabled');
+    }
+
     public function testCreation(): void
     {
         $client = self::createClient();
@@ -163,8 +174,12 @@ class CrudControllerTest extends WebTestCase
     public function testRights(): void
     {
         $client = self::createClient();
+
         $client->request('GET', '/admin/category-extra-actions/create');
         self::assertResponseStatusCodeSame(404);
+
+        $client->request('GET', '/admin/disabled/');
+        self::assertResponseStatusCodeSame(401);
     }
 
     protected static function getKernelClass(): string
