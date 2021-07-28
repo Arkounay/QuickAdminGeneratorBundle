@@ -66,6 +66,7 @@ class Menu implements MenuInterface
 
         if (!isset($this->config['menu']['items'])) {
             // Generate menu from all the cruds if nothing is specifying in yaml, alphabetically
+            $cruds = [];
             foreach ($this->cruds as $crud) {
                 /** @var Crud $crud */
                 if ($crud->isEnabled()) {
