@@ -21,6 +21,13 @@ services:
     Arkounay\Bundle\QuickAdminGeneratorBundle\Crud\CrudListener:
         autowire: true
 
+    Arkounay\Bundle\QuickAdminGeneratorBundle\Menu\Menu:
+        arguments:
+            $cruds: !tagged_iterator quickadmin.crud
+            $config: '%quick_admin_generator%'
+
+    Arkounay\Bundle\QuickAdminGeneratorBundle\Menu\MenuInterface: '@Arkounay\Bundle\QuickAdminGeneratorBundle\Menu\Menu'
+
     # controllers are imported separately to make sure services can be injected
     # as action arguments even if you don't extend any base controller class
     Arkounay\Bundle\QuickAdminGeneratorBundle\Controller\DashboardController:

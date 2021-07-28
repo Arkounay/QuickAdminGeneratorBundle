@@ -3,6 +3,7 @@
 namespace Arkounay\Bundle\QuickAdminGeneratorBundle\Extension;
 
 use Arkounay\Bundle\QuickAdminGeneratorBundle\Controller\Crud;
+use Arkounay\Bundle\QuickAdminGeneratorBundle\Menu\MenuInterface;
 use Arkounay\Bundle\QuickAdminGeneratorBundle\Model\Action;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
@@ -40,7 +41,12 @@ class QagExtension extends AbstractExtension implements GlobalsInterface
      */
     private $requestStack;
 
-    public function __construct(iterable $cruds, array $config, TranslatorInterface $translator, RouterInterface $router, RequestStack $requestStack)
+    /**
+     * @var MenuInterface
+     */
+    private $menu;
+
+    public function __construct(iterable $cruds, array $config, TranslatorInterface $translator, RouterInterface $router, RequestStack $requestStack, MenuInterface $menu)
     {
 
         $this->cruds = $cruds;
@@ -48,47 +54,35 @@ class QagExtension extends AbstractExtension implements GlobalsInterface
         $this->translator = $translator;
         $this->router = $router;
         $this->requestStack = $requestStack;
+        $this->menu = $menu;
     }
 
-    private function getMenuItems():array
+    private function getMenuItems(): iterable
     {
-        $res = [];
-        if (!isset($this->config['menu']['items'])) {
-            foreach ($this->cruds as $crud) {
-                /** @var Crud $crud */
-                $res[$this->translator->trans($crud->getPluralName())] = $crud;
-            }
-            ksort($res);
-        } elseif (is_iterable($this->config['menu']['items'])) {
-            $items = $this->getCrudAsKArrayWithClassKeys($this->cruds);
-            $menuItems = [];
-            foreach ($this->config['menu']['items'] as $class) {
-                $menuItems[] = $items[$class];
-            }
-            $res = $menuItems;
-        } elseif (class_exists($this->config['menu']['items'])) {
-            $items = $this->getCrudAsKArrayWithClassKeys($this->cruds);
-            $res = (new $this->config['menu']['items'])($items);
-        } else {
-            throw new \InvalidArgumentException('Could not generate menu. Please check in the yaml arkounay_quick_admin_generator.menu.items is correct.');
-        }
+//        $res = [];
+//        if (!isset($this->config['menu']['items'])) {
+//            foreach ($this->cruds as $crud) {
+//                /** @var Crud $crud */
+//                $res[$this->translator->trans($crud->getPluralName())] = $crud;
+//            }
+//            ksort($res);
+//        } elseif (is_iterable($this->config['menu']['items'])) {
+//            $items = $this->getCrudAsKArrayWithClassKeys($this->cruds);
+//            $menuItems = [];
+//            foreach ($this->config['menu']['items'] as $class) {
+//                $menuItems[] = $items[$class];
+//            }
+//            $res = $menuItems;
+//        } elseif (class_exists($this->config['menu']['items'])) {
+//            $items = $this->getCrudAsKArrayWithClassKeys($this->cruds);
+//            $res = (new $this->config['menu']['items'])($items);
+//        } else {
+//            throw new \InvalidArgumentException('Could not generate menu. Please check in the yaml arkounay_quick_admin_generator.menu.items is correct.');
+//        }
 
-        return $res;
+        return $this->menu->generateMenu();
     }
 
-    /**
-     * Converts a Cruds iterable to an array of crud with their class name as keys
-     * @return Crud[]
-     */
-    private function getCrudAsKArrayWithClassKeys(iterable $cruds): array
-    {
-        $items = [];
-        foreach ($cruds as $crud) {
-            $items[get_class($crud)] = $crud;
-        }
-
-        return $items;
-    }
 
     public function getActionHref(Action $action, $entity = null): string
     {
