@@ -130,64 +130,40 @@
                                 {{ block('global_search') }}
                             </li>
                         {% endif %}
-                        <li class="nav-item {{ current_route == 'qag.dashboard' ? 'active' }}">
-                            {% block menu_items_dashboard %}
-                                <a class="nav-link" href="{{ path('qag.dashboard') }}">
-                                    {% block menu_items_dashboard_icon '' %}
-                                    <span class="nav-link-title"> {% block menu_items_dashboard_label 'Dashboard'|trans %} </span>
-                                </a>
-                            {% endblock %}
-                        </li>
-                        {% for k, menu_item in qag.menu_items %}
-                            {% if menu_item is iterable %}
-                                {% set active = false %}
-                                {% set items = menu_item %}
-                                {% set has_children = false %}
-                                {% for menu_item in items %}
-                                    {% if not active %}
-                                        {% set active = "qag.#{menu_item.route}" == current_route or "qag.#{menu_item.route}_" in current_route %}
-                                    {% endif %}
-                                    {% if not has_children and menu_item.enabled %}
-                                        {% set has_children = true %}
-                                    {% endif %}
-                                {% endfor %}
-                                {% if has_children %}
-                                    <li class="nav-item dropdown {{ active ? 'active' }}">
-                                        <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown" role="button" aria-expanded="true">
-                                            <span class="nav-link-title">{{ k }}</span>
-                                        </a>
-                                        <ul class="dropdown-menu">
-                                            {% for menu_item in items %}
-                                                {% block menu_item_children %}
-                                                    {% if menu_item.enabled %}
-                                                        <li>
-                                                            <a class="dropdown-item {{ active and menu_vertical ? 'text-white' }} {% if "qag.#{menu_item.route}" == current_route or "qag.#{menu_item.route}_" in current_route %}active{% endif %}" href="{{ path('qag.' ~ menu_item.route) }}">
-                                                                {% if menu_vertical or menu_item.icon is not null %}
-                                                                    {{ _self.tabler_icon(menu_item.icon|default('chevron-right'), 16, 16, icon_class) }}
-                                                                {% endif %}
-                                                                <span>{{ menu_item.pluralName|trans }}</span>
-                                                            </a>
-                                                        </li>
-                                                    {% endif %}
-                                                {% endblock %}
-                                            {% endfor %}
-                                        </ul>
-                                    </li>
-                                {% endif %}
+                        {% for menu_item in qag.menu_items %}
+                            {# menu_item \Arkounay\Bundle\QuickAdminGeneratorBundle\Menu\MenuItem #}
+                            {% if menu_item.children is not empty %}
+                                <li class="nav-item dropdown {{ menu_item.active ? 'active' }}">
+                                    <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown" role="button" aria-expanded="true">
+                                        <span class="nav-link-title">{{ menu_item.label }}</span>
+                                    </a>
+                                    <ul class="dropdown-menu">
+                                        {% for menu_item in menu_item.children %}
+                                            {% block menu_item_children %}
+                                                <li>
+                                                    <a class="dropdown-item {{ menu_item.active and menu_vertical ? 'text-white' }} {{ menu_item.active ? 'active' }}" href="{{ menu_item.url }}">
+                                                        {% if menu_vertical or menu_item.icon is not null %}
+                                                            {{ _self.tabler_icon(menu_item.icon|default('chevron-right'), 16, 16, icon_class) }}
+                                                        {% endif %}
+                                                        <span>{{ menu_item.label|trans }}</span>
+                                                    </a>
+                                                </li>
+                                            {% endblock %}
+                                        {% endfor %}
+                                    </ul>
+                                </li>
                             {% else %}
                                 {% block menu_item %}
-                                    {% if menu_item.enabled %}
-                                        {# menu_item \Arkounay\Bundle\QuickAdminGeneratorBundle\Crud\Crud #}
-                                        <li class="nav-item {% if "qag.#{menu_item.route}" == current_route or "qag.#{menu_item.route}_" in current_route %}active{% endif %}">
-                                            <a class="nav-link" href="{{ path('qag.' ~ menu_item.route) }}">
-                                                {% if  menu_vertical or menu_item.icon is not null %}
-                                                    {{ _self.tabler_icon(menu_item.icon|default('chevron-right'), 16, 16, icon_class) }}
-                                                {% endif %}
-                                                <span>{{ menu_item.pluralName|trans }}</span>
-                                            </a>
-                                        </li>
-                                    {% endif %}
-                                {% endblock %}
+                                    {# menu_item \Arkounay\Bundle\QuickAdminGeneratorBundle\Crud\Crud #}
+                                    <li class="nav-item {% if menu_item.active %}active{% endif %}">
+                                        <a class="nav-link" href="{{ menu_item.url }}">
+                                            {% if menu_vertical or menu_item.icon is not null %}
+                                                {{ _self.tabler_icon(menu_item.icon|default('chevron-right'), 16, 16, icon_class) }}
+                                            {% endif %}
+                                            <span>{{ menu_item.label|trans }}</span>
+                                        </a>
+                                    </li>
+                            {% endblock %}
 
                             {% endif %}
                         {% endfor %}
