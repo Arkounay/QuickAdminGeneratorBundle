@@ -1023,7 +1023,7 @@ abstract class Crud extends AbstractController
     protected function hasActions(array $actionEntities): bool
     {
         foreach ($actionEntities as $actions) {
-            if (!empty($actions)) {
+            if (\count($actions) > 0) {
                 return true;
             }
         }
