@@ -92,6 +92,10 @@ $enable-dark-mode: false;
   position: absolute;
   right: 0;
   top: 0;
+
+  >.w-100 {
+    display: none !important;
+  }
 }
 .btn-collection {
   border: 0;
@@ -103,6 +107,22 @@ $enable-dark-mode: false;
   &-remove:hover {
       color: $danger;
   }
+}
+
+.btn-collection-remove:hover {
+  @extend .text-danger;
+}
+
+.btn-collection-remove .icon {
+  color: inherit;
+}
+
+.btn-collection-container button .icon {
+  margin: 0;
+}
+
+.arkounay-ux-collection >.card .mx-3.mb-3 {
+  @extend .my-3
 }
 
 .position input {

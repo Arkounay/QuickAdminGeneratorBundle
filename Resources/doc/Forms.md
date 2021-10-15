@@ -102,43 +102,25 @@ By doing this, the earlier `buildForm` method and its events will not be called 
 
 ### Collections
 
-There is a special class you can add for collections.
+[Ux Collection](https://github.com/arkounay/ux-collection) is included to handle collections :
+
 ```php
+use Arkounay\Bundle\UxCollectionBundle\Form\UxCollectionType;
+// ...
 protected function buildForm($entity, bool $creation): FormBuilderInterface
 {
     $builder = parent::buildForm($entity, $creation);
 
     $builder
-        ->add('news', CollectionType::class, [
-            'entry_type' => NewsType::class,
-            'allow_add' => true,
-            'allow_delete' => true,
-            'attr' => ['class' => 'collection', 'data-add-label' => 'Add a news'],
+        ->add('articles', UxCollectionType::class, [
+            'entry_type' => ArticleType::class,
             'by_reference' => false,
-        ])
+            'add_label' => 'Add an article'
+        ]);
     ;
 
     return $builder;
 }
-```
-
-It will render collections properly.
-
-![Collections](https://raw.githubusercontent.com/Arkounay/QuickAdminGeneratorBundle/master/Resources/doc/images/collections.png)
-
-This uses [ninsuo/symfony-collection](https://github.com/ninsuo/symfony-collection). Although not maintained, this still works very well and has many interesting features.
-
-Every time an item is added or removed, the collection will fire a `collection_add` and `collection_remove` event respectively.
-This is useful if you need to initiate certains objects through js, like select2 for example.
-
-```javascript
-$(function() {
-
-    $('.collection').on('collection_add', function(e, element) {
-        $(element).find('.select2').select2();
-    });
-
-})
 ```
 
 
