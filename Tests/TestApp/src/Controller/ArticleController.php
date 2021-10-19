@@ -30,9 +30,12 @@ class ArticleController extends Crud
     protected function getFilters(): Filters
     {
         return parent::getFilters()
+            ->clear()
             ->add('name')
             ->add('createdAt')
             ->add('published')
+            ->add('category')
+            ->remove('category')
         ;
     }
 
