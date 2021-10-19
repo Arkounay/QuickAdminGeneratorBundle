@@ -52,7 +52,12 @@ class Field
      */
     public $help;
 
-    public function __construct(?string $label = null, ?string $twigName = null, ?bool $sortable = null, ?string $formClass = null, ?string $formType = null, ?bool $required = null, ?string $help = null, ?string $placeholder = null)
+    /**
+     * @var ?int
+     */
+    public $position;
+
+    public function __construct(?string $label = null, ?string $twigName = null, ?bool $sortable = null, ?string $formClass = null, ?string $formType = null, ?bool $required = null, ?string $help = null, ?string $placeholder = null, ?int $position = null)
     {
         $this->label = $label;
         $this->twigName = $twigName;
@@ -62,6 +67,7 @@ class Field
         $this->required = $required;
         $this->help = $help;
         $this->placeholder = $placeholder;
+        $this->position = $position;
     }
 
 }

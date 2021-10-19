@@ -22,7 +22,7 @@ class Article
     /**
      * @var \DateTime
      * @ORM\Column(type="datetime")
-     * @QAG\Field(label="Date of creation")
+     * @QAG\Field(label="Date of creation", position=1)
      */
     private $createdAt;
 
@@ -35,7 +35,7 @@ class Article
     /**
      * @ORM\Column(type="string", length=255)
      * @Assert\NotBlank()
-     * @QAG\Field(help="The name of the Article.")
+     * @QAG\Field(help="The name of the Article.", position=0)
      */
     private $name;
 
