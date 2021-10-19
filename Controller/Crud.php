@@ -845,7 +845,6 @@ abstract class Crud extends AbstractController
 
         if (!empty($positions)) {
             // needs sorting
-            $sortedFields = [];
             $position = 0;
             foreach ($items as $field) {
                 if ($field->getPosition() !== null) {
@@ -854,7 +853,6 @@ abstract class Crud extends AbstractController
                 while (in_array($position, $positions)) {
                     $position++;
                 }
-                $sortedFields[$position] = $field;
                 $field->setPosition($position);
                 $position++;
             }
@@ -867,7 +865,6 @@ abstract class Crud extends AbstractController
         foreach ($items as $field) {
             $fields->add($field);
         }
-
 
         return $fields;
     }
