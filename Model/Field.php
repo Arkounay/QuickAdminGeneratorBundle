@@ -80,6 +80,11 @@ class Field implements Listable
      */
     protected $help;
 
+    /**
+     * @var int position
+     */
+    protected $position;
+
     public function __construct(string $index)
     {
         $this->index = $index;
@@ -252,6 +257,16 @@ class Field implements Listable
     public function setHelp(?string $help): void
     {
         $this->help = $help;
+    }
+
+    public function getPosition(): ?int
+    {
+        return $this->position;
+    }
+
+    public function setPosition(?int $position): void
+    {
+        $this->position = $position;
     }
 
 }

@@ -139,6 +139,9 @@ class CrudControllerTest extends WebTestCase
         self::assertResponseIsSuccessful();
         self::assertStringContainsString('Date of creation', $client->getResponse()->getContent());
 
+        // position
+        self::assertSelectorTextContains('.page-body .table-card.table-responsive table thead th:nth-child(2)', 'Name');
+
         $client->request('GET', '/admin/article-filters/create');
         self::assertStringContainsString('The name of the Article.', $client->getResponse()->getContent());
     }

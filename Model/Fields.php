@@ -27,7 +27,6 @@ class Fields extends TypedArray
         $this->fieldService = $fieldService;
         $this->metadata = $metadata;
     }
-
     protected function createFromIndexName(string $index): Listable
     {
         return $this->fieldService->createField($this->metadata, $index);

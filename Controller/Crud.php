@@ -723,7 +723,7 @@ abstract class Crud extends AbstractController
 
         $fetchMode = $this->getFieldFetchMode();
         if ($fetchMode !== \Arkounay\Bundle\QuickAdminGeneratorBundle\Annotation\Crud::FETCH_AUTO) {
-            // When fetch mode is not automatic, every fields need to have a "Show" annotation to be fetched.
+            // When fetch mode is not automatic, every field needs to have a "Show" annotation to be fetched.
             foreach ($res as $k => $property) {
                 $reflectionProperty = $this->metadata->getReflectionProperty($property);
                 $annotations = $this->reader->getPropertyAnnotations($reflectionProperty);
@@ -831,11 +831,39 @@ abstract class Crud extends AbstractController
     protected function createFieldsFromMetadata(): Fields
     {
         $fields = new Fields($this->metadata, $this->fieldService);
+        $items = [];
+        $positions = [];
         foreach ($this->getAllEntityFields() as $fieldIndex) {
             $field = $this->fieldService->createField($this->metadata, $fieldIndex, true, $this->getFieldFetchMode());
             if ($field !== null) {
-                $fields->add($field);
+                $items[] = $field;
+                if ($field->getPosition() !== null) {
+                    $positions[] = $field->getPosition();
+                }
             }
+        }
+
+        if (!empty($positions)) {
+            // needs sorting
+            $position = 0;
+            foreach ($items as $field) {
+                if ($field->getPosition() !== null) {
+                    continue;
+                }
+                while (in_array($position, $positions)) {
+                    $position++;
+                }
+                $field->setPosition($position);
+                $position++;
+            }
+
+            usort($items, static function (Field $a, Field $b): int {
+                return $a->getPosition() <=> $b->getPosition();
+            });
+        }
+
+        foreach ($items as $field) {
+            $fields->add($field);
         }
 
         return $fields;
