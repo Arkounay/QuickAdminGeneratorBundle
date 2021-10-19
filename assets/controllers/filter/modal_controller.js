@@ -10,7 +10,6 @@ export default class extends Controller {
         this.$filterModal = $('#filter-modal');
         this.$filterForm = this.$filterModal.find('#filter-form');
         this.ajaxFilterUrl = this.element.dataset.ajaxRoute;
-        console.log(this.ajaxFilterUrl);
 
         if (this.$filterForm.find('.is-invalid').length) {
             setTimeout(() => this.open(null), 0)

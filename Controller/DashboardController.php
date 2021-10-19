@@ -6,7 +6,7 @@ namespace Arkounay\Bundle\QuickAdminGeneratorBundle\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 
-class DashboardController extends AbstractController implements AdminInterface
+class DashboardController extends AbstractController
 {
 
     public function dashboard(): Response

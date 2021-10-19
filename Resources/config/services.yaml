@@ -51,10 +51,4 @@ services:
     Arkounay\Bundle\QuickAdminGeneratorBundle\Crud\RouteLoader:
         arguments:
             - !tagged_iterator quickadmin.crud
-            - '@qag.admin'
             - '%quick_admin_generator%'
-
-    qag.admin:
-        class: Arkounay\Bundle\QuickAdminGeneratorBundle\Controller\DashboardController
-
-    Arkounay\Bundle\QuickAdminGeneratorBundle\Controller\AdminInterface: '@qag.admin'

@@ -2,13 +2,7 @@
 
 [![Build Status](https://travis-ci.org/Arkounay/QuickAdminGeneratorBundle.svg?branch=master)](https://travis-ci.org/Arkounay/QuickAdminGeneratorBundle) [![codecov](https://codecov.io/gh/Arkounay/QuickAdminGeneratorBundle/branch/master/graph/badge.svg?token=8HOIPA6PMI)](https://codecov.io/gh/Arkounay/QuickAdminGeneratorBundle)
 
-
-
-QAG is a bundle that allows quick and simple administration backends generation for Symfony applications using Doctrine.
-
-The theme used is [Tabler](github.com/tabler/tabler).
-
-Disclaimer: this is primarily made for my specific use cases :sweat_smile:
+QAG is a bundle that allows quick and simple administration backends generation for Symfony applications using Doctrine and [Tabler](github.com/tabler/tabler).
 
 ![Quick Admin Generator Preview](https://raw.githubusercontent.com/Arkounay/QuickAdminGeneratorBundle/master/Resources/doc/images/menu-horizontal.png)
 
@@ -47,7 +41,7 @@ access_control:
 
 **and that's it, the bundle is ready to be used.**
 
-Now, you can add a Controller that extends `Arkounay\Bundle\QuickAdminGeneratorBundle\Controller\Crud` to add your first entity.
+Now, you can add a Controller that extends `Arkounay\Bundle\QuickAdminGeneratorBundle\Controller\Crud` to add your first crud.
 
 For example, let's say you have a `News` entity.
 *(Make sure `News` implements `__toString()`)*
@@ -88,8 +82,8 @@ You can use annotations for simple and quick tweaks regarding entities fields, o
 
 See :
 1) [Controllers, lists, and security](Resources/doc/Controllers.md)
-2) [Actions and routing](Resources/doc/Actions.md)
-3) [Fields](Resources/doc/Fields.md)
+2) [Fields](Resources/doc/Fields.md)
+3) [Actions and routing](Resources/doc/Actions.md)
 4) [Forms](Resources/doc/Forms.md)
 5) [Configuring menu items and their position](Resources/doc/Menu.md)
 6) [Overriding the rest of the twigs](Resources/doc/Twig.md)

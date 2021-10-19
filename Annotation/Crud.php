@@ -14,7 +14,7 @@ class Crud
 
     /**
      * @var string auto|manual
-     * Check if fields should be fetch automatically or manually
+     * Check if fields should be fetched automatically or manually
      */
     public $fetchMode = self::FETCH_AUTO;
 
