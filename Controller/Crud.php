@@ -164,14 +164,14 @@ abstract class Crud extends AbstractController
      */
     public function getGlobalActions(): ?Actions
     {
-        $res = new Actions();
+        $actions = new Actions();
 
         if ($this->isCreatable()) {
             $createAction = new Action('create');
             $createAction->setLabel($this->translator->trans('Create') . ' ' . $this->translator->trans($this->getName()));
             $createAction->setIcon('plus');
             $createAction->addClasses('btn', 'btn-primary');
-            $res->add($createAction);
+            $actions->add($createAction);
         }
 
         if ($this->isPrimary && !$this->getFilters()->isEmpty()) {
@@ -180,10 +180,13 @@ abstract class Crud extends AbstractController
             $filterAction->setAttributes(['data-controller' => 'filter--modal', 'data-action' => 'filter--modal#open', 'data-ajax-route' => $this->generateUrl("qag.{$this->getRoute()}_filter_form_ajax")]);
             $filterAction->setIcon('filter');
             $filterAction->setCustomHref('#');
-            $res->add($filterAction);
+            $actions->add($filterAction);
         }
 
-        return $res;
+        $event = new GenericEvent($actions, ['crud' => $this, 'entity_class' => $this->getEntity()]);
+        $this->eventDispatcher->dispatch($event, 'qag.events.global_actions');
+
+        return $actions;
     }
 
     /**
@@ -212,6 +215,9 @@ abstract class Crud extends AbstractController
             $removeAction->setAttributes(['data-controller' => 'modal-form', 'data-action' => 'modal-form#open', 'data-target' => '#delete-modal']);
             $actions->add($removeAction);
         }
+
+        $event = new GenericEvent($actions, ['entity' => $entity, 'crud' => $this, 'entity_class' => $this->getEntity()]);
+        $this->eventDispatcher->dispatch($event, 'qag.events.actions');
 
         return $actions;
     }
