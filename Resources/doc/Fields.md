@@ -1,12 +1,12 @@
-# Fields
+# Fields configuration
 
 * [Configure Fields by Annotations](#configure-fields-by-annotations)
-  - [@QAG\Field](#gaqfield)
-  - [@QAG\HideInForm](#gaqhideinform)
-  - [@QAG\HideInList](#gaqhideinlist)
-  - [@QAG\Ignore](#gaqignore)
-  - [@QAG\Sort](#gaqsort)
-  - [@QAG\Crud](#gaqcrud)
+  - [@QAG\Field](#qagfield)
+  - [@QAG\HideInForm](#qaghideinform)
+  - [@QAG\HideInList](#qaghideinlist)
+  - [@QAG\Ignore](#qagignore)
+  - [@QAG\Sort](#qagsort)
+  - [@QAG\Crud](#qagcrud)
 * [Configure Fields by Attributes](#configure-fields-by-attributes)
 * [Configure Fields by overriding controllers](#configure-fields-by-overriding-controllers)
 * [Configure Fields by using Listeners](#configure-fields-by-using-listeners)
