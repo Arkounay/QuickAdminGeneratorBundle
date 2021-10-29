@@ -1,0 +1,134 @@
+# QAG - Quick Admin Generator Bundle for Symfony 5
+
+[![Build Status](https://travis-ci.org/Arkounay/QuickAdminGeneratorBundle.svg?branch=master)](https://travis-ci.org/Arkounay/QuickAdminGeneratorBundle) [![codecov](https://codecov.io/gh/Arkounay/QuickAdminGeneratorBundle/branch/master/graph/badge.svg?token=8HOIPA6PMI)](https://codecov.io/gh/Arkounay/QuickAdminGeneratorBundle)
+
+QAG is a bundle that allows quick and simple administration backends generation for Symfony applications using Doctrine and [Tabler](github.com/tabler/tabler).
+
+![Quick Admin Generator Preview](https://raw.githubusercontent.com/Arkounay/QuickAdminGeneratorBundle/master/docs/images/menu-horizontal.png)
+
+## Getting started
+
+Install the dependency:
+
+```
+composer require arkounay/quick-admin-generator-bundle
+```
+
+also make sure the following line was added in `config/bundles.php`:
+
+```php
+Arkounay\Bundle\QuickAdminGeneratorBundle\ArkounayQuickAdminGeneratorBundle::class => ['all' => true],
+```
+
+and that assets were installed: ` php bin/console assets:install --symlink`.
+
+
+Finally, add the following route configuration, for example in `config/routes.yaml`:
+
+```yaml
+qag_routes:
+    resource: 'Arkounay\Bundle\QuickAdminGeneratorBundle\Crud\RouteLoader'
+    type: service
+    prefix: '/admin'
+```
+
+You will probably want secure the /admin route prefix, to do so you can add the following line in your `security.yaml`:
+
+```yaml
+access_control:
+     - { path: ^/admin, roles: ROLE_ADMIN }
+```
+
+**and that's it, the bundle is ready to be used.**
+
+Now, you can add a Controller that extends `Arkounay\Bundle\QuickAdminGeneratorBundle\Controller\Crud` to add your first crud.
+
+For example, let's say you have a `News` entity.
+
+!> Make sure your entity implements `__toString()`!
+
+Create a controller for instance `src/Controller/Admin/NewsController.php`, with the following code:
+
+```php
+namespace App\Controller\Admin;
+
+use App\Entity\News;
+use Arkounay\Bundle\QuickAdminGeneratorBundle\Controller\Crud;
+
+class NewsController extends Crud
+{
+    public function getEntity(): string
+    {
+        return News::class;
+    }
+}
+```
+    
+and now refresh `/admin` in your browser. You should see a new "News" item that appeared in the menu, and you should now be able to create, edit, and delete news.
+
+If you use the symfony command to display routes `php bin/console debug:router`, you'll see that some routes avec been generated for you:
+```
+qag.category                    ANY      ANY      ANY    /admin/category/                  
+qag.category_create             ANY      ANY      ANY    /admin/category/create            
+qag.category_delete             ANY      ANY      ANY    /admin/category/delete/{id}/      
+qag.category_delete_batch       ANY      ANY      ANY    /admin/category/deleteBatch      
+qag.category_edit               ANY      ANY      ANY    /admin/category/edit/{id}/        
+qag.category_filter_form_ajax   ANY      ANY      ANY    /admin/category/filterFormAjax
+```
+
+## Next steps
+
+There are multiple ways to configure and override things in QAG Bundle, depending on the complexity of the project.
+You can use [annotations](Fields.md#configure-fields-by-annotations) for simple and quick tweaks regarding entities fields, override twigs to change appearance, add listeners to create special rules that applies when parsing entities, etc.
+
+See :
+1) [Fields configuration](Fields.md)
+    * [Configure Fields by Annotations](Fields.md#configure-fields-by-annotations)
+      - [@QAG\Field](Fields.md#qagfield)
+      - [@QAG\HideInForm](Fields.md#qaghideinform)
+      - [@QAG\HideInList](Fields.md#qaghideinlist)
+      - [@QAG\Ignore](Fields.md#qagignore)
+      - [@QAG\Sort](Fields.md#qagsort)
+      - [@QAG\Crud](Fields.md#qagcrud)
+    * [Configure Fields by Attributes](#configure-fields-by-attributes)
+    * [Configure Fields by overriding controllers](#configure-fields-by-overriding-controllers)
+    * [Configure Fields by using Listeners](#configure-fields-by-using-listeners)
+2) [Controllers, lists, and security](Controllers.md)
+   * [Changing the URL prefix](Controllers.md#changing-the-url-prefix)
+   * [Metadata](Controllers.md#metadata)
+       + [Changing name](Controllers.md#changing-name)
+       + [Adding an icon](Controllers.md#adding-an-icon)
+       + [Adding a description](Controllers.md#adding-a-description)
+       + [Responsive mode](Controllers.md#responsive-mode)
+   * [Permissions](Controllers.md#permissions)
+   * [Filtering the list](Controllers.md#filtering-the-list)
+       + [Filtering through Query Builder](Controllers.md#filtering-through-query-builder)
+       + [Filtering through Filters](Controllers.md#filtering-through-filters)
+   * [Dependency injection](Controllers.md#dependency-injection)
+   * [Overriding the default behaviour](Controllers.md#overriding-the-default-behaviour)
+3) [Actions and routing](Actions.md)
+   - [Normal actions](Actions.md#normal-actions)
+   - [Batch actions](Actions.md#batch-actions)
+   - [Global actions](Actions.md#global-actions)
+   - [Customizing how actions are rendered](Actions.md#customizing-how-actions-are-rendered)
+   - [Routing shorcuts](Actions.md#routing-shorcuts)
+4) [Forms](Forms.md)
+   * [Overriding the Form Builder directly](Forms.md#overriding-the-form-builder-directly)
+   * [Overriding the automatic Form Builder generation by using Event Subscribers](Forms.md#overriding-the-automatic-form-builder-generation-by-using-event-subscribers)
+   * [Overriding the form type](Forms.md#overriding-the-form-type)
+   * [Collections](Forms.md#collections)
+   * [Overriding the form's twig theme](Forms.md#overriding-the-form-s-twig-theme)
+   * [Overriding the form's twig theme for a specific entity](Forms.md#overriding-the-form-s-twig-theme-for-a-specific-entity)
+5) [Configuring menu items and their position](Menu.md)
+   * [Overriding the menu through yaml](Menu.md#overriding-the-menu-through-yaml)
+   * [Overriding the menu by service](Menu.md#overriding-the-menu-by-service)
+   * [Overriding the menu through twig](Menu.md#overriding-the-menu-through-twig)
+   * [Changing the menu orientation](Menu.md#changing-the-menu-orientation)
+   * [Changing the title](Menu.md#changing-the-title)
+   * [Enabling global search](Menu.md#enabling-global-search)
+6) [Overriding the rest of the twigs](Twig.md)
+   * [Theme](Twig.md#theme)
+   * [Overriding creation and edition](Twig.md#overriding-creation-and-edition)
+   * [Overriding lists](Twig.md#overriding-lists)
+   * [Overriding the Dashboard](Twig.md#overriding-the-dashboard)
+   * [Adding custom JavaScript](Twig.md#adding-custom-javascript)

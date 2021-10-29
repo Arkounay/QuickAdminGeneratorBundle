@@ -59,7 +59,7 @@ The default route expected by actions and generates by automatic routes is `qag.
 So, for example if you need to add a "Show", or a "Duplicate" action, you can use this method.
 Extra actions are automatically put in a dropdown.
 
-![Actions](https://raw.githubusercontent.com/Arkounay/QuickAdminGeneratorBundle/master/Resources/doc/images/actions.png)
+![Actions](https://raw.githubusercontent.com/Arkounay/QuickAdminGeneratorBundle/master/docs/images/actions.png)
 
 #### Batch actions
 
@@ -87,7 +87,7 @@ public function archiveBatchAction(): RedirectResponse
 }
 ```
 
-![Batch Actions](https://raw.githubusercontent.com/Arkounay/QuickAdminGeneratorBundle/master/Resources/doc/images/actions-batch.png)
+![Batch Actions](https://raw.githubusercontent.com/Arkounay/QuickAdminGeneratorBundle/master/docs/images/actions-batch.png)
 
 If you need to remove batch actions, you can simply override getBatchActions and return `null`. This will remove the checkboxes altogether:
 
@@ -115,7 +115,7 @@ public function exportAction(): Response
 }
 ```
 
-![Customizing Actions](https://raw.githubusercontent.com/Arkounay/QuickAdminGeneratorBundle/master/Resources/doc/images/actions-global.png)
+![Customizing Actions](https://raw.githubusercontent.com/Arkounay/QuickAdminGeneratorBundle/master/docs/images/actions-global.png)
 
 If you check the routes just like for "normal" actions, you'll see a small difference:
 
@@ -141,7 +141,7 @@ public function getActions(): ?Actions
 }
 ```
 
-![Customizing Actions](https://raw.githubusercontent.com/Arkounay/QuickAdminGeneratorBundle/master/Resources/doc/images/actions-custom.png)
+![Customizing Actions](https://raw.githubusercontent.com/Arkounay/QuickAdminGeneratorBundle/master/docs/images/actions-custom.png)
 
 This can be useful to change a button's appearance.
 

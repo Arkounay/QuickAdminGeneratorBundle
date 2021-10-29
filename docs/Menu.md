@@ -9,7 +9,7 @@
 
 ---
 
-By default, the menu is generated automatically.
+?> By default, the menu is generated automatically.
 One menu item will be created for each Crud Controllers detected, and it will be sorted alphabetically.
 
 You can however change how it's done, and even add child items.
@@ -36,7 +36,7 @@ arkounay_quick_admin_generator:
 - If a `crud` isn't specified, you can specifiy how an item is renderer through the `label`, `url`, `route`, `route_params`, `target` and `attr` attributes
 - The `children` attribute allows adding submenu items.
 
-![Menu](https://raw.githubusercontent.com/Arkounay/QuickAdminGeneratorBundle/master/Resources/doc/images/menu-subitems.png)
+![Menu](https://raw.githubusercontent.com/Arkounay/QuickAdminGeneratorBundle/master/docs/images/menu-subitems.png)
 
 
 ## Overriding the menu by service
@@ -95,7 +95,7 @@ If you want to configure how the dashboard item looks, you can override the bloc
 
 By default, the menu is horizontal. 
 
-![Horizontal Menu](https://raw.githubusercontent.com/Arkounay/QuickAdminGeneratorBundle/master/Resources/doc/images/menu-horizontal.png)
+![Horizontal Menu](https://raw.githubusercontent.com/Arkounay/QuickAdminGeneratorBundle/master/docs/images/menu-horizontal.png)
 
 You can make it vertical by editing the yaml:
 ```yaml
@@ -104,7 +104,7 @@ arkounay_quick_admin_generator:
         theme: 'vertical'
 ```
 
-![Vertical Menu](https://raw.githubusercontent.com/Arkounay/QuickAdminGeneratorBundle/master/Resources/doc/images/menu-vertical.png)
+![Vertical Menu](https://raw.githubusercontent.com/Arkounay/QuickAdminGeneratorBundle/master/docs/images/menu-vertical.png)
 
 ## Changing the title
 
