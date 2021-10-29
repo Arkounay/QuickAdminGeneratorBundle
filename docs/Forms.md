@@ -9,7 +9,7 @@
 
 ---
 
-As we've seen, you can override a form's field label and type through Fields.
+?> You can override a form's field label and type through [Fields](Fields.md).
 However, you can get more control by either overriding the form builder directly, or changing the FormType altogether.
 
 ### Overriding the Form Builder directly
