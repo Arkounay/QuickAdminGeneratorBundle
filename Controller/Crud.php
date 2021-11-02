@@ -125,7 +125,6 @@ abstract class Crud extends AbstractController
     public function setInternalDependencies(EntityManagerInterface $em, FieldService $fieldService, RequestStack $requestStack, EventDispatcherInterface $eventDispatcher, TranslatorInterface $translator, TwigLoaderService $twigLoader, Reader $reader): void
     {
         $this->em = $em;
-        $this->repository = $em->getRepository($this->getEntity());
         $this->fieldService = $fieldService;
         $this->request = $requestStack->getCurrentRequest();
         $this->eventDispatcher = $eventDispatcher;
@@ -133,6 +132,7 @@ abstract class Crud extends AbstractController
         $this->translator = $translator;
         $this->twigLoader = $twigLoader;
         $this->reader = $reader;
+        $this->repository = $em->getRepository($this->getEntity());
     }
 
     /**
