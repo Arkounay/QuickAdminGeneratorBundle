@@ -547,14 +547,7 @@ abstract class Crud extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($entity);
-            $em->flush();
-
-            $event = new GenericEvent($entity);
-            $this->eventDispatcher->dispatch($event, 'qag.events.post_create');
-            $this->addFlash('highlighted_row_id', $entity->getId());
-
+            $this->updateEntity($entity, true);
             return $this->redirectToList();
         }
 
@@ -592,14 +585,7 @@ abstract class Crud extends AbstractController
         $form->handleRequest($this->request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($entity);
-            $em->flush();
-
-            $event = new GenericEvent($entity);
-            $this->eventDispatcher->dispatch($event, 'qag.events.post_edit');
-            $this->addFlash('highlighted_row_id', $entity->getId());
-
+            $this->updateEntity($entity, false);
             return $this->redirectToList();
         }
 
@@ -613,6 +599,21 @@ abstract class Crud extends AbstractController
             'back' => $this->backUrl(),
             'action_name' => 'Edit'
         ]);
+    }
+
+    /**
+     * Called when flushing a newly created entity or after updating an existing one.
+     * @param T $entity
+     * @param bool $creation
+     */
+    protected function updateEntity($entity, bool $creation): void
+    {
+        $this->em->persist($entity);
+        $this->em->flush();
+        $this->addFlash('highlighted_row_id', $entity->getId());
+
+        $event = new GenericEvent($entity);
+        $this->eventDispatcher->dispatch($event, $creation ? 'qag.events.post_create' : 'qag.events.post_edit');
     }
 
     /**
