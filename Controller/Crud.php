@@ -735,10 +735,20 @@ abstract class Crud extends AbstractController
                 $reflectionProperty = $this->metadata->getReflectionProperty($property);
                 $annotations = $this->reader->getPropertyAnnotations($reflectionProperty);
                 $ignoreField = true;
-                foreach ($annotations as $annotation) {
-                    if (strpos(get_class($annotation), 'Arkounay\Bundle\QuickAdminGeneratorBundle\Annotation\Show') !== false) {
-                        $ignoreField = false;
-                        break;
+                if (PHP_VERSION_ID >= 80000 && empty($annotations)) {
+                    $attributes = $reflectionProperty->getAttributes();
+                    foreach ($attributes as $attribute) {
+                        if (str_starts_with($attribute->getName(), 'Arkounay\Bundle\QuickAdminGeneratorBundle\Annotation\Show')) {
+                            $ignoreField = false;
+                            break;
+                        }
+                    }
+                } else {
+                    foreach ($annotations as $annotation) {
+                        if (strpos(get_class($annotation), 'Arkounay\Bundle\QuickAdminGeneratorBundle\Annotation\Show') !== false) {
+                            $ignoreField = false;
+                            break;
+                        }
                     }
                 }
                 if ($ignoreField) {
