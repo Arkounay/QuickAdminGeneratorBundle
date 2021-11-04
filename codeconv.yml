@@ -4,12 +4,12 @@ coverage:
     status:
         project:
             default:
-                threshold: 1%
+                threshold: 3%
                 if_not_found: success
         patch:
             default:
                 enabled: yes
-                threshold: 1%
+                threshold: 3%
                 if_not_found: success
         changes:
             default:
