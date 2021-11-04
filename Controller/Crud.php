@@ -758,14 +758,21 @@ abstract class Crud extends AbstractController
     protected function getFieldFetchMode(): string
     {
         if ($this->_cachedFetchMode === null) {
+            $fetchMode = \Arkounay\Bundle\QuickAdminGeneratorBundle\Annotation\Crud::FETCH_AUTO;;
             $reflectionClass = $this->metadata->getReflectionClass();
             $crudAnnotation = $this->reader->getClassAnnotation($reflectionClass, \Arkounay\Bundle\QuickAdminGeneratorBundle\Annotation\Crud::class);
             if ($crudAnnotation !== null) {
                 /** @var \Arkounay\Bundle\QuickAdminGeneratorBundle\Annotation\Crud $crudAnnotation */
-                $this->_cachedFetchMode = $crudAnnotation->fetchMode;
-            } else {
-                $this->_cachedFetchMode = \Arkounay\Bundle\QuickAdminGeneratorBundle\Annotation\Crud::FETCH_AUTO;
+                $fetchMode = $crudAnnotation->fetchMode;
+            } elseif (PHP_VERSION_ID >= 80000) {
+                $attributes = $reflectionClass->getAttributes(\Arkounay\Bundle\QuickAdminGeneratorBundle\Annotation\Crud::class);
+                if (!empty($attributes)) {
+                    /** @var \Arkounay\Bundle\QuickAdminGeneratorBundle\Annotation\Crud $crudAttribute */
+                    $crudAttribute = $attributes[0]->newInstance();
+                    $fetchMode = $crudAttribute->fetchMode;
+                }
             }
+            $this->_cachedFetchMode = $fetchMode;
         }
 
         return $this->_cachedFetchMode;
