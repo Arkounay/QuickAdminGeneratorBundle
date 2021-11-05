@@ -62,38 +62,6 @@
     {%- endif -%}
 {%- endblock form_label %}
 
-{% block collection_widget %}
-    {% apply spaceless %}
-        {% if prototype is defined %}
-            {% set attr = attr|merge({'data-prototype': form_row(prototype)}) %}
-            {% set attr = attr|merge({'data-prototype-name': prototype.vars.name}) %}
-        {% endif %}
-        {% set attr = attr|merge({'data-allow-add': allow_add ? 1 : 0}) %}
-        {% set attr = attr|merge({'data-allow-remove': allow_delete ? 1 : 0 }) %}
-        {% set attr = attr|merge({'data-name-prefix': full_name}) %}
-        {% set attr = attr|merge({'class': attr.class|default('collection')}) %}
-        {% set attr = attr|merge({'data-controller': attr['data-controller']|default('collection')}) %}
-        {% set attr = attr|merge({'data-add-label': (attr['data-add-label']|default('Add'))|trans}) %}
-        {% set attr = attr|merge({'data-remove-label': (attr['data-remove-label']|default('Remove'))|trans}) %}
-        {{ block('form_widget') }}
-    {% endapply %}
-{% endblock %}
-
-{% block collection_entry_row %}
-    {% import '@ArkounayQuickAdminGenerator/base.html.twig' as icon_renderer %}
-
-    <div class="card p-3 mb-3">
-        <div class="btn-collection-container">
-            <a href="#" class="collection-up btn btn-collection">{{ icon_renderer.tabler_icon('arrow-up') }}</a>
-            <a href="#" class="collection-down btn btn-collection">{{ icon_renderer.tabler_icon('arrow-down') }}</a>
-            <a href="#" class="collection-remove btn btn-collection btn-collection-remove">{{ icon_renderer.tabler_icon('x') }}</a>
-        </div>
-        {{ form_widget(form) }}
-        {{ form_errors(form) }}
-        {{ form_rest(form) }}
-    </div>
-{% endblock %}
-
 {% block form_errors -%}
     {%- if errors|length > 0 -%}
         <span class="{% if form is not rootform %}invalid-feedback{% else %}alert alert-danger{% endif %} d-block">
