@@ -155,6 +155,7 @@ class FieldService
             $field->setPlaceholder($annotationField->placeholder);
             $field->setHelp($annotationField->help);
             $field->setPosition($annotationField->position);
+            $field->setPayload($annotationField->payload);
         }
 
         $event = new GenericEvent($field, ['metadata' => $metadata]);

@@ -90,6 +90,7 @@ The twig filed needs to be located at `templates/bundles/ArkounayQuickAdminGener
 - `required` defines if the form's field is required when editing or creating. If not specified, will automatically try to guess it with doctrine's metadata.
 - `help` and `placeholder` will change the corresponding form attribute when creating / editing.
 - `position` defines in which order the fields appear, both in form and list.
+- `payload` is a custom payload of mixed type, that can be used for custom event subscribers for example. (see [Configure Fields by using Listeners](Fields.md#configure-fields-by-using-listeners))
 
 #### @QAG\HideInForm
 Allows you to hide a field in both creation and edition.

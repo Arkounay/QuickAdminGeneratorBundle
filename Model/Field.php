@@ -81,9 +81,14 @@ class Field implements Listable
     protected $help;
 
     /**
-     * @var int position
+     * @var int
      */
     protected $position;
+
+    /**
+     * @var mixed for custom events
+     */
+    protected $payload;
 
     public function __construct(string $index)
     {
@@ -267,6 +272,16 @@ class Field implements Listable
     public function setPosition(?int $position): void
     {
         $this->position = $position;
+    }
+
+    public function getPayload()
+    {
+        return $this->payload;
+    }
+
+    public function setPayload($payload): void
+    {
+        $this->payload = $payload;
     }
 
 }
