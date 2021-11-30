@@ -116,6 +116,7 @@ class QagExtension extends AbstractExtension implements GlobalsInterface
 
     public function getGlobals(): array
     {
+        dump($this->config);
         return ['qag' => ['menu_items' => $this->getMenuItems(), 'config' => $this->config]];
     }
 

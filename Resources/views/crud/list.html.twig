@@ -2,7 +2,9 @@
 
 {% set has_batch_actions = batch_actions is not empty and entities is not empty %}
 
-{% block body_class 'list' %}
+{% block body_class %}
+    {{ parent() }} list
+{% endblock %}
 
 {% block content_title %}
     {{ plural_name|trans }}
@@ -223,7 +225,7 @@
     </div>
 
 
-    <div class="small mt-2 table-pagination">
+    <div class="mt-2 table-pagination">
         {{ knp_pagination_render(entities, '@ArkounayQuickAdminGenerator/crud/pagination.html.twig') }}
     </div>
 

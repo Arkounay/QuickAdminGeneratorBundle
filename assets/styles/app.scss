@@ -1,7 +1,13 @@
+$white: #ffffff !default;
+$input-bg: $white !default;
 $enable-dark-mode: false;
 @import '~@tabler/core';
 @import "~select2/src/scss/core";
 @import "~@ttskch/select2-bootstrap4-theme/dist/select2-bootstrap4.min.css";
+
+:root {
+  --tblr-body-bg: #f8fafc;
+}
 
 .batch-column {
   width: 15px;
@@ -147,7 +153,7 @@ html, body {
 }
 
 .table > thead > tr > th {
-  background-color: #fbfcff;
+  background-color: var(--tblr-body-bg);
 }
 
 .mb-3-5 {
@@ -228,4 +234,24 @@ tr.highlighted {
   .input-icon-addon {
     color: #dcdcdc !important;
   }
+}
+
+.btn-outline-secondary {
+  background-color: $white;
+}
+
+.table > :not(:first-child), .markdown > table > :not(:first-child) {
+  border-top: 1px solid rgba(101, 109, 119, 0.16);
+}
+
+.table > tbody > tr:last-child td {
+  border-bottom: 0;
+}
+
+.table-card {
+  @extend .card;
+}
+
+.btn-link:hover {
+  background-color: transparent;
 }
