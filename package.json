@@ -1,7 +1,9 @@
 {
   "devDependencies": {
     "@arkounay/ux-collection": "file:vendor/arkounay/ux-collection/Resources/assets",
+    "@hotwired/turbo": "^7.0.0-beta.5",
     "@symfony/stimulus-bridge": "^2.0.0",
+    "@symfony/ux-turbo": "file:vendor/symfony/ux-turbo/Resources/assets",
     "@symfony/webpack-encore": "^1.0.0",
     "core-js": "^3.0.0",
     "node-sass": "^6.0.1",
@@ -13,7 +15,6 @@
   },
   "license": "UNLICENSED",
   "dependencies": {
-    "@hotwired/turbo": "^7.0.0-beta.4",
     "@tabler/core": "^1.0.0-beta4",
     "@ttskch/select2-bootstrap4-theme": "^1.4.0",
     "jquery": "^3.5.1",

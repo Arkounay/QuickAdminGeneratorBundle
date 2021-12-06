@@ -47,11 +47,10 @@ abstract class Crud extends AbstractController
 
     private const ITEMS_PER_PAGE = 15;
     protected EntityManagerInterface $em;
-
     protected ClassMetadata $metadata;
     private Reader $reader;
     protected FieldService $fieldService;
-    protected Request $request;
+    protected ?Request $request;
     protected EventDispatcherInterface $eventDispatcher;
     protected InflectorInterface $inflector;
     protected TranslatorInterface $translator;
@@ -506,11 +505,11 @@ abstract class Crud extends AbstractController
             return $this->redirectToList();
         }
 
-        return $this->render($this->formTwig(true), $this->retrieveParams('create', [
+        return $this->renderForm($this->formTwig(true), $this->retrieveParams('create', [
             'creation' => true,
             'name' => $this->getName(),
             'plural_name' => $this->getPluralName(),
-            'form' => $form->createView(),
+            'form' => $form,
             'back' => $this->backUrl(),
             'action_name' => 'Create'
         ]));
@@ -544,12 +543,12 @@ abstract class Crud extends AbstractController
             return $this->redirectToList();
         }
 
-        return $this->render($this->formTwig(false), $this->retrieveParams('edit', [
+        return $this->renderForm($this->formTwig(false), $this->retrieveParams('edit', [
             'creation' => false,
             'name' => $this->getName(),
             'plural_name' => $this->getPluralName(),
             'entity' => $entity,
-            'form' => $form->createView(),
+            'form' => $form,
             'list' => $this->backUrl(),
             'back' => $this->backUrl(),
             'action_name' => 'Edit'
@@ -870,8 +869,8 @@ abstract class Crud extends AbstractController
         $form = $this->createFilterForm()->getForm();
         $form->handleRequest($request);
 
-        return $this->render($this->filterFormTwig(), [
-            'form' => $form->createView()
+        return $this->renderForm($this->filterFormTwig(), [
+            'form' => $form
         ]);
     }
 

@@ -1,11 +1,5 @@
 {% extends 'bootstrap_4_layout.html.twig' %}
 
-{%- block form_start -%}
-    {# Disable Turbo by default when submitting a form (until symfony 5.3 renders proper HTTP status) #}
-    {% set attr = attr|merge({'data-turbo': attr['data-turbo']|default('false')}) %}
-    {{ parent() }}
-{%- endblock form_start -%}
-
 {% block form_row -%}
     {%- if compound is defined and compound -%}
         {%- set element = 'fieldset' -%}

@@ -9,6 +9,12 @@
                     "@arkounay/ux-collection/src/style-when-not-using-bootstrap-5.css": false
                 }
             }
+        },
+        "@symfony/ux-turbo": {
+            "turbo-core": {
+                "enabled": true,
+                "fetch": "eager"
+            }
         }
     },
     "entrypoints": []
