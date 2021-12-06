@@ -4,9 +4,14 @@ $enable-dark-mode: false;
 @import '~@tabler/core';
 @import "~select2/src/scss/core";
 @import "~@ttskch/select2-bootstrap4-theme/dist/select2-bootstrap4.min.css";
+@import "ux-media";
 
 :root {
   --tblr-body-bg: #f8fafc;
+}
+
+body .markdown > table > thead > tr > body th, body .table > thead > tr > th {
+  background-color: #FBFCFF;
 }
 
 .batch-column {
@@ -254,4 +259,13 @@ tr.highlighted {
 
 .btn-link:hover {
   background-color: transparent;
+}
+
+.no-required-mark .required:after {
+  display: none;
+}
+
+input[type='color'] {
+  max-width: 50px;
+  padding: 2px;
 }

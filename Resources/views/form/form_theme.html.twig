@@ -79,3 +79,57 @@
         {{ form_widget(form.minute, {label: false, attr: {class: 'w-auto'}}) }}
     </div>
 {% endblock %}
+
+{% block choice_widget_expanded -%}
+    <div {{ block('widget_container_attributes') }}>
+        {%- for child in form %}
+            {{- form_widget(child, {
+                parent_label_class: label_attr.class|default('azeaze'),
+                translation_domain: choice_translation_domain,
+                valid: valid,
+            }) -}}
+        {% endfor -%}
+    </div>
+{%- endblock choice_widget_expanded %}
+
+{%- block checkbox_radio_label -%}
+    {#- Do not display the label if widget is not defined in order to prevent double label rendering -#}
+    {%- if widget is defined -%}
+        {%- set label_attr = label_attr|merge({class: (label_attr.class|default('') ~ ' form-check-label')|trim}) -%}
+        {%- if not compound -%}
+            {% set label_attr = label_attr|merge({'for': id}) %}
+        {%- endif -%}
+        {%- if parent_label_class is defined -%}
+            {%- set label_attr = label_attr|merge({class: (label_attr.class|default('') ~ ' ' ~ parent_label_class)|replace({'checkbox-inline': '', 'radio-inline': ''})|trim}) -%}
+        {%- endif -%}
+        {%- if label is not same as(false) and label is empty -%}
+            {%- if label_format is not empty -%}
+                {%- set label = label_format|replace({
+                    '%name%': name,
+                    '%id%': id,
+                }) -%}
+            {%- else -%}
+                {%- set label = name|humanize -%}
+            {%- endif -%}
+        {%- endif -%}
+
+        {{ widget|raw }}
+        <label{% with { attr: label_attr } %}{{ block('attributes') }}{% endwith %}>
+            {%- if label is not same as(false) -%}
+                {%- if translation_domain is same as(false) -%}
+                    {%- if label_html is same as(false) -%}
+                        {{- label -}}
+                    {%- else -%}
+                        {{- label|raw -}}
+                    {%- endif -%}
+                {%- else -%}
+                    {%- if label_html is same as(false) -%}
+                        {{- label|trans(label_translation_parameters, translation_domain) -}}
+                    {%- else -%}
+                        {{- label|trans(label_translation_parameters, translation_domain)|raw -}}
+                    {%- endif -%}
+                {%- endif -%}
+            {%- endif -%}
+        </label>
+    {%- endif -%}
+{%- endblock checkbox_radio_label %}

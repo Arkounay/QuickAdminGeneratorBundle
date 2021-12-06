@@ -17741,8 +17741,26 @@ Antialiasing
   border-color: #5897fb;
 }
 
+.ux-media .icon {
+  margin: 0;
+}
+.ux-media .btn:focus {
+  border: 1px solid rgba(101, 109, 118, 0.24);
+}
+.ux-media .btn-group {
+  height: 36px !important;
+}
+.ux-media .img-preview svg {
+  width: 50px;
+  min-height: 30px;
+}
+
 :root {
   --tblr-body-bg: #f8fafc;
+}
+
+body .markdown > table > thead > tr > body th, body .table > thead > tr > th, body .markdown > table > thead > tr > th {
+  background-color: #FBFCFF;
 }
 
 .batch-column {
@@ -17950,6 +17968,15 @@ tr.highlighted {
 
 .btn-link:hover {
   background-color: transparent;
+}
+
+.no-required-mark .required:after {
+  display: none;
+}
+
+input[type=color] {
+  max-width: 50px;
+  padding: 2px;
 }
 .arkounay-ux-collection .sortable-ghost {
     border: 2px solid #86b7fe !important;
