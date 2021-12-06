@@ -219,7 +219,7 @@ class FieldService
     protected function getAttribute(\ReflectionProperty $reflectionProperty, $class)
     {
         $res = $this->reader->getPropertyAnnotation($reflectionProperty, $class);
-        if ($res === null && PHP_VERSION_ID >= 80000) {
+        if ($res === null) {
             $attributes = $reflectionProperty->getAttributes($class);
             if (!empty($attributes)) {
                 $res = $attributes[0]->newInstance();

@@ -5,6 +5,10 @@ namespace Arkounay\Bundle\QuickAdminGeneratorBundle\Model;
 
 /**
  * @internal
+ * @psalm-template TKey of array-key
+ * @psalm-template T
+ * @template-extends \IteratorAggregate<TKey, T>
+ * @template-extends \ArrayAccess<TKey|null, T>
  */
 abstract class TypedArray implements \IteratorAggregate, \ArrayAccess, \Countable
 {
