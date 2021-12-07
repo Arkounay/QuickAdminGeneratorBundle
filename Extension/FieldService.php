@@ -117,7 +117,7 @@ class FieldService
 
         $field->setLabel($annotationField !== null && $annotationField->label ? $annotationField->label : $this->formRenderer->humanize($fieldIndex));
         $field->setType($metadata ? $this->getType($metadata, $fieldIndex) : 'virtual');
-        $field->setTwig($this->twigLoader->getTwigPartialByFieldType($field->getType(), $annotationField !== null ? $annotationField->twigName : null));
+        $field->setTwig($this->twigLoader->getTwigPartialByFieldType($field->getType(), $annotationField?->twigName));
 
         switch ($field->getType()) {
             case 'virtual':

@@ -55,10 +55,7 @@ class Action implements Listable
 
     public function getLabel(): ?string
     {
-        if ($this->label === null) {
-            return u($this->index)->title()->toString();
-        }
-        return $this->label;
+        return $this->label ?? u($this->index)->title()->toString();
     }
 
     public function setLabel(?string $label): self

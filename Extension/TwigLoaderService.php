@@ -24,9 +24,9 @@ class TwigLoaderService
             return "@ArkounayQuickAdminGenerator/crud/fields/_$twigName.html.twig";
         }
 
-        if (strpos($type, 'datetime') !== false) {
+        if (str_contains($type, 'datetime')) {
             $res = '@ArkounayQuickAdminGenerator/crud/fields/_datetime.html.twig';
-        } elseif (strpos($type, 'date') !== false) {
+        } elseif (str_contains($type, 'date')) {
             $res = '@ArkounayQuickAdminGenerator/crud/fields/_date.html.twig';
         } else {
             $res = "@ArkounayQuickAdminGenerator/crud/fields/_$type.html.twig";

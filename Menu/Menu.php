@@ -139,17 +139,14 @@ class Menu implements MenuInterface
             } else {
                 $menuItem = new MenuItem($node['label']);
             }
-            if (isset($node['url']) && isset($node['route'])) {
+            if (isset($node['url'], $node['route'])) {
                 throw new InvalidConfigurationException('Menu item cannot have both url and route parameters');
             }
             if (isset($node['url'])) {
                 $menuItem->setUrl($node['url']);
             }
             if (isset($node['route'])) {
-                $routeParams = [];
-                if (isset($node['route_params'])) {
-                    $routeParams = $node['route_params'];
-                }
+                $routeParams = $node['route_params'] ?? [];
                 $menuItem->setUrl($this->router->generate($node['route'], $routeParams));
             }
             if (isset($node['icon'])) {
@@ -187,7 +184,7 @@ class Menu implements MenuInterface
         $route = $this->router->generate('qag.' . $crud->getRoute());
         $menuItem = new MenuItem($crud->getPluralName());
         $menuItem->setUrl($route);
-        if ($request->attributes->get('_route') !== 'qag.dashboard' && strpos($request->getPathInfo(), $route) !== false) {
+        if ($request->attributes->get('_route') !== 'qag.dashboard' && str_contains($request->getPathInfo(), $route)) {
             $menuItem->setActive($route);
         }
         return $menuItem;

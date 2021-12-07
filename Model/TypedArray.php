@@ -61,7 +61,7 @@ abstract class TypedArray implements \IteratorAggregate, \ArrayAccess, \Countabl
      * @param mixed $offset
      * @param Listable $value
      */
-    public function offsetSet($offset, $value)
+    public function offsetSet($offset, $value): void
     {
         if (is_null($offset)) {
             $this->add($value);
@@ -72,17 +72,20 @@ abstract class TypedArray implements \IteratorAggregate, \ArrayAccess, \Countabl
         }
     }
 
-    public function offsetExists($offset)
+    public function offsetExists($offset): bool
     {
         return isset($this->items[$offset]);
     }
 
-    public function offsetUnset($offset)
+    public function offsetUnset($offset): void
     {
         unset($this->items[$offset]);
     }
 
-    public function offsetGet($offset)
+    /**
+     * @return T
+     */
+    public function offsetGet($offset): Listable
     {
         return $this->items[$offset];
     }

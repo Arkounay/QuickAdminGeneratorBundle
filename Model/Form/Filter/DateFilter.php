@@ -32,20 +32,17 @@ class DateFilter extends GenericFilter
             $end = $tmp;
         }
 
-        switch ($choice) {
-            case 'between':
-                return $builder->andWhere("e.$index > :{$index}_start")
-                    ->andWhere("e.$index < :{$index}_end")
-                    ->setParameter("{$index}_start", $start)
-                    ->setParameter("{$index}_end", $end);
-            case 'not in':
-                return $builder->andWhere("e.$index < :{$index}_start or e.$index > :{$index}_end")
-                    ->setParameter("{$index}_start", $start)
-                    ->setParameter("{$index}_end", $end);
-            default:
-                return $builder->andWhere("e.$index $choice :$index")
-                    ->setParameter($index, $formData['date']);
-        }
+        return match ($choice) {
+            'between' => $builder->andWhere("e.$index > :{$index}_start")
+                ->andWhere("e.$index < :{$index}_end")
+                ->setParameter("{$index}_start", $start)
+                ->setParameter("{$index}_end", $end),
+            'not in' => $builder->andWhere("e.$index < :{$index}_start or e.$index > :{$index}_end")
+                ->setParameter("{$index}_start", $start)
+                ->setParameter("{$index}_end", $end),
+            default => $builder->andWhere("e.$index $choice :$index")
+                ->setParameter($index, $formData['date']),
+        };
     }
 
     public function isEmpty($data): bool
@@ -54,13 +51,10 @@ class DateFilter extends GenericFilter
             return false;
         }
 
-        switch ($data['choice']) {
-            case 'between':
-            case 'not in':
-                return empty($data['date_start']) && empty($data['date_end']);
-            default:
-                return empty($data['date']);
-        }
+        return match ($data['choice']) {
+            'between', 'not in' => empty($data['date_start']) && empty($data['date_end']),
+            default => empty($data['date']),
+        };
     }
 
 }

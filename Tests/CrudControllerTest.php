@@ -8,13 +8,15 @@ use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Output\BufferedOutput;
+use Symfony\Component\HttpFoundation\Session\Session;
+use Symfony\Component\HttpFoundation\Session\Storage\MockFileSessionStorage;
 
 class CrudControllerTest extends WebTestCase
 {
 
     public function testRoutes(): void
     {
-        $client = self::createClient();
+        $client = static::createClient();
         $application = new Application($client->getKernel());
         $application->setAutoExit(false);
 
@@ -39,7 +41,7 @@ class CrudControllerTest extends WebTestCase
 
     public function testMenu(): void
     {
-        $client = self::createClient();
+        $client = static::createClient();
 
         $client->request('GET', '/admin/');
         self::assertResponseIsSuccessful();
@@ -50,7 +52,7 @@ class CrudControllerTest extends WebTestCase
 
     public function testCreation(): void
     {
-        $client = self::createClient();
+        $client = static::createClient();
 
         $client->request('GET', '/admin/category/create');
         self::assertResponseIsSuccessful();
@@ -68,7 +70,7 @@ class CrudControllerTest extends WebTestCase
 
     public function testSearch(): void
     {
-        $client = self::createClient();
+        $client = static::createClient();
 
         $client->request('GET', '/admin/category/?search=NotFound');
         self::assertResponseIsSuccessful();
@@ -85,7 +87,7 @@ class CrudControllerTest extends WebTestCase
 
     public function testEdition(): void
     {
-        $client = self::createClient();
+        $client = static::createClient();
 
         $client->request('GET', '/admin/category/edit/1/');
         self::assertResponseIsSuccessful();
@@ -105,7 +107,7 @@ class CrudControllerTest extends WebTestCase
 
     public function testActions(): void
     {
-        $client = self::createClient();
+        $client = static::createClient();
 
         $client->request('GET', '/admin/category-extra-actions/create');
         self::assertResponseStatusCodeSame(404);
@@ -118,7 +120,7 @@ class CrudControllerTest extends WebTestCase
 
     public function testDeletion(): void
     {
-        $client = self::createClient();
+        $client = static::createClient();
 
         $token = $client->getContainer()->get('security.csrf.token_manager')->getToken('delete');
 
@@ -134,7 +136,7 @@ class CrudControllerTest extends WebTestCase
 
     public function testAnnotations(): void
     {
-        $client = self::createClient();
+        $client = static::createClient();
         $client->request('GET', '/admin/article-filters/');
         self::assertResponseIsSuccessful();
         self::assertStringContainsString('Date of creation', $client->getResponse()->getContent());
@@ -148,7 +150,7 @@ class CrudControllerTest extends WebTestCase
 
     public function testFilters(): void
     {
-        $client = self::createClient();
+        $client = static::createClient();
         $client->request('GET', '/admin/article-filters/filterFormAjax');
         self::assertResponseIsSuccessful();
 
@@ -158,7 +160,7 @@ class CrudControllerTest extends WebTestCase
         $client->request('GET', '/admin/article-filters/');
         self::assertSelectorTextContains('.table-pagination strong', 24);
 
-        $client->request('GET', '/admin/article-filters/', [
+        $client->request('GET', '/admin/article-filters/', ([
             'filter' => [
                 'published' => 1,
                 'createdAt' => [
@@ -169,14 +171,14 @@ class CrudControllerTest extends WebTestCase
                   ],
                 'name' => null
             ]
-        ]);
+        ]));
         self::assertResponseIsSuccessful();
         self::assertSelectorTextContains('.table-pagination strong', 12);
     }
 
     public function testRights(): void
     {
-        $client = self::createClient();
+        $client = static::createClient();
 
         $client->request('GET', '/admin/category-extra-actions/create');
         self::assertResponseStatusCodeSame(404);
@@ -187,7 +189,7 @@ class CrudControllerTest extends WebTestCase
 
     public function testFetchModeManual(): void
     {
-        $client = self::createClient();
+        $client = static::createClient();
 
         $crawler = $client->request('GET', '/admin/person/create');
         self::assertResponseStatusCodeSame(200);

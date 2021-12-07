@@ -59,27 +59,6 @@ class QagExtension extends AbstractExtension implements GlobalsInterface
 
     private function getMenuItems(): iterable
     {
-//        $res = [];
-//        if (!isset($this->config['menu']['items'])) {
-//            foreach ($this->cruds as $crud) {
-//                /** @var Crud $crud */
-//                $res[$this->translator->trans($crud->getPluralName())] = $crud;
-//            }
-//            ksort($res);
-//        } elseif (is_iterable($this->config['menu']['items'])) {
-//            $items = $this->getCrudAsKArrayWithClassKeys($this->cruds);
-//            $menuItems = [];
-//            foreach ($this->config['menu']['items'] as $class) {
-//                $menuItems[] = $items[$class];
-//            }
-//            $res = $menuItems;
-//        } elseif (class_exists($this->config['menu']['items'])) {
-//            $items = $this->getCrudAsKArrayWithClassKeys($this->cruds);
-//            $res = (new $this->config['menu']['items'])($items);
-//        } else {
-//            throw new \InvalidArgumentException('Could not generate menu. Please check in the yaml arkounay_quick_admin_generator.menu.items is correct.');
-//        }
-
         return $this->menu->generateMenu();
     }
 

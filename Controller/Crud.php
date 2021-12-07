@@ -413,7 +413,7 @@ abstract class Crud extends AbstractController
             'has_filters' => !$this->getFilters()->isEmpty(),
             'active_filters_nb' => $activeFiltersNb,
             'has_active_filters' => $activeFiltersNb > 0,
-            'filter_form' => $filterForm ? $filterForm->createView() : null,
+            'filter_form' => $filterForm?->createView(),
             'filter_form_twig' => $this->filterFormTwig(),
             'is_simple_responsive_mode' => $this->simpleResponsiveMode(),
             'has_actions' => $this->hasActions($actionsEntities),
@@ -699,7 +699,7 @@ abstract class Crud extends AbstractController
                     }
                 } else {
                     foreach ($annotations as $annotation) {
-                        if (strpos(get_class($annotation), 'Arkounay\Bundle\QuickAdminGeneratorBundle\Annotation\Show') !== false) {
+                        if (str_contains(get_class($annotation), 'Arkounay\Bundle\QuickAdminGeneratorBundle\Annotation\Show')) {
                             $ignoreField = false;
                             break;
                         }
