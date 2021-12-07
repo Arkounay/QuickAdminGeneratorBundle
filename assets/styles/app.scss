@@ -269,3 +269,9 @@ input[type='color'] {
   max-width: 50px;
   padding: 2px;
 }
+
+.table-pagination .result-count {
+  @include media-breakpoint-down(sm) {
+      font-size: 12px;
+  }
+}

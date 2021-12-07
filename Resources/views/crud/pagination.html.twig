@@ -1,10 +1,12 @@
 {# default Sliding pagination control implementation #}
     <div class="row">
-        <div class="col text-muted">
+        <div class="col text-muted result-count">
             {% if totalCount > 1 %}
                 {{ 'pagination.num_of_result'|trans({'%total_count%': totalCount})|raw }}
                 {% if pageCount > 1 %}
-                    - {{ 'Page'|trans }} {{ current }} / {{ pageCount }}
+                    <div class="d-block d-sm-inline">
+                        <span class="d-none d-sm-inline">-</span> {{ 'Page'|trans }} {{ current }} / {{ pageCount }}
+                    </div>
                 {% endif %}
             {% endif %}
         </div>

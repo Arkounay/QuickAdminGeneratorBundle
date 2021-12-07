@@ -17978,6 +17978,12 @@ input[type=color] {
   max-width: 50px;
   padding: 2px;
 }
+
+@media (max-width: 575.98px) {
+  .table-pagination .result-count {
+    font-size: 12px;
+  }
+}
 .arkounay-ux-collection .sortable-ghost {
     border: 2px solid #86b7fe !important;
 }
