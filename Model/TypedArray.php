@@ -52,7 +52,7 @@ abstract class TypedArray implements \IteratorAggregate, \ArrayAccess, \Countabl
         return $this;
     }
 
-    public function getIterator()
+    public function getIterator(): \Traversable
     {
         return new \ArrayIterator($this->items);
     }
@@ -110,7 +110,7 @@ abstract class TypedArray implements \IteratorAggregate, \ArrayAccess, \Countabl
         }
     }
 
-    public function count()
+    public function count(): int
     {
         return \count($this->items);
     }

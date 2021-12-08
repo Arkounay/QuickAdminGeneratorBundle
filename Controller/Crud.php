@@ -217,6 +217,7 @@ abstract class Crud extends AbstractController
     public function deleteAction($entity): Response
     {
         if (!$this->isCsrfTokenValid('delete', $this->request->request->get('token'))) {
+            $this->addFlash('danger', $this->translator->trans('The CSRF token is invalid. Please try to resubmit the form.'));
             return $this->redirectToList();
         }
         if (!$this->isDeletable($entity)) {
@@ -372,10 +373,10 @@ abstract class Crud extends AbstractController
             }
         }
 
-        $filters = $request->query->get('filter');
+        $filters = $request->query->all('filter');
         $filterForm = null;
         $activeFiltersNb = 0;
-        if ($filters) {
+        if (!empty($filters)) {
             $filterForm = $this->createFilterForm()->getForm();
             $filterForm->handleRequest($request);
             foreach ($this->getFilters() as $f) {

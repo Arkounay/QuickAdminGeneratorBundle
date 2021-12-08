@@ -122,7 +122,8 @@ class CrudControllerTest extends WebTestCase
     {
         $client = static::createClient();
 
-        $token = $client->getContainer()->get('security.csrf.token_manager')->getToken('delete');
+        $crawler = $client->request('GET', '/admin/category/');
+        $token = $crawler->filter('#delete-modal input[name="token"]')->attr('value');
 
         $client->request('POST', '/admin/category/delete/1/', [
             'token' => $token
