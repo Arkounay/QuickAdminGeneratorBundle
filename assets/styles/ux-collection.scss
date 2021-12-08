@@ -1,0 +1,15 @@
+.btn-collection-remove:hover {
+  @extend .text-danger;
+}
+
+.btn-collection-remove .icon {
+  color: inherit;
+}
+
+.btn-collection-container button .icon {
+  margin: 0;
+}
+
+.arkounay-ux-collection >.card .mx-3.mb-3 {
+  @extend .my-3
+}

@@ -9,6 +9,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
+use Twig\Environment;
 use Twig\Extension\AbstractExtension;
 use Twig\Extension\GlobalsInterface;
 use Twig\TwigFunction;
@@ -16,45 +17,15 @@ use Twig\TwigFunction;
 class QagExtension extends AbstractExtension implements GlobalsInterface
 {
 
-    /**
-     * @var Crud[]
-     */
-    private $cruds;
-
-    /**
-     * @var array
-     */
-    private $config;
-
-    /**
-     * @var TranslatorInterface
-     */
-    private $translator;
-
-    /**
-     * @var RouterInterface
-     */
-    private $router;
-
-    /**
-     * @var RequestStack
-     */
-    private $requestStack;
-
-    /**
-     * @var MenuInterface
-     */
-    private $menu;
-
-    public function __construct(iterable $cruds, array $config, TranslatorInterface $translator, RouterInterface $router, RequestStack $requestStack, MenuInterface $menu)
-    {
-
+    public function __construct(
+        /** @var Crud[] */ iterable $cruds,
+        private array $config,
+        private RouterInterface $router,
+        private RequestStack $requestStack,
+        private MenuInterface $menu,
+        private Environment $twig
+    ) {
         $this->cruds = $cruds;
-        $this->config = $config;
-        $this->translator = $translator;
-        $this->router = $router;
-        $this->requestStack = $requestStack;
-        $this->menu = $menu;
     }
 
     private function getMenuItems(): iterable
@@ -88,9 +59,22 @@ class QagExtension extends AbstractExtension implements GlobalsInterface
         return '#';
     }
 
+    public function icon(string $name, int $width = 16, int $height = 16, ?string $class = null): string
+    {
+        return $this->twig->render('@ArkounayQuickAdminGenerator/extensions/_icon_renderer.html.twig', [
+            'name' => $name,
+            'width' => $width,
+            'height' => $height,
+            'class' => $class
+        ]);
+    }
+
     public function getFunctions(): array
     {
-        return [new TwigFunction('action_href', [$this, 'getActionHref'])];
+        return [
+            new TwigFunction('qag_action_href', [$this, 'getActionHref']),
+            new TwigFunction('qag_render_icon', [$this, 'icon'], ['is_safe' => ['html']]),
+        ];
     }
 
     public function getGlobals(): array

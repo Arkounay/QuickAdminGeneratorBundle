@@ -14,7 +14,7 @@ class Actions extends TypedArray
     protected function createFromIndexName(string $index): Listable
     {
         $action = new Action($index);
-        $action->addClasses('action-' . $index, 'btn', 'btn-outline-secondary');
+        $action->addClasses('action-' . $index, 'btn');
         $action->setLabel(u($index)->title()->toString());
 
         return $action;

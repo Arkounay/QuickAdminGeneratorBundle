@@ -61,7 +61,7 @@
                                         <form action="{{ path('qag.global_search') }}" method="get" data-controller="global-search" data-global-search-index-value="0">
                                             <div class="input-icon">
                                                 <span class="input-icon-addon">
-                                                    {{ _self.tabler_icon('search', 20, 20) }}
+                                                    {{ qag_render_icon('search', 20, 20) }}
                                                 </span>
                                                 <input type="search" autocomplete="off" name="q" data-action="keyup->global-search#search keydown->global-search#navigate" class="form-control" placeholder="{{ 'Global search'|trans }}" value="{{ current_route == 'qag.global_search' ? app.request.query.get('q') }}"/>
                                                 <div class="search-box text-secondary d-none" data-global-search-target="resultBox"></div>
@@ -98,7 +98,7 @@
                             {% block user_menu_dropdown %}
                                 {% block user_menu_dropdown_homepage %}
                                     <a class="dropdown-item" href="/">
-                                        {{ _self.tabler_icon('home', 50, 44, 'icon dropdown-item-icon icon-tabler icon-tabler-logout') }}
+                                        {{ qag_render_icon('home', 50, 44, 'icon dropdown-item-icon icon-tabler icon-tabler-logout') }}
                                         {{ 'Homepage'|trans }}
                                     </a>
                                 {% endblock %}
@@ -146,7 +146,7 @@
                                                     <li>
                                                         <a class="dropdown-item {{ menu_item.attributes.class|default }} {{ menu_item.active and menu_vertical ? 'text-white' }} {{ menu_item.active ? 'active' }}" {% for k, v in menu_item.attributes %}{% if k != 'class' %}{{ k }}="{{ v }}"{% endif %}{% endfor %} href="{{ menu_item.url }}">
                                                             {% if menu_vertical or menu_item.icon is not null %}
-                                                                {{ _self.tabler_icon(menu_item.icon|default('chevron-right'), 16, 16, icon_class) }}
+                                                                {{ qag_render_icon(menu_item.icon|default('chevron-right'), 16, 16, icon_class) }}
                                                             {% endif %}
                                                             <span>{{ menu_item.label|trans }}</span>
                                                         </a>
@@ -165,7 +165,7 @@
                                         <li class="nav-item {% if menu_item.active %}active{% endif %}">
                                             <a class="nav-link {{ menu_item.attributes.class|default }}" {% for k, v in menu_item.attributes %}{% if k != 'class' %}{{ k }}="{{ v }}"{% endif %}{% endfor %} href="{{ menu_item.url }}">
                                                 {% if menu_vertical or menu_item.icon is not null %}
-                                                    {{ _self.tabler_icon(menu_item.icon|default('chevron-right'), 16, 16, icon_class) }}
+                                                    {{ qag_render_icon(menu_item.icon|default('chevron-right'), 16, 16, icon_class) }}
                                                 {% endif %}
                                                 <span>{{ menu_item.label|trans }}</span>
                                             </a>
@@ -273,9 +273,3 @@
 
 </body>
 </html>
-
-{% macro tabler_icon(name, width=16, height=16, class='') %}
-    <svg width="{{ width }}" height="{{ height }}" {% if class %}class="{{ class }}"{% endif %}>
-        <use xlink:href="{{ asset('bundles/arkounayquickadmingenerator/tabler-sprite.svg') }}#tabler-{{ name }}" />
-    </svg>
-{% endmacro  %}
