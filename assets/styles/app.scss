@@ -2,10 +2,10 @@ $white: #ffffff !default;
 $input-bg: $white !default;
 //$enable-dark-mode: false;
 @import '~@tabler/core';
-@import "~select2/src/scss/core";
-@import "~@ttskch/select2-bootstrap4-theme/dist/select2-bootstrap4.min.css";
+@import "~select2-bootstrap-5-theme";
 @import "ux-media";
 @import "ux-collection";
+@import "select2";
 
 @mixin card {
   margin-bottom: .5rem;
@@ -187,7 +187,7 @@ tr.highlighted {
     background-color: #ffffa5;
   }
   to {
-    background-color: none;
+    background-color: inherit;
   }
 }
 
@@ -305,4 +305,8 @@ input[type='color'] {
   label {
     cursor: pointer;
   }
+}
+
+::-webkit-calendar-picker-indicator {
+  filter: invert(0.5);
 }

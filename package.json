@@ -16,9 +16,9 @@
   "license": "UNLICENSED",
   "dependencies": {
     "@tabler/core": "https://github.com/migolo/tabler#patch-1",
-    "@ttskch/select2-bootstrap4-theme": "^1.4.0",
     "jquery": "^3.5.1",
-    "select2": "^4.0.13"
+    "select2": "^4.0.13",
+    "select2-bootstrap-5-theme": "^1.2.0"
   },
   "scripts": {
     "dev-server": "encore dev-server",
