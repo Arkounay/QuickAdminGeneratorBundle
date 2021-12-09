@@ -1,6 +1,6 @@
 $white: #ffffff !default;
 $input-bg: $white !default;
-$enable-dark-mode: false;
+//$enable-dark-mode: false;
 @import '~@tabler/core';
 @import "~select2/src/scss/core";
 @import "~@ttskch/select2-bootstrap4-theme/dist/select2-bootstrap4.min.css";
@@ -14,10 +14,15 @@ $enable-dark-mode: false;
   flex-direction: column;
   min-width: 0;
   word-wrap: break-word;
-  background-color: #ffffff;
+  background-color: var(--#{$variable-prefix}card-bg);
   background-clip: border-box;
   border: 1px solid rgba(110, 117, 130, 0.2);
   border-radius: 3px;
+
+}
+
+.theme-dark {
+  --btn-border-color: #2C3C56;
 }
 
 :root {
@@ -239,6 +244,13 @@ tr.highlighted {
     }
   }
 }
+.theme-dark .search-box {
+  border-color: var(--btn-border-color) !important;
+  .list-group {
+    background-color: var(--tblr-body-bg)
+  }
+
+}
 
 .global-search-item {
   input {
@@ -249,7 +261,7 @@ tr.highlighted {
   }
 }
 
-.btn-outline-secondary {
+body:not(.theme-dark) .btn-outline-secondary {
   background-color: $white;
 }
 
@@ -282,4 +294,15 @@ input[type='color'] {
 }
 .search-form input {
   border-color: var(--btn-border-color);
+}
+.dark-mode-switcher {
+  cursor: pointer;
+  input.form-check-input {
+    cursor: pointer;
+    margin-left: 0;
+    margin-right: 10px;
+  }
+  label {
+    cursor: pointer;
+  }
 }

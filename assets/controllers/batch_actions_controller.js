@@ -1,5 +1,4 @@
 import { Controller } from 'stimulus';
-import 'select2';
 
 /**
  * @property {HTMLInputElement} selectAllCheckboxTarget

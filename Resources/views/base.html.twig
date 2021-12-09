@@ -5,8 +5,9 @@
 {%- endif -%}
 {%- set current_route = app.request.get('_route') -%}
 
-{% set menu_vertical = qag.config.menu.theme == 'vertical'  %}
+{% set menu_vertical = qag.config.menu.theme == 'vertical' %}
 {% set menu_horizontal = not menu_vertical  %}
+{% set dark_theme = app.session.get('theme', qag.config.theme.default) == 'dark' %}
 
 <!doctype html>
 <html lang="{{ app.request.locale }}">
@@ -36,7 +37,7 @@
     <title> {% block title block('header_title') ~ ' - ' ~ block('content_title') %}</title>
 </head>
 
-<body class="{% block body_extra_class '' %}" {% block body_attributes '' %}>
+<body class="{{ dark_theme ? 'theme-dark' }} {% block body_extra_class '' %}" {% block body_attributes '' %}>
 {% block body %}
     {% if menu_vertical %}
     <aside class="navbar navbar-vertical navbar-expand-lg navbar-dark">
@@ -73,7 +74,7 @@
                         </div>
                     {% endif %}
                     <div class="nav-item dropdown">
-                        <a href="#" class="nav-link d-flex lh-1 text-reset p-0" data-bs-toggle="dropdown">
+                        <a href="#" class="nav-link d-flex lh-1 text-reset p-0" data-bs-toggle="dropdown" data-bs-auto-close="outside">
                             {% block user_menu_username %}
                                 {% if app.user is not null %}
                                     {% if app.user.username is defined %}
@@ -102,6 +103,14 @@
                                         {{ 'Homepage'|trans }}
                                     </a>
                                 {% endblock %}
+                                {% if qag.config.theme.allow_switch %}
+                                    {% block dark_mode_switcher %}
+                                        <div class="dark-mode-switcher dropdown-item form-check form-switch ps-2" {{ stimulus_controller('theme', {url: path('qag.switch_theme'), darkMode: dark_theme}) }} {{ stimulus_action('theme', 'toggle', 'click') }}>
+                                            <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault" {{ stimulus_target('theme', 'check') }}>
+                                            <label class="form-check-label" for="flexSwitchCheckDefault">{{ 'Dark mode'|trans }}</label>
+                                        </div>
+                                    {% endblock %}
+                                {% endif %}
                                 {% block user_menu_dropdown_logout %}
                                     {% if app.user is not null %}
                                         <a class="dropdown-item" href="{% block user_menu_dropdown_logout_path '/logout' %}">

@@ -6,6 +6,7 @@
 * [Changing the menu orientation](#changing-the-menu-orientation)
 * [Changing the title](#changing-the-title)
 * [Enabling global search](#enabling-global-search)
+* [Switch to dark Mode](#switch-to-dark-mode)
 
 ---
 
@@ -125,3 +126,14 @@ arkounay_quick_admin_generator:
 ```
 
 You can modify the results with the `qag.events.quick_search_item` and `qag.events.quick_search_crud` events.
+
+## Switch to dark Mode
+
+You can allow users to switch to dark mode, or set it as default :
+
+```yaml
+arkounay_quick_admin_generator:
+    theme:
+        default: 'light'
+        allow_switch: true
+```

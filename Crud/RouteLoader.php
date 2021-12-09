@@ -6,6 +6,7 @@ namespace Arkounay\Bundle\QuickAdminGeneratorBundle\Crud;
 use Arkounay\Bundle\QuickAdminGeneratorBundle\Controller\Crud;
 use Arkounay\Bundle\QuickAdminGeneratorBundle\Controller\DashboardController;
 use Arkounay\Bundle\QuickAdminGeneratorBundle\Controller\GlobalSearchController;
+use Arkounay\Bundle\QuickAdminGeneratorBundle\Controller\ThemeController;
 use Arkounay\Bundle\QuickAdminGeneratorBundle\Model\Action;
 use Symfony\Bundle\FrameworkBundle\Routing\RouteLoaderInterface;
 use Symfony\Component\Routing\Route;
@@ -74,6 +75,9 @@ class RouteLoader implements RouteLoaderInterface
         }
 
         $routes->add('qag.dashboard', new Route('/', ['_controller' => DashboardController::class . "::dashboard"]));
+        if ($this->config['theme']['allow_switch']) {
+            $routes->add('qag.switch_theme', new Route('/theme-switch', ['_controller' => ThemeController::class . "::switchTheme", '_format' => 'json']));
+        }
         if ($this->config['global_search']) {
             $routes->add('qag.global_search', new Route('/global-search', ['_controller' => GlobalSearchController::class . "::search"]));
         }

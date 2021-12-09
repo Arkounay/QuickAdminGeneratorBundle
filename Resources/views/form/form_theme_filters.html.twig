@@ -14,10 +14,10 @@
 
 {% block entity_filter_widget %}
     <div class="row">
-        <div class="col-4">
+        <div class="col-md-4">
             {{ form_widget(form.choice) }}
         </div>
-        <div class="col">
+        <div class="col-md-8">
             {{ form_widget(form.entity) }}
         </div>
     </div>
@@ -25,7 +25,7 @@
 
 {% macro filter_multiple(form, name) %}
     <div class="row filter-row">
-        <div class="col-3">
+        <div class="col-md-3">
             {{ form_widget(form.choice) }}
         </div>
         <div class="col js-filter-multiple">

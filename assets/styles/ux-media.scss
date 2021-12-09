@@ -13,3 +13,21 @@
     min-height: 30px;
   }
 }
+
+.theme-dark .ux-media {
+  &.bg-white {
+    background-color: var(--tblr-body-bg) !important;
+  }
+
+  .btn-light {
+    background-color: var(--tblr-body-bg) !important;
+    color: red;
+    &:hover {
+      border-color: #626976;
+    }
+  }
+
+  svg {
+    stroke: #626976 !important;
+  }
+}

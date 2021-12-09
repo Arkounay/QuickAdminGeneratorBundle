@@ -38,6 +38,9 @@ services:
             $cruds: !tagged_iterator quickadmin.crud
         tags: ['controller.service_arguments']
 
+    Arkounay\Bundle\QuickAdminGeneratorBundle\Controller\ThemeController:
+        tags: ['controller.service_arguments']
+
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
 

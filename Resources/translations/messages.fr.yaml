@@ -39,6 +39,7 @@ View: Voir
 Yes: Oui
 No: Non
 All: Tous
+Dark mode: Thème sombre
 
 pagination:
     num_of_result: '<strong> %total_count% </strong> résultats'

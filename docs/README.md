@@ -126,6 +126,7 @@ See :
    * [Changing the menu orientation](Menu.md#changing-the-menu-orientation)
    * [Changing the title](Menu.md#changing-the-title)
    * [Enabling global search](Menu.md#enabling-global-search)
+   * [Switch to dark Mode](Menu.md#switch-to-dark-mode)
 6) [Overriding the rest of the twigs](Twig.md)
    * [Theme](Twig.md#theme)
    * [Overriding creation and edition](Twig.md#overriding-creation-and-edition)
