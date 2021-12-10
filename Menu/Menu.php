@@ -100,10 +100,14 @@ class Menu implements MenuInterface
 
     protected function createDashboardMenuItem(Request $request): ?MenuItem
     {
-        $dashboard = new MenuItem('Dashboard');
-        $dashboard->setUrl($this->router->generate('qag.dashboard'));
-        $dashboard->setActive($request->attributes->get('_route') === 'qag.dashboard');
-        return $dashboard;
+        if ($this->config['dashboard_route_redirection'] === null) {
+            $dashboard = new MenuItem('Dashboard');
+            $dashboard->setUrl($this->router->generate('qag.dashboard'));
+            $dashboard->setActive($request->attributes->get('_route') === 'qag.dashboard');
+            return $dashboard;
+        }
+
+        return null;
     }
 
     /**

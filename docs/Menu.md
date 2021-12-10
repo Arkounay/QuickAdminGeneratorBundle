@@ -7,6 +7,7 @@
 * [Changing the title](#changing-the-title)
 * [Enabling global search](#enabling-global-search)
 * [Switch to dark Mode](#switch-to-dark-mode)
+* [Redirect to a specific route instead of the Dashboard](#redirect-to-a-specific-route-instead-of-the-dashboard)
 
 ---
 
@@ -136,4 +137,13 @@ arkounay_quick_admin_generator:
     theme:
         default: 'light'
         allow_switch: true
+```
+
+## Redirect to a specific route instead of the Dashboard
+
+This will redirect to a specified route instead of the Dashbaord, and will remove the Dashboard menu item automatically :
+
+```yaml
+arkounay_quick_admin_generator:
+    dashboard_route_redirection: 'qag.news'
 ```
