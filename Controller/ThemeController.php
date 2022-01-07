@@ -14,7 +14,7 @@ class ThemeController extends AbstractController
     public function switchTheme(Request $request, SessionInterface $session): Response
     {
         $theme = $request->getContent();
-        $session->set('theme', $theme);
+        $session->set('qag.theme', $theme);
         return new Response();
     }
 

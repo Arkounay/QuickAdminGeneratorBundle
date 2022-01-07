@@ -2,37 +2,24 @@ import { Controller } from '@hotwired/stimulus';
 
 export default class extends Controller {
 
-    static targets = ['check']
-
     static values = {
-        url: String,
-        darkMode: Boolean
+        theme: String,
+        watchForChange: Boolean
     }
 
-    toggle(e) {
-        console.log(e.target.tagName);
-        if (e.target.tagName === 'LABEL') {
-            e.preventDefault();
+    connect() {
+        if (this.themeValue === 'auto' && window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+            this.element.classList.add('theme-dark');
         }
-        this.darkModeValue = !this.darkModeValue;
-
-        if (this.darkModeValue) {
-            document.body.classList.add('theme-dark');
-        } else {
-            document.body.classList.remove('theme-dark');
+        if (this.watchForChangeValue) {
+            window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', event => {
+                if (event.matches) {
+                    this.element.classList.add('theme-dark');
+                } else {
+                    this.element.classList.remove('theme-dark');
+                }
+            })
         }
-
-        fetch(this.urlValue, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: this.darkModeValue ? 'dark' : 'light'
-        });
-    }
-
-    darkModeValueChanged(value) {
-        this.checkTarget.checked = value;
     }
 
 }

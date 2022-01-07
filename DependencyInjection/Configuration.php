@@ -31,7 +31,7 @@ class Configuration implements ConfigurationInterface
                 ->arrayNode('theme')
                     ->children()
                         ->enumNode('default')
-                            ->values(['light', 'dark'])
+                            ->values(['light', 'dark', 'auto'])
                             ->defaultValue('light')
                             ->info('Default theme color')
                         ->end()

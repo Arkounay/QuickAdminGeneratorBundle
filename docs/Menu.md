@@ -135,8 +135,8 @@ You can allow users to switch to dark mode, or set it as default :
 ```yaml
 arkounay_quick_admin_generator:
     theme:
-        default: 'light'
-        allow_switch: true
+        default: 'light' # either light / dark / or auto. (auto checks user's preference)
+        allow_switch: true # will display a toggle to change the theme on user menu
 ```
 
 ## Redirect to a specific route instead of the Dashboard
