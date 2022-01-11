@@ -27,14 +27,20 @@
 
     {% block css %}
         <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin>
-        <link rel="stylesheet" href="{{ "#{qag.config.asset_path}/build/app.css" }}">
+        <link rel="stylesheet" href="{{ "#{qag.config.assets_path}/build/app.css" }}">
     {% endblock %}
 
     {% block head_js %}
-        <script src="{{ "#{qag.config.asset_path}/build/app.js" }}"></script>
+        <script src="{{ "#{qag.config.assets_path}/build/app.js" }}"></script>
     {% endblock %}
 
-    <title> {% block title block('header_title') ~ ' - ' ~ block('content_title') %}</title>
+    <title>
+        {%- block title -%}
+            {%- set content_title = block('content_title') -%}
+            {{ block('header_title') -}} {% if content_title %} - {{ content_title -}}{%- endif -%}
+        {%- endblock -%}
+    </title>
+
 </head>
 
 <body class="{{ dark_theme ? 'theme-dark' }} {% block body_extra_class '' %}" {% block body_attributes stimulus_controller('theme', {theme: app.session.get('qag.theme', qag.config.theme.default), watchForChange: qag.config.theme.default == 'auto'}) %}>
@@ -240,7 +246,7 @@
                     <div class="col-auto">
                         {% block content_title_wrapper %}
                             <h2 class="page-title">
-                                {% block content_title block('title') %}
+                                {% block content_title '' %}
                             </h2>
                         {% endblock %}
                     </div>

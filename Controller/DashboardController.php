@@ -17,7 +17,7 @@ class DashboardController extends AbstractController
             return $this->redirectToRoute($redirectRoute);
         }
 
-        return $this->render('@ArkounayQuickAdminGenerator/crud/index.html.twig');
+        return $this->render('@ArkounayQuickAdminGenerator/dashboard.html.twig');
     }
 
 }
