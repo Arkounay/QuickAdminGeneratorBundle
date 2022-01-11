@@ -108,12 +108,12 @@ By default, the responsive mode of the list view will be simplified.
 ![Responsive Simple](https://raw.githubusercontent.com/Arkounay/QuickAdminGeneratorBundle/master/docs/images/responsive-simple.png)
 
 This will disallow batch actions and hide some information, but make the view more simple on mobile devices.
-To undo this, you can override the `simpleResponsiveMode` method and return false there.
+To enable this, override the `simpleResponsiveMode` method and return true.
 
 ```php
 protected function simpleResponsiveMode(): bool
 {
-    return false;
+    return true;
 }
 ```
 

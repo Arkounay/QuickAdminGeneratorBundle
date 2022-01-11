@@ -22,11 +22,13 @@ $input-bg: $white !default;
 
 .theme-dark {
   --btn-border-color: #2C3C56;
+  --tbl-hover-light: #1B283A;
 }
 
 :root {
   --tblr-body-bg: #f8fafc;
   --btn-border-color: #E6E7E9;
+  --tbl-hover-light: #fcfcfc;
 }
 
 body .markdown > table > thead > tr > body th, body .table > thead > tr > th {
@@ -308,4 +310,12 @@ input[type='color'] {
 
 ::-webkit-calendar-picker-indicator {
   filter: invert(0.5);
+}
+
+.table-hover-light > tbody > tr:hover {
+  background-color: var(--tbl-hover-light);
+}
+
+tr.batch-highlighted {
+  background-color: var(--tbl-hover-light);
 }

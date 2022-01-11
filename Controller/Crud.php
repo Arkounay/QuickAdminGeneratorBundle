@@ -632,6 +632,8 @@ abstract class Crud extends AbstractController
                         'widget' => 'single_text',
                     ]));
                     break;
+                case 'datetime_immutable':
+                    $options['input'] = 'datetime_immutable';
                 case 'datetime':
                     $builder->add($field->getIndex(), $field->getFormType() ?? DateTimeType::class, array_merge($options, [
                         'widget' => 'single_text',
@@ -992,7 +994,7 @@ abstract class Crud extends AbstractController
      */
     protected function simpleResponsiveMode(): bool
     {
-        return true;
+        return false;
     }
 
     /**

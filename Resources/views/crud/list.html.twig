@@ -108,16 +108,16 @@
         </div>
     {% endif %}
 
-    <div class="{{ is_simple_responsive_mode ? 'd-none' }} d-sm-block table-card table-responsive" data-controller="position--list batch-actions">
+    <div class="{{ is_simple_responsive_mode ? 'd-none' }} d-sm-block table-card table-responsive" {{ stimulus_controller({'position/list': {}, 'batch_actions': {}}) }}>
         {% block table %}
-            <table class="table align-middle mb-0">
+            <table class="table align-middle mb-0 table-hover-light">
                 {% do entities.setSortableTemplate('@KnpPaginator/Pagination/twitter_bootstrap_v4_font_awesome_sortable_link.html.twig') %}
                 <thead>
                     <tr>
                         {% if has_batch_actions %}
                             <th class="batch-column">
                                 <label for="batch-actions-select-all">
-                                    <input type="checkbox" class="form-check-input" id="batch-actions-select-all" data-batch-actions-target="selectAllCheckbox" data-action="batch-actions#selectAll">
+                                    <input type="checkbox" class="form-check-input" id="batch-actions-select-all" {{ stimulus_target('batch_actions', 'selectAllCheckbox') }} {{ stimulus_action('batch_actions', 'selectAll') }}>
                                 </label>
                             </th>
                         {% endif %}
@@ -144,7 +144,7 @@
                                     {% block batch_td %}
                                         <td class="batch-column">
                                             <label class="custom-control-label" for="batch-action-{{ entity.id }}">
-                                                <input type="checkbox" class="batch-action form-check-input" name="batch-actions[{{ entity.id }}]" id="batch-action-{{ entity.id }}" form="batch-form" data-batch-actions-target="rowCheckbox" data-action="batch-actions#selectOne">
+                                                <input type="checkbox" class="batch-action form-check-input" name="batch-actions[{{ entity.id }}]" id="batch-action-{{ entity.id }}" form="batch-form" {{ stimulus_target('batch_actions', 'rowCheckbox') }} {{ stimulus_action('batch_actions', 'selectOne', 'change') }}>
                                             </label>
                                         </td>
                                     {% endblock %}
@@ -165,7 +165,7 @@
                                                         {% set action = actions.delete %}
                                                         <a {{ action_renderer.action_attributes(action, entity, null, ['btn-sm']) }}> {{ qag_render_icon('x', 12, 12) }} </a>
                                                     {% else %}
-                                                        <button type="button" data-controller="modal-fix" class="btn btn-outline-primary dropdown-toggle dropdown-toggle-split" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                        <button type="button" {{ stimulus_controller('modal_fix') }} class="btn btn-outline-primary dropdown-toggle dropdown-toggle-split" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                                             <span class="visually-hidden">Toggle Dropdown</span>
                                                         </button>
                                                         <div class="dropdown-menu dropdown-menu-end">
@@ -195,7 +195,8 @@
         <form method="post" data-turbo="false" id="batch-form" action="{{ path(route ~ '_delete_batch', app.request.query.all) }}">
             <input type="hidden" name="token" value="{{ csrf_token('batch') }}" />
 
-            <div class="batch-actions-container" data-batch-actions-target="actionsContainer" style="display: none;">
+            <div class="batch-actions-container" {{ stimulus_target('batch_actions', 'actionsContainer') }} style="display: none;">
+                <span {{ stimulus_target('batch_actions', 'actionText') }} data-single-count="{{ 'batch_selection_single'|trans }}" data-plural-count="{{ 'batch_selection_multiple'|trans }}"></span>
                 {% block batch_actions %}
                     {% for action in batch_actions %}
                         {# action \Arkounay\Bundle\QuickAdminGeneratorBundle\Model\Action #}
