@@ -53,6 +53,10 @@ class Configuration implements ConfigurationInterface
                     ->end()
                     ->addDefaultsIfNotSet()
                 ->end()
+                ->scalarNode('asset_path')
+                    ->defaultValue('/bundles/arkounayquickadmingenerator')
+                    ->info('The asset public path.')
+                ->end()
             ->end()
         ->end();
 

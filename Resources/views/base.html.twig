@@ -27,11 +27,11 @@
 
     {% block css %}
         <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin>
-        <link rel="stylesheet" href="{{ asset('bundles/arkounayquickadmingenerator/build/app.css') }}">
+        <link rel="stylesheet" href="{{ "#{qag.config.asset_path}/build/app.css" }}">
     {% endblock %}
 
     {% block head_js %}
-        <script src="{{ asset('bundles/arkounayquickadmingenerator/build/app.js') }}"></script>
+        <script src="{{ "#{qag.config.asset_path}/build/app.js" }}"></script>
     {% endblock %}
 
     <title> {% block title block('header_title') ~ ' - ' ~ block('content_title') %}</title>
