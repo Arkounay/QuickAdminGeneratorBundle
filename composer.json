@@ -42,7 +42,7 @@
         "doctrine/orm": "^2.10",
         "symfony/proxy-manager-bridge": ">=5.1.0",
         "symfony/ux-turbo": "^2.0",
-        "symfony/webpack-encore-bundle": "^1.13",
+        "symfony/webpack-encore-bundle": "^1.13"
     },
     "autoload": {
         "psr-4": {
