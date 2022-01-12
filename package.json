@@ -2,7 +2,7 @@
   "devDependencies": {
     "@arkounay/ux-collection": "file:vendor/arkounay/ux-collection/Resources/assets",
     "@hotwired/stimulus": "^3.0.0",
-    "@hotwired/turbo": "^7.0.0-beta.5",
+    "@hotwired/turbo": "^7.0.1",
     "@symfony/stimulus-bridge": "^2.0.0",
     "@symfony/ux-turbo": "file:vendor/symfony/ux-turbo/Resources/assets",
     "@symfony/webpack-encore": "^1.0.0",
