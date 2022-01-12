@@ -38,13 +38,16 @@ export default class extends Controller {
             document.body.classList.remove('theme-dark');
         }
 
-        fetch(this.urlValue, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: value ? 'dark' : 'light'
-        });
+        if (!document.documentElement.hasAttribute('data-turbo-preview')) {
+            fetch(this.urlValue, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: value ? 'dark' : 'light'
+            });
+            window.Turbo.clearCache();
+        }
         this.checkTarget.checked = value;
     }
 
