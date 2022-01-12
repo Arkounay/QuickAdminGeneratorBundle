@@ -17,7 +17,7 @@ class CrudListener implements EventSubscriberInterface
      */
     private $activeCrud;
 
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
         return [
             KernelEvents::CONTROLLER => 'onKernelController'
@@ -27,7 +27,7 @@ class CrudListener implements EventSubscriberInterface
     public function onKernelController(ControllerEvent $event): void
     {
 
-        if (!$event->isMasterRequest()) {
+        if (!$event->isMainRequest()) {
             return;
         }
 

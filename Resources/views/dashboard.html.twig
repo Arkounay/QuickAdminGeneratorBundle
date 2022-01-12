@@ -1,0 +1,101 @@
+{% extends '@ArkounayQuickAdminGenerator/base.html.twig' %}
+
+{%- block content_title -%}
+    Dashboard
+{%- endblock -%}
+
+
+{% block content %}
+    <div class="card">
+        <div class="card-header h3">
+            Welcome!
+        </div>
+        <div class="card-body">
+
+            Current configuration:
+            <pre class="mt-2">
+                {{- _self.unfold_config(qag.config) -}}
+            </pre>
+
+        </div>
+    </div>
+
+    {% if qag.menu_items|length <= 1 %}
+    <div class="card mt-3">
+        <div class="card-header h3">
+            Getting started
+        </div>
+        <div class="card-body">
+                It seems no entity has been configured for now.
+                Create a Controller for example in <pre class="d-inline p-0 text-green">src/Controller/Admin/YourEntityController.php</pre> to get started:
+            <pre class="mt-2">
+                {%- verbatim -%}
+&lt;?php
+
+namespace App\Controller\Admin;
+
+use App\Entity\YourEntity;
+use Arkounay\Bundle\QuickAdminGeneratorBundle\Controller\Crud;
+
+class YourEntityController extends Crud
+{
+
+    public function getEntity(): string
+    {
+        return YourEntity::class;
+    }
+
+}
+                {%- endverbatim -%}
+        </pre>
+        </div>
+    </div>
+    {% endif %}
+
+    <div class="card mt-3">
+        <div class="card-header h3">
+            Replace this dashboard
+        </div>
+        <div class="card-body">
+
+            To override this, create a file in <pre class="d-inline p-0 text-green">templates/bundles/ArkounayQuickAdminGeneratorBundle/dashboard.html.twig</pre>. <br>
+            For example:
+            <pre class="mt-2">
+                {%- verbatim -%}
+{% extends '@!ArkounayQuickAdminGenerator/dashboard.html.twig' %}
+
+{% block content %}
+    &lt;div class=&quot;card&quot;&gt;
+        &lt;div class=&quot;card-body&quot;&gt;
+            Hi {{ app.user }}
+        &lt;/div&gt;
+    &lt;/div&gt;
+{% endblock %}
+                {%- endverbatim -%}
+            </pre>
+        If you don't need any dashboard, you can redirect towards a route through qag.yaml, i.e:
+            <pre class="mt-2">
+                {%- verbatim -%}
+arkounay_quick_admin_generator:
+    dashboard_route_redirection: 'qag.news'
+                {%- endverbatim -%}
+            </pre>
+        </div>
+
+        <div class="card-footer">
+            Checkout the <a target="_blank" href="https://arkounay.github.io/QuickAdminGeneratorBundle/#/">documentation</a> for more informations.
+        </div>
+    </div>
+{% endblock %}
+
+{%- macro unfold_config(array, level=0) -%}
+    {%- for k, v in array -%}
+        {%- for i in 0..level -%}{% if not loop.first %}{{ '    ' }}{% endif %}{%- endfor -%}
+        {%- if v is iterable -%}
+            {{- k -}}: {{- '\n' -}}
+            {{- _self.unfold_config(v, level+1) -}}
+        {%- else -%}
+            {{- k -}}: {{ v|json_encode|replace({'\\': ''}) -}} {{- '\n' -}}
+        {%- endif -%}
+    {%- endfor -%}
+{%- endmacro -%}

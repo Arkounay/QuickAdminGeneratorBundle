@@ -22,6 +22,7 @@ $autoload = require $file;
 
 $application = new Application(new TestKernel('test', true));
 $application->setAutoExit(false);
+$application->getKernel()->boot();
 
 $nullOutput = new NullOutput();
 $input = new ArrayInput(['command' => 'doctrine:database:drop', '--no-interaction' => true, '--force' => true]);

@@ -5,6 +5,10 @@ namespace Arkounay\Bundle\QuickAdminGeneratorBundle\Model;
 
 /**
  * @internal
+ * @psalm-template TKey of array-key
+ * @psalm-template T
+ * @template-extends \IteratorAggregate<TKey, T>
+ * @template-extends \ArrayAccess<TKey|null, T>
  */
 abstract class TypedArray implements \IteratorAggregate, \ArrayAccess, \Countable
 {
@@ -48,7 +52,7 @@ abstract class TypedArray implements \IteratorAggregate, \ArrayAccess, \Countabl
         return $this;
     }
 
-    public function getIterator()
+    public function getIterator(): \Traversable
     {
         return new \ArrayIterator($this->items);
     }
@@ -57,7 +61,7 @@ abstract class TypedArray implements \IteratorAggregate, \ArrayAccess, \Countabl
      * @param mixed $offset
      * @param Listable $value
      */
-    public function offsetSet($offset, $value)
+    public function offsetSet($offset, $value): void
     {
         if (is_null($offset)) {
             $this->add($value);
@@ -68,17 +72,20 @@ abstract class TypedArray implements \IteratorAggregate, \ArrayAccess, \Countabl
         }
     }
 
-    public function offsetExists($offset)
+    public function offsetExists($offset): bool
     {
         return isset($this->items[$offset]);
     }
 
-    public function offsetUnset($offset)
+    public function offsetUnset($offset): void
     {
         unset($this->items[$offset]);
     }
 
-    public function offsetGet($offset)
+    /**
+     * @return T
+     */
+    public function offsetGet($offset): Listable
     {
         return $this->items[$offset];
     }
@@ -103,7 +110,7 @@ abstract class TypedArray implements \IteratorAggregate, \ArrayAccess, \Countabl
         }
     }
 
-    public function count()
+    public function count(): int
     {
         return \count($this->items);
     }

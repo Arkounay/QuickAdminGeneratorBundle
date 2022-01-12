@@ -1,0 +1,33 @@
+.ux-media {
+  .icon {
+    margin: 0;
+  }
+  .btn:focus {
+    border: 1px solid hsla(213,8%,43%,.24);
+  }
+  .btn-group {
+    height: 36px !important;
+  }
+  .img-preview svg {
+    width: 50px;
+    min-height: 30px;
+  }
+}
+
+.theme-dark .ux-media {
+  &.bg-white {
+    background-color: var(--tblr-body-bg) !important;
+  }
+
+  .btn-light {
+    background-color: var(--tblr-body-bg) !important;
+    color: red;
+    &:hover {
+      border-color: #626976;
+    }
+  }
+
+  svg {
+    stroke: #626976 !important;
+  }
+}

@@ -36,10 +36,10 @@ See more at [Fields](Fields.md) documentation to see how to override how the tab
 
 ### Overriding the dashboard
 
-Override the twig `crud/index.html.twig` by creating a file in `templates/bundles/ArkounayQuickAdminGeneratorBundle/crud/index.html.twig`
+Override the twig `dashboard.html.twig` by creating a file in `templates/bundles/ArkounayQuickAdminGeneratorBundle/dashboard.html.twig`
 
 ```twig
-{% extends '@!ArkounayQuickAdminGenerator/crud/index.html.twig' %}
+{% extends '@!ArkounayQuickAdminGenerator/dashboard.html.twig' %}
 
 {% block content %}
     <div class="card">
@@ -70,7 +70,7 @@ class DashboardController extends \Arkounay\Bundle\QuickAdminGeneratorBundle\Con
    public function dashboard(): Response
    {
        // do something
-       return $this->render('@ArkounayQuickAdminGenerator/crud/index.html.twig');
+       return $this->render('@ArkounayQuickAdminGenerator/dashboard.html.twig');
    }
 
 

@@ -1,12 +1,10 @@
-{% import '@ArkounayQuickAdminGenerator/base.html.twig' as icon_renderer %}
-
 <a{% for attr, value  in options %} {{ attr }}="{{ value }}"{% endfor %}>
     {{ title }}
     {% if sorted %}
         {% if direction == 'desc' %}
-            {{ icon_renderer.tabler_icon('arrow-down') }}
+            {{ qag_render_icon('arrow-down') }}
         {% else %}
-            {{ icon_renderer.tabler_icon('arrow-up') }}
+            {{ qag_render_icon('arrow-up') }}
         {% endif %}
     {% endif %}
 </a>

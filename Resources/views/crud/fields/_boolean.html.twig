@@ -1,5 +1,3 @@
-{% import '@ArkounayQuickAdminGenerator/base.html.twig' as icon_renderer %}
-
 {% if actions.edit is defined and current_action_name == 'list' %}
     {# Editable : display switch #}
     <label class="form-check form-switch">
@@ -7,8 +5,8 @@
     </label>
 {% else %}
     {% if value %}
-        {{ icon_renderer.tabler_icon('check', 30 ,20, 'text-teal') }}
+        {{ qag_render_icon('check', 30 ,20, 'text-teal') }}
     {% else %}
-        {{ icon_renderer.tabler_icon('x', 30 , 20, 'text-pink') }}
+        {{ qag_render_icon('x', 30 , 20, 'text-pink') }}
     {% endif %}
 {% endif %}

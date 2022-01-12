@@ -23,7 +23,7 @@ public function getActions(): ?Actions
 }
 ```
 
-Every actions lead to a custom route, so you will need to add one too in the controller. A simple function like this will work: 
+Every action leads to a custom route, so you will need to add one too in the controller. A simple function like this will work: 
 
 ```php
 public function customAction($entity)

@@ -5,11 +5,12 @@
 {%- endif -%}
 {%- set current_route = app.request.get('_route') -%}
 
-{% set menu_vertical = qag.config.menu.theme == 'vertical'  %}
+{% set menu_vertical = qag.config.menu.theme == 'vertical' %}
 {% set menu_horizontal = not menu_vertical  %}
+{% set dark_theme = app.session.get('qag.theme', qag.config.theme.default) == 'dark' %}
 
 <!doctype html>
-<html>
+<html lang="{{ app.request.locale }}">
 <head>
     <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"/>
@@ -26,17 +27,23 @@
 
     {% block css %}
         <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin>
-        <link rel="stylesheet" href="{{ asset('bundles/arkounayquickadmingenerator/build/app.css') }}">
+        <link rel="stylesheet" href="{{ "#{qag.config.assets_path}/build/app.css" }}">
     {% endblock %}
 
     {% block head_js %}
-        <script src="{{ asset('bundles/arkounayquickadmingenerator/build/app.js') }}"></script>
+        <script src="{{ "#{qag.config.assets_path}/build/app.js" }}"></script>
     {% endblock %}
 
-    <title> {% block title block('header_title') ~ ' - ' ~ block('content_title') %}</title>
+    <title>
+        {%- block title -%}
+            {%- set content_title = block('content_title') -%}
+            {{ block('header_title') -}} {% if content_title %} - {{ content_title -}}{%- endif -%}
+        {%- endblock -%}
+    </title>
+
 </head>
 
-<body class="antialiased {% block body_extra_class '' %}" {% block body_attributes '' %}>
+<body class="{{ dark_theme ? 'theme-dark' }} {% block body_extra_class '' %}" {% block body_attributes stimulus_controller('theme', {theme: app.session.get('qag.theme', qag.config.theme.default), watchForChange: qag.config.theme.default == 'auto'}) %}>
 {% block body %}
     {% if menu_vertical %}
     <aside class="navbar navbar-vertical navbar-expand-lg navbar-dark">
@@ -61,7 +68,7 @@
                                         <form action="{{ path('qag.global_search') }}" method="get" data-controller="global-search" data-global-search-index-value="0">
                                             <div class="input-icon">
                                                 <span class="input-icon-addon">
-                                                    {{ _self.tabler_icon('search', 20, 20) }}
+                                                    {{ qag_render_icon('search', 20, 20) }}
                                                 </span>
                                                 <input type="search" autocomplete="off" name="q" data-action="keyup->global-search#search keydown->global-search#navigate" class="form-control" placeholder="{{ 'Global search'|trans }}" value="{{ current_route == 'qag.global_search' ? app.request.query.get('q') }}"/>
                                                 <div class="search-box text-secondary d-none" data-global-search-target="resultBox"></div>
@@ -73,7 +80,7 @@
                         </div>
                     {% endif %}
                     <div class="nav-item dropdown">
-                        <a href="#" class="nav-link d-flex lh-1 text-reset p-0" data-bs-toggle="dropdown">
+                        <a href="#" class="nav-link d-flex lh-1 text-reset p-0" data-bs-toggle="dropdown" data-bs-auto-close="outside">
                             {% block user_menu_username %}
                                 {% if app.user is not null %}
                                     {% if app.user.username is defined %}
@@ -98,10 +105,18 @@
                             {% block user_menu_dropdown %}
                                 {% block user_menu_dropdown_homepage %}
                                     <a class="dropdown-item" href="/">
-                                        {{ _self.tabler_icon('home', 50, 44, 'icon dropdown-item-icon icon-tabler icon-tabler-logout') }}
+                                        {{ qag_render_icon('home', 50, 44, 'icon dropdown-item-icon icon-tabler icon-tabler-logout') }}
                                         {{ 'Homepage'|trans }}
                                     </a>
                                 {% endblock %}
+                                {% if qag.config.theme.allow_switch %}
+                                    {% block dark_mode_switcher %}
+                                        <div class="dark-mode-switcher dropdown-item form-check form-switch ps-2" {{ stimulus_controller('theme_switch', {url: path('qag.switch_theme'), darkMode: dark_theme}) }} {{ stimulus_action('theme_switch', 'toggle', 'click') }}>
+                                            <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault" {{ stimulus_target('theme_switch', 'check') }}>
+                                            <label class="form-check-label" for="flexSwitchCheckDefault">{{ 'Dark mode'|trans }}</label>
+                                        </div>
+                                    {% endblock %}
+                                {% endif %}
                                 {% block user_menu_dropdown_logout %}
                                     {% if app.user is not null %}
                                         <a class="dropdown-item" href="{% block user_menu_dropdown_logout_path '/logout' %}">
@@ -146,7 +161,7 @@
                                                     <li>
                                                         <a class="dropdown-item {{ menu_item.attributes.class|default }} {{ menu_item.active and menu_vertical ? 'text-white' }} {{ menu_item.active ? 'active' }}" {% for k, v in menu_item.attributes %}{% if k != 'class' %}{{ k }}="{{ v }}"{% endif %}{% endfor %} href="{{ menu_item.url }}">
                                                             {% if menu_vertical or menu_item.icon is not null %}
-                                                                {{ _self.tabler_icon(menu_item.icon|default('chevron-right'), 16, 16, icon_class) }}
+                                                                {{ qag_render_icon(menu_item.icon|default('chevron-right'), 16, 16, icon_class) }}
                                                             {% endif %}
                                                             <span>{{ menu_item.label|trans }}</span>
                                                         </a>
@@ -165,7 +180,7 @@
                                         <li class="nav-item {% if menu_item.active %}active{% endif %}">
                                             <a class="nav-link {{ menu_item.attributes.class|default }}" {% for k, v in menu_item.attributes %}{% if k != 'class' %}{{ k }}="{{ v }}"{% endif %}{% endfor %} href="{{ menu_item.url }}">
                                                 {% if menu_vertical or menu_item.icon is not null %}
-                                                    {{ _self.tabler_icon(menu_item.icon|default('chevron-right'), 16, 16, icon_class) }}
+                                                    {{ qag_render_icon(menu_item.icon|default('chevron-right'), 16, 16, icon_class) }}
                                                 {% endif %}
                                                 <span>{{ menu_item.label|trans }}</span>
                                             </a>
@@ -231,7 +246,7 @@
                     <div class="col-auto">
                         {% block content_title_wrapper %}
                             <h2 class="page-title">
-                                {% block content_title block('title') %}
+                                {% block content_title '' %}
                             </h2>
                         {% endblock %}
                     </div>
@@ -273,9 +288,3 @@
 
 </body>
 </html>
-
-{% macro tabler_icon(name, width=16, height=16, class='') %}
-    <svg width="{{ width }}" height="{{ height }}" {% if class %}class="{{ class }}"{% endif %}>
-        <use xlink:href="{{ asset('bundles/arkounayquickadmingenerator/tabler-sprite.svg') }}#tabler-{{ name }}" />
-    </svg>
-{% endmacro  %}

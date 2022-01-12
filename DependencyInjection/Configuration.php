@@ -10,7 +10,7 @@ use Symfony\Component\Config\Definition\ConfigurationInterface;
 class Configuration implements ConfigurationInterface
 {
 
-    public function getConfigTreeBuilder()
+    public function getConfigTreeBuilder(): TreeBuilder
     {
         $treeBuilder = new TreeBuilder('quick_admin_generator');
 
@@ -24,6 +24,24 @@ class Configuration implements ConfigurationInterface
                     ->defaultFalse()
                     ->info('Allow global search')
                 ->end()
+                ->scalarNode('dashboard_route_redirection')
+                    ->defaultNull()
+                    ->info('When specified, will disable the dashboard menu item and redirect to given route')
+                ->end()
+                ->arrayNode('theme')
+                    ->children()
+                        ->enumNode('default')
+                            ->values(['light', 'dark', 'auto'])
+                            ->defaultValue('light')
+                            ->info('Default theme color')
+                        ->end()
+                        ->booleanNode('allow_switch')
+                            ->defaultTrue()
+                            ->info('Allows user to switch to dark mode or light mode')
+                        ->end()
+                    ->end()
+                    ->addDefaultsIfNotSet()
+                ->end()
                 ->arrayNode('menu')
                     ->children()
                         ->enumNode('theme')
@@ -34,6 +52,10 @@ class Configuration implements ConfigurationInterface
                         ->variableNode('items')->end()
                     ->end()
                     ->addDefaultsIfNotSet()
+                ->end()
+                ->scalarNode('assets_path')
+                    ->defaultValue('/bundles/arkounayquickadmingenerator')
+                    ->info('The asset public path.')
                 ->end()
             ->end()
         ->end();

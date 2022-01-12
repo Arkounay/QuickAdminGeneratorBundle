@@ -1,0 +1,27 @@
+.btn-collection-remove:hover {
+  @extend .text-danger;
+}
+
+.btn-collection-remove .icon {
+  color: inherit;
+}
+
+.btn-collection-container button .icon {
+  margin: 0;
+}
+
+.arkounay-ux-collection >.card .mx-3.mb-3 {
+  @extend .my-3
+}
+
+.theme-dark .arkounay-ux-collection {
+  .btn {
+    color: #626976;
+    &:hover {
+      color: var(--tblr-btn-color-text);
+    }
+  }
+  .card {
+    border-color: var(--tblr-border-color);
+  }
+}

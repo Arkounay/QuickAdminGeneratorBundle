@@ -1,4 +1,3 @@
-{% import '@ArkounayQuickAdminGenerator/base.html.twig' as icon %}
 {% import '@ArkounayQuickAdminGenerator/crud/actions/_action_renderer.html.twig' as action_renderer %}
 
 {% set is_filter_action_and_active = action.index == 'filter' and has_active_filters %}
@@ -11,7 +10,7 @@
 {#<a {{ action_renderer.action_attributes(action, action.customHref ?? path(route ~ '_' ~ action.index)) }}>#}
 <a {{ action_renderer.action_attributes(action) }}>
     {% if action.icon %}
-        {{ icon.tabler_icon(action.icon, 17, 17, 'me-1') }}
+        {{ qag_render_icon(action.icon, 17, 17, 'me-1') }}
     {% endif %}
     <span>{{ action.label|trans }}</span>
     {% if is_filter_action_and_active %}
@@ -19,7 +18,7 @@
     {% endif %}
 </a>
 {% if is_filter_action_and_active %}
-    <a href="{{ path(route) }}" class="btn btn-danger w-4 p-0">{{ icon.tabler_icon('x') }}</a>
+    <a href="{{ path(route) }}" class="btn btn-danger w-4 p-0">{{ qag_render_icon('x') }}</a>
     </div>
 {% endif %}
 

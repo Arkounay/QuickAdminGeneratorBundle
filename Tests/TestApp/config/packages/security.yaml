@@ -1,12 +1,9 @@
 security:
-    encoders:
-        App\Entity\User:
-            algorithm: auto
+    enable_authenticator_manager: true
 
     # https://symfony.com/doc/current/security.html#where-do-users-come-from-user-providers
     firewalls:
         main:
-            anonymous: true
             lazy: true
             logout:
                 path: app_logout

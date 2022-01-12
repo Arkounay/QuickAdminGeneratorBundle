@@ -1,11 +1,12 @@
-import { Controller } from 'stimulus';
+import { Controller } from '@hotwired/stimulus';
 import 'select2';
 
 export default class extends Controller {
 
     connect() {
         this.select.select2({
-            theme: 'bootstrap4',
+            theme: 'bootstrap-5',
+            width: '100%'
         });
     }
 
