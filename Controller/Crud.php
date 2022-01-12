@@ -246,7 +246,7 @@ abstract class Crud extends AbstractController
         if (!$this->isCsrfTokenValid('batch', $this->request->request->get('token'))) {
             return $this->redirectToList();
         }
-        $checked = $this->request->request->get('batch-actions');
+        $checked = $this->request->request->all('batch-actions');
         $nbChecked = \count($checked);
         foreach ($checked as $k => $v) {
             /** @var T $entity */
