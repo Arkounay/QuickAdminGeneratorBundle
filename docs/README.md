@@ -1,8 +1,8 @@
-# QAG - Quick Admin Generator Bundle for Symfony 5
+# QAG - Quick Admin Generator Bundle
 
 [![Build Status](https://travis-ci.org/Arkounay/QuickAdminGeneratorBundle.svg?branch=master)](https://travis-ci.org/Arkounay/QuickAdminGeneratorBundle) [![codecov](https://codecov.io/gh/Arkounay/QuickAdminGeneratorBundle/branch/master/graph/badge.svg?token=8HOIPA6PMI)](https://codecov.io/gh/Arkounay/QuickAdminGeneratorBundle)
 
-QAG is a bundle that allows quick and simple administration backends generation for Symfony applications using Doctrine and [Tabler](github.com/tabler/tabler).
+QAG is a bundle that allows quick and simple administration backends generation for Symfony applications using Doctrine.
 
 ![Quick Admin Generator Preview](https://raw.githubusercontent.com/Arkounay/QuickAdminGeneratorBundle/master/docs/images/menu-horizontal.png)
 
@@ -79,7 +79,7 @@ qag.category_filter_form_ajax   ANY      ANY      ANY    /admin/category/filterF
 ## Next steps
 
 There are multiple ways to configure and override things in QAG Bundle, depending on the complexity of the project.
-You can use [annotations](Fields.md#configure-fields-by-annotations) for simple and quick tweaks regarding entities fields, override twigs to change appearance, add listeners to create special rules that applies when parsing entities, etc.
+You can use [attributes](Fields.md#configure-fields-by-annotations) for simple and quick tweaks regarding entities fields, override twigs to change appearance, add listeners to create special rules that applies when parsing entities, etc.
 
 See :
 1) [Fields configuration](Fields.md)
