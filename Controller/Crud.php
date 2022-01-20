@@ -1064,9 +1064,9 @@ abstract class Crud extends AbstractController
     /**
      * Allows params overriding before twig rendering
      */
-    protected function retrieveParams(string $action, array $array): array
+    protected function retrieveParams(string $action, array $params): array
     {
-        return $array;
+        return $params;
     }
 
 }

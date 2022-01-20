@@ -188,6 +188,9 @@ class Menu implements MenuInterface
         $route = $this->router->generate('qag.' . $crud->getRoute());
         $menuItem = new MenuItem($crud->getPluralName());
         $menuItem->setUrl($route);
+        if ($crud->getIcon() !== null) {
+            $menuItem->setIcon($crud->getIcon());
+        }
         if ($request->attributes->get('_route') !== 'qag.dashboard' && str_contains($request->getPathInfo(), $route)) {
             $menuItem->setActive($route);
         }
