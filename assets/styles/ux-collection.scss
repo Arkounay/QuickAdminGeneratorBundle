@@ -10,8 +10,16 @@
   margin: 0;
 }
 
-.arkounay-ux-collection >.card .mx-3.mb-3 {
+.arkounay-ux-collection .collection-content {
   @extend .my-3
+}
+
+.arkounay-ux-collection .collection-hide-delete .collection-content {
+  @extend .my-0
+}
+
+.arkounay-ux-collection .btn-outline-secondary:hover {
+  color: inherit;
 }
 
 .theme-dark .arkounay-ux-collection {
