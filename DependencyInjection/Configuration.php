@@ -57,6 +57,10 @@ class Configuration implements ConfigurationInterface
                     ->defaultValue('/bundles/arkounayquickadmingenerator')
                     ->info('The asset public path.')
                 ->end()
+                ->booleanNode('allow_form_resubmit')
+                    ->defaultFalse()
+                    ->info('Disables turbo on form submission, so you can refresh the page to resubmit form data (useful in dev env).')
+                ->end()
             ->end()
         ->end();
 

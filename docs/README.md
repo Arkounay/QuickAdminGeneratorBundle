@@ -119,6 +119,7 @@ See :
    * [Collections](Forms.md#collections)
    * [Overriding the form's twig theme](Forms.md#overriding-the-form-s-twig-theme)
    * [Overriding the form's twig theme for a specific entity](Forms.md#overriding-the-form-s-twig-theme-for-a-specific-entity)
+   * [Disabling turbo on form submit](Forms.md#disabling-turbo-on-form-submit)
 5) [Configuring menu items and their position](Menu.md)
    * [Overriding the menu through yaml](Menu.md#overriding-the-menu-through-yaml)
    * [Overriding the menu by service](Menu.md#overriding-the-menu-by-service)
