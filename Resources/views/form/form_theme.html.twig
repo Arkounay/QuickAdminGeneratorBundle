@@ -5,6 +5,7 @@
         {% set attr = attr|merge({'data-turbo': attr['data-turbo']|default('false')}) %}
     {% endif %}
     {{ parent() }}
+    <input type="submit" class="d-none">
 {%- endblock form_start -%}
 
 {% block form_row -%}
