@@ -102,6 +102,11 @@ class FieldService
                         $field->setDefaultSortDirection($sort->direction);
                     }
                     $annotationField = $this->getAttribute($reflectionProperty, \Arkounay\Bundle\QuickAdminGeneratorBundle\Annotation\Field::class);
+
+                    if ($reflectionProperty->getType()?->getName() && enum_exists($reflectionProperty->getType()?->getName())) {
+                        $field->setType('enum');
+                        $field->setAssociationMapping($reflectionProperty->getType()?->getName());
+                    }
                 }
 
                 if ($hasField) {
@@ -116,7 +121,9 @@ class FieldService
         }
 
         $field->setLabel($annotationField !== null && $annotationField->label ? $annotationField->label : $this->formRenderer->humanize($fieldIndex));
-        $field->setType($metadata ? $this->getType($metadata, $fieldIndex) : 'virtual');
+        if ($field->getType() === null) {
+            $field->setType($metadata ? $this->getType($metadata, $fieldIndex) : 'virtual');
+        }
         $field->setTwig($this->twigLoader->getTwigPartialByFieldType($field->getType(), $annotationField?->twigName));
 
         switch ($field->getType()) {

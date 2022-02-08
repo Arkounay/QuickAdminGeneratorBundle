@@ -23,6 +23,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\EventDispatcher\GenericEvent;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
+use Symfony\Component\Form\Extension\Core\Type\EnumType;
 use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -626,6 +627,11 @@ abstract class Crud extends AbstractController
             switch ($field->getType()) {
                 case 'decimal':
                     $builder->add($field->getIndex(), TextType::class, $options);
+                    break;
+                case 'enum':
+                    $builder->add($field->getIndex(), EnumType::class, array_merge($options, [
+                        'class' => $field->getAssociationMapping(),
+                    ]));
                     break;
                 case 'date':
                     $builder->add($field->getIndex(), $field->getFormType() ?? DateType::class, array_merge($options, [
