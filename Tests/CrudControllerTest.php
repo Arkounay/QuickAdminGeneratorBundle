@@ -194,7 +194,7 @@ class CrudControllerTest extends WebTestCase
 
         $crawler = $client->request('GET', '/admin/person/create');
         self::assertResponseStatusCodeSame(200);
-        self::assertCount(2, $crawler->filter('.page-body input'));
+        self::assertCount(3, $crawler->filter('.page-body input'));
     }
 
     protected static function getKernelClass(): string
