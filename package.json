@@ -2,16 +2,15 @@
   "devDependencies": {
     "@arkounay/ux-collection": "file:vendor/arkounay/ux-collection/Resources/assets",
     "@hotwired/stimulus": "^3.0.0",
+    "@symfony/stimulus-bridge": "^3.0.0",
+    "@symfony/webpack-encore": "^1.7.0",
     "@hotwired/turbo": "^7.0.1",
-    "@symfony/stimulus-bridge": "^2.0.0",
     "@symfony/ux-turbo": "file:vendor/symfony/ux-turbo/Resources/assets",
-    "@symfony/webpack-encore": "^1.0.0",
     "core-js": "^3.0.0",
     "node-sass": "^6.0.1",
     "regenerator-runtime": "^0.13.2",
     "sass-loader": "^12.1.0",
     "sortablejs": "^1.14.0",
-    "stimulus": "^2.0.0",
     "webpack-notifier": "^1.6.0"
   },
   "license": "UNLICENSED",
