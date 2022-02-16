@@ -156,8 +156,8 @@
                                 {% block actions %}
                                     {% if actions is not empty %}
                                         <td class="text-end">
-                                            {% if actions|length > 1 %}
-                                                <div class="btn-group btn-group-table">
+                                            <div class="btn-group btn-group-table">
+                                                {% if actions|length > 1 %}
                                                     {% set main_action = actions|first %}
                                                     {{ action_renderer.action_a(main_action, entity) }}
                                                     {% if actions|length == 2 and actions.delete is defined and actions|last == actions.delete %}
@@ -174,11 +174,11 @@
                                                             {% endfor %}
                                                         </div>
                                                     {% endif %}
-                                                </div>
-                                            {% elseif actions|length == 1 %}
-                                                {% set main_action = actions|first %}
-                                                {{ action_renderer.action_a(main_action, entity) }}
-                                            {% endif %}
+                                                {% elseif actions|length == 1 %}
+                                                    {% set main_action = actions|first %}
+                                                    {{ action_renderer.action_a(main_action, entity) }}
+                                                {% endif %}
+                                            </div>
                                         </td>
                                     {% endif %}
                                 {% endblock %}
@@ -261,6 +261,4 @@
             </div>
         {% endif %}
     {% endblock %}
-
 {% endblock %}
-
