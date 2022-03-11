@@ -4,6 +4,7 @@
 * [Metadata](#metadata)
   + [Changing name](#changing-name)
   + [Adding an icon](#adding-an-icon)
+  + [Adding a badge with a number](#adding-a-badge-with-a-number)
   + [Adding a description](#adding-a-description)
   + [Responsive mode](#responsive-mode)
 * [Permissions](#permissions)
@@ -96,6 +97,24 @@ public function getIcon(): ?string
     return 'arrow-right';
 }
 ``` 
+
+### Adding a badge with a number
+
+You can add a badge that has a number by overriding getBadgeNumber, eg:
+```php
+public function getBadgeNumber(): ?int
+{
+    return $this->repository->count(['important' => true]);
+}
+``` 
+
+And to override its class:
+```php
+public function getBadgeClass(): ?string
+{
+    return 'bg-azure';
+}
+```
 
 ### Adding a description
 

@@ -20,4 +20,9 @@ class CategoryController extends Crud
         return Category::class;
     }
 
+    public function getBadgeNumber(): ?int
+    {
+        return 25;
+    }
+
 }

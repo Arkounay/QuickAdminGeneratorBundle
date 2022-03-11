@@ -182,7 +182,12 @@
                                                 {% if menu_vertical or menu_item.icon is not null %}
                                                     {{ qag_render_icon(menu_item.icon|default('chevron-right'), 16, 16, icon_class) }}
                                                 {% endif %}
-                                                <span>{{ menu_item.label|trans }}</span>
+                                                <span>
+                                                    {{ menu_item.label|trans }}
+                                                    {% if menu_item.badgeNumber is not null %}
+                                                        <span class="badge badge-number badge-pill {{ menu_item.badgeClass|default('bg-red') }}">{{ menu_item.badgeNumber }}</span>
+                                                    {% endif %}
+                                                </span>
                                             </a>
                                         </li>
                                     {% endif %}
@@ -280,7 +285,14 @@
     {% if app.request.query.get('highlight') %}
     <script>
         setTimeout(function() {
-            window.find('{{ app.request.query.get('highlight')|e }}');
+            let firstInput = document.querySelector('.card input');
+            if (firstInput === null) {
+                firstInput = document.querySelector('.card textarea');
+            }
+            if (firstInput !== null) {
+                firstInput.focus();
+                window.find('{{ app.request.query.get('highlight')|e }}', 0, 0, 0, 0, 0, 0);
+            }
         }, 10);
     </script>
     {% endif %}

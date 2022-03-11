@@ -419,6 +419,7 @@ abstract class Crud extends AbstractController
             'filter_form_twig' => $this->filterFormTwig(),
             'is_simple_responsive_mode' => $this->simpleResponsiveMode(),
             'has_actions' => $this->hasActions($actionsEntities),
+            'badge_number' => $this->getBadgeNumber()
         ]));
     }
 
@@ -869,6 +870,22 @@ abstract class Crud extends AbstractController
         return null;
     }
 
+
+    /**
+     * The number that will be displayed for the menu as a badge.
+     */
+    public function getBadgeNumber(): ?int
+    {
+        return null;
+    }
+
+    /**
+     * The class that will be added for the badge if there's one.
+     */
+    public function getBadgeClass(): ?string
+    {
+        return null;
+    }
 
     /**
      * Gets the filters form

@@ -319,3 +319,31 @@ input[type='color'] {
 tr.batch-highlighted {
   background-color: var(--tbl-hover-light);
 }
+
+.navbar .navbar-nav .nav-link .badge.badge-number {
+  display: inline-block;
+  position: relative;
+  top: 4px;
+  left: 2px;
+  transform: none;
+  min-width: 1.8em;
+  height: 1.8em;
+  text-align: center;
+  padding-left: 3px;
+  padding-right: 3px;
+}
+
+.card-footer-sticky {
+  position: sticky;
+  bottom: -1px;
+}
+
+.card-footer-sticky-active {
+  box-shadow: 1px -3px 5px rgb(50 50 50 / 10%);
+}
+
+@include media-breakpoint-up(md) {
+  .nav-item .nav-link {
+    line-height: 32px;
+  }
+}

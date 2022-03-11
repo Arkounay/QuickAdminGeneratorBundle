@@ -47,6 +47,7 @@ class CrudControllerTest extends WebTestCase
         self::assertResponseIsSuccessful();
         self::assertSelectorTextContains('#navbar-menu', 'Submenu');
         self::assertSelectorTextContains('#navbar-menu', 'Categories');
+        self::assertSelectorTextContains('#navbar-menu', '25');
         self::assertSelectorTextNotContains('#navbar-menu', 'Category disabled');
     }
 

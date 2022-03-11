@@ -156,6 +156,12 @@ class Menu implements MenuInterface
             if (isset($node['icon'])) {
                 $menuItem->setIcon($node['icon']);
             }
+            if (isset($node['badge_number'])) {
+                $menuItem->setBadgeNumber($node['badge_number']);
+            }
+            if (isset($node['badge_class'])) {
+                $menuItem->setBadgeClass($node['badge_class']);
+            }
             if (isset($node['attr'])) {
                 foreach ($node['attr'] as $k => $v) {
                     $menuItem->addAttribute($k, $v);
@@ -190,6 +196,12 @@ class Menu implements MenuInterface
         $menuItem->setUrl($route);
         if ($crud->getIcon() !== null) {
             $menuItem->setIcon($crud->getIcon());
+        }
+        if ($crud->getBadgeNumber() !== null) {
+            $menuItem->setBadgeNumber($crud->getBadgeNumber());
+        }
+        if ($crud->getBadgeClass() !== null) {
+            $menuItem->setBadgeClass($crud->getBadgeClass());
         }
         if ($request->attributes->get('_route') !== 'qag.dashboard' && str_contains($request->getPathInfo(), $route)) {
             $menuItem->setActive($route);

@@ -23,6 +23,16 @@ class MenuItem
     protected $icon;
 
     /**
+     * @var ?int
+     */
+    protected $badgeNumber;
+
+    /**
+     * @var ?string
+     */
+    protected $badgeClass;
+
+    /**
      * @var bool
      */
     protected $active = false;
@@ -35,7 +45,7 @@ class MenuItem
     /**
      * @var string[]
      */
-    protected $attributes= [];
+    protected $attributes = [];
 
     public function __construct(string $label)
     {
@@ -70,6 +80,26 @@ class MenuItem
     public function setIcon(?string $icon): void
     {
         $this->icon = $icon;
+    }
+
+    public function getBadgeNumber(): ?int
+    {
+        return $this->badgeNumber;
+    }
+
+    public function setBadgeNumber(?int $badgeNumber): void
+    {
+        $this->badgeNumber = $badgeNumber;
+    }
+
+    public function getBadgeClass(): ?string
+    {
+        return $this->badgeClass;
+    }
+
+    public function setBadgeClass(?string $badgeClass): void
+    {
+        $this->badgeClass = $badgeClass;
     }
 
     public function isActive(): bool
