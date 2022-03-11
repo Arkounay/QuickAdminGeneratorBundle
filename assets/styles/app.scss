@@ -333,6 +333,11 @@ tr.batch-highlighted {
   padding-right: 3px;
 }
 
+.navbar .navbar-nav .dropdown-menu .dropdown-item .badge.badge-number {
+  min-width: 1.9em;
+  margin-left: 5px;
+}
+
 .card-footer-sticky {
   position: sticky;
   bottom: -1px;
