@@ -341,6 +341,7 @@ tr.batch-highlighted {
 .card-footer-sticky {
   position: sticky;
   bottom: -1px;
+  z-index: 2;
 }
 
 .card-footer-sticky-active {
