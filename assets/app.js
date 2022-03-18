@@ -17,3 +17,4 @@ function applyTooltip() {
 applyTooltip();
 
 document.addEventListener('turbo:load', () => applyTooltip());
+document.addEventListener('turbo:before-cache', () => document.querySelectorAll('.highlighted').forEach((e) => e.classList.remove('highlighted')));

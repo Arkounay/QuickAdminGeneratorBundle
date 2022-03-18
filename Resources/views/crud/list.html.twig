@@ -138,7 +138,7 @@
                     {% block tbody %}
                         {% for i, entity in entities %}
                             {% set actions = actions_entities[i]|default([]) %}
-                            <tr  {{ entity.id == highlighted_row ? 'class="highlighted" data-turbo-cache="false"' }}>
+                            <tr {{ entity.id == highlighted_row ? 'class="highlighted"' }}>
                                 {% if has_batch_actions %}
                                     {% block batch_td %}
                                         <td class="batch-column">
