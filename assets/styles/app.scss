@@ -353,3 +353,7 @@ tr.batch-highlighted {
     line-height: 32px;
   }
 }
+
+textarea[data-controller~="textarea"] {
+  resize: none;
+}

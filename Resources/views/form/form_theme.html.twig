@@ -135,3 +135,9 @@
         </label>
     {%- endif -%}
 {%- endblock checkbox_radio_label %}
+
+{% block textarea_widget %}
+    {% set controller = attr['data-controller']|default('textarea') %}
+    {% set attr = attr|merge({'data-controller': controller}) %}
+    {{- parent() -}}
+{% endblock %}
