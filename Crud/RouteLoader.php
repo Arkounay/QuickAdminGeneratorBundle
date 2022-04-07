@@ -54,7 +54,7 @@ class RouteLoader implements RouteLoaderInterface
                     try {
                         $globalActions = $crud->getGlobalActions();
                     } catch (\Exception) {
-                        $globalActions = null;
+                        throw new \RuntimeException("Could not retrieve global actions, make sure you're using " . '"$this->isPrimary"' . " if you're using the router to generate a custom href");
                     }
                     $globalActionsIndexes = [];
                     if ($globalActions !== null) {
