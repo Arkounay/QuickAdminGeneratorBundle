@@ -70,10 +70,10 @@ class FormImageListener implements EventSubscriberInterface
 
         if (self::IsImage($field)) {
             /** @var FormBuilderInterface $formBuilder */
-            $formBuilder->add($field->getIndex(), MediaType::class, [
+            $formBuilder->add($field->getIndex(), MediaType::class, array_merge($field->guessFormOptions(), [
                 'required' => false,
                 'conf' => 'default'
-            ]);
+            ]));
             $event->stopPropagation(); // don't forget to stop the propagation
         }
     }

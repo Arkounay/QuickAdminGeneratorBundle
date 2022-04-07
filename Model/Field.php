@@ -2,6 +2,12 @@
 
 namespace Arkounay\Bundle\QuickAdminGeneratorBundle\Model;
 
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
+use Symfony\Component\Form\Extension\Core\Type\DateType;
+use Symfony\Component\Form\Extension\Core\Type\EnumType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
+
 class Field implements Listable
 {
 
@@ -282,6 +288,66 @@ class Field implements Listable
     public function setPayload($payload): void
     {
         $this->payload = $payload;
+    }
+
+    public function guessFormOptions(): array
+    {
+        $options = ['label' => $this->getLabel(), 'required' => $this->isRequired()];
+        if ($this->getFormClass() !== null) {
+            $options['attr'] = ['class' => $this->getFormClass()];
+        }
+        if ($this->getPlaceholder() !== null) {
+            $options['placeholder'] = $this->getPlaceholder();
+        }
+        if ($this->getHelp() !== null) {
+            $options['help'] = $this->getHelp();
+        }
+
+        switch ($this->getType()) {
+            case 'enum':
+                $options['expanded'] = true;
+                $options['class'] = $this->getAssociationMapping();
+                break;
+            case 'datetime_immutable':
+                $options['input'] = 'datetime_immutable';
+            case 'datetime':
+            case 'date':
+                $options['widget'] = 'single_text';
+                break;
+            case 'relation':
+                $options['attr']['data-controller'] = 'select2';
+                $options['class'] =  $this->getAssociationMapping();
+                $options['multiple'] =  false;
+                break;
+            case 'relation_to_many':
+                $options['attr']['data-controller'] = 'select2';
+                $options['class'] = $this->getAssociationMapping();
+                $options['multiple'] = true;
+                $options['by_reference'] = false;
+                break;
+        }
+
+        return $options;
+    }
+
+    public function guessFormType(): string
+    {
+        switch ($this->getType()) {
+            case 'decimal':
+                return TextType::class;
+            case 'enum':
+                return EnumType::class;
+            case 'date':
+                return $this->getFormType() ?? DateType::class;
+            case 'datetime_immutable':
+            case 'datetime':
+                return $this->getFormType() ?? DateTimeType::class;
+            case 'relation_to_many':
+            case 'relation':
+                return $this->getFormType() ?? EntityType::class;
+            default:
+                return $this->getFormType();
+        }
     }
 
 }

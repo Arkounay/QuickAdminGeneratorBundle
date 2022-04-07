@@ -614,58 +614,7 @@ abstract class Crud extends AbstractController
                 continue;
             }
 
-            $options = ['label' => $field->getLabel(), 'required' => $field->isRequired()];
-            if ($field->getFormClass() !== null) {
-                $options['attr'] = ['class' => $field->getFormClass()];
-            }
-            if ($field->getPlaceholder() !== null) {
-                $options['placeholder'] = $field->getPlaceholder();
-            }
-            if ($field->getHelp() !== null) {
-                $options['help'] = $field->getHelp();
-            }
-
-            switch ($field->getType()) {
-                case 'decimal':
-                    $builder->add($field->getIndex(), TextType::class, $options);
-                    break;
-                case 'enum':
-                    $builder->add($field->getIndex(), EnumType::class, array_merge($options, [
-                        'class' => $field->getAssociationMapping(),
-                    ]));
-                    break;
-                case 'date':
-                    $builder->add($field->getIndex(), $field->getFormType() ?? DateType::class, array_merge($options, [
-                        'widget' => 'single_text',
-                    ]));
-                    break;
-                case 'datetime_immutable':
-                    $options['input'] = 'datetime_immutable';
-                case 'datetime':
-                    $builder->add($field->getIndex(), $field->getFormType() ?? DateTimeType::class, array_merge($options, [
-                        'widget' => 'single_text',
-                    ]));
-                    break;
-                case 'relation':
-                    $options['attr']['data-controller'] = 'select2';
-                    $builder->add($field->getIndex(), $field->getFormType() ?? EntityType::class, array_merge($options, [
-                        'class' => $field->getAssociationMapping(),
-                        'multiple' => false,
-                    ]));
-                    break;
-                case 'relation_to_many':
-                    $options['attr']['data-controller'] = 'select2';
-                    $builder->add($field->getIndex(), $field->getFormType() ?? EntityType::class, array_merge($options, [
-                        'class' => $field->getAssociationMapping(),
-                        'multiple' => true,
-                        'by_reference' => false,
-                    ]));
-                    break;
-                default:
-                    $builder->add($field->getIndex(), $field->getFormType(), $options);
-                    break;
-            }
-
+            $builder->add($field->getIndex(), $field->getFormType(), $field->guessFormOptions());
         }
 
         return $builder;
@@ -830,28 +779,24 @@ abstract class Crud extends AbstractController
             }
         }
 
-        if (!empty($positions)) {
-            // needs sorting
-            $position = 0;
-            foreach ($items as $field) {
-                if ($field->getPosition() !== null) {
-                    continue;
-                }
-                while (in_array($position, $positions)) {
-                    $position++;
-                }
-                $field->setPosition($position);
+        // sorting
+        $position = 0;
+        foreach ($items as $field) {
+            if ($field->getPosition() !== null) {
+                continue;
+            }
+            while (in_array($position, $positions)) {
                 $position++;
             }
-
-            usort($items, static function (Field $a, Field $b): int {
-                return $a->getPosition() <=> $b->getPosition();
-            });
+            $field->setPosition($position);
+            $position++;
         }
 
         foreach ($items as $field) {
             $fields->add($field);
         }
+
+        $fields->sortByPosition();
 
         return $fields;
     }

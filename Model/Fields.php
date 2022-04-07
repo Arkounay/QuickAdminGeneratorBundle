@@ -37,5 +37,14 @@ class Fields extends TypedArray
         return Field::class;
     }
 
+    public function sortByPosition(): self
+    {
+        usort($this->items, static function (Field $a, Field $b): int {
+            return $a->getPosition() <=> $b->getPosition();
+        });
+
+        return $this;
+    }
+
 
 }
