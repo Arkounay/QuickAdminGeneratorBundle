@@ -51,10 +51,14 @@ class RouteLoader implements RouteLoaderInterface
                 $routeName = "qag.{$crud->getRoute()}";
                 if ($suffix) {
                     $routeName .= '_' . u($suffix)->snake();
-                    $globalActions = $crud->getGlobalActions();
+                    try {
+                        $globalActions = $crud->getGlobalActions();
+                    } catch (\Exception) {
+                        $globalActions = null;
+                    }
                     $globalActionsIndexes = [];
                     if ($globalActions !== null) {
-                        foreach ($crud->getGlobalActions() as $a) {
+                        foreach ($globalActions as $a) {
                             /** @var Action $a */
                             $globalActionsIndexes[] = $a->getIndex();
                         }
