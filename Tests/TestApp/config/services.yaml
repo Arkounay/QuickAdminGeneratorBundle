@@ -23,4 +23,5 @@ services:
         resource: '../src/Controller'
         tags: ['controller.service_arguments']
 
+    Psr\Log\NullLogger: ~
     logger: '@Psr\Log\NullLogger'
