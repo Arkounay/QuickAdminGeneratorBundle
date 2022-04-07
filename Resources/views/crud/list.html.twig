@@ -16,14 +16,18 @@
     <div class="global-actions col">
         <div class="d-flex justify-content-end flex-wrap">
             {% if is_searchable %}
-                <form action="{{ app.request.requestUri }}" method="get" class="search-form w-100 w-sm-auto">
-                    <div class="input-group">
-                        <input type="text" class="form-control" name="search" placeholder="{{ 'search_entity'|trans({'%entity_name%': name|trans}) }}" value="{{ search }}">
-                        <button type="submit" class="btn btn-white">
-                            {{ qag_render_icon('search') }}
-                        </button>
-                    </div>
-                </form>
+                {% block search_form %}
+                    <form action="{{ app.request.requestUri }}" method="get" class="search-form w-100 w-sm-auto">
+                        <div class="input-group">
+                            {% block search_form_content %}
+                                <input type="text" class="form-control" name="search" placeholder="{{ 'search_entity'|trans({'%entity_name%': name|trans}) }}" value="{{ search }}">
+                                <button type="submit" class="btn btn-white">
+                                    {{ qag_render_icon('search') }}
+                                </button>
+                            {% endblock %}
+                        </div>
+                    </form>
+                {% endblock %}
             {% endif %}
             {% for global_action in global_actions|reverse %}
                 <div class="ms-1 ms-sm-2 mt-1 mt-sm-0 mb-sm-1">
