@@ -39,7 +39,7 @@ class Fields extends TypedArray
 
     public function sortByPosition(): self
     {
-        usort($this->items, static function (Field $a, Field $b): int {
+        uasort($this->items, static function (Field $a, Field $b): int {
             return $a->getPosition() <=> $b->getPosition();
         });
 
