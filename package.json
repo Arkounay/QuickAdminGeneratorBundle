@@ -2,10 +2,10 @@
   "devDependencies": {
     "@arkounay/ux-collection": "file:vendor/arkounay/ux-collection/Resources/assets",
     "@hotwired/stimulus": "^3.0.0",
-    "@symfony/stimulus-bridge": "^3.0.0",
-    "@symfony/webpack-encore": "^1.7.0",
     "@hotwired/turbo": "^7.0.1",
+    "@symfony/stimulus-bridge": "^3.0.0",
     "@symfony/ux-turbo": "file:vendor/symfony/ux-turbo/Resources/assets",
+    "@symfony/webpack-encore": "^1.7.0",
     "core-js": "^3.0.0",
     "node-sass": "^6.0.1",
     "regenerator-runtime": "^0.13.2",
@@ -16,7 +16,7 @@
   "license": "UNLICENSED",
   "dependencies": {
     "@tabler/core": "https://github.com/migolo/tabler#patch-1",
-    "jquery": "^3.5.1",
+    "jquery": "^3.6.0",
     "select2": "^4.1.0-rc.0",
     "select2-bootstrap-5-theme": "^1.2.0"
   },

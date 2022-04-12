@@ -1,7 +1,9 @@
 import './styles/app.scss';
 
+import $ from "jquery";
+global.$ = global.jQuery = $;
+
 import './bootstrap';
-import 'jquery';
 import 'bootstrap';
 import Tooltip from 'bootstrap/js/src/tooltip';
 
