@@ -382,7 +382,7 @@ abstract class Crud extends AbstractController
             $filterForm->handleRequest($request);
             foreach ($this->getFilters() as $f) {
                 /** @var Filter $f */
-                if (!$f->getFilterForm()->isEmpty($filters[$f->getIndex()])) {
+                if (isset($filters[$f->getIndex()]) && !$f->getFilterForm()->isEmpty($filters[$f->getIndex()])) {
                     $f->getFilterForm()->addToQueryBuilder($queryBuilder, $filterForm, $f);
                     $activeFiltersNb++;
                 }
