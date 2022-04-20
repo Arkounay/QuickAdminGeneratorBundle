@@ -168,7 +168,7 @@
                                                         {% set action = actions.delete %}
                                                         <a {{ action_renderer.action_attributes(action, entity, null, ['btn-sm']) }}> {{ qag_render_icon('x', 12, 12) }} </a>
                                                     {% else %}
-                                                        <button type="button" {{ stimulus_controller('modal_fix') }} class="btn btn-outline-primary dropdown-toggle dropdown-toggle-split" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                        <button type="button" {{ stimulus_controller('dropdown_fix') }} class="btn btn-outline-primary dropdown-toggle dropdown-toggle-split"  data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                                             <span class="visually-hidden">Toggle Dropdown</span>
                                                         </button>
                                                         <div class="dropdown-menu dropdown-menu-end">
