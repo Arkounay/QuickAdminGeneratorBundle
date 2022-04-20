@@ -55,7 +55,7 @@ body .markdown > table > thead > tr > body th, body .table > thead > tr > th {
     @include card;
   }
   .table-responsive {
-    overflow: visible;
+    overflow: auto;
   }
 }
 

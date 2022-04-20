@@ -1,6 +1,6 @@
 {# default Sliding pagination control implementation #}
     <div class="row">
-        <div class="col text-muted result-count">
+        <div class="col-4 text-muted result-count">
             {% if totalCount > 1 %}
                 {{ 'pagination.num_of_result'|trans({'%total_count%': totalCount})|raw }}
                 {% if pageCount > 1 %}
@@ -11,7 +11,7 @@
             {% endif %}
         </div>
         {% if pageCount > 1 %}
-            <div class="col text-end">
+            <div class="col-8 text-end">
                 <div class="pagination d-inline-flex">
                     {% if first is defined and current != first %}
                         <li class="page-item">
