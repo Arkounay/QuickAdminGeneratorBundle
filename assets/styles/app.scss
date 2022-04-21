@@ -1,6 +1,6 @@
 $white: #ffffff !default;
 $input-bg: $white !default;
-//$enable-dark-mode: false;
+
 @import '~@tabler/core';
 @import "ux-media";
 @import "ux-collection";
@@ -17,7 +17,6 @@ $input-bg: $white !default;
   background-clip: border-box;
   border: 1px solid rgba(110, 117, 130, 0.2);
   border-radius: 3px;
-
 }
 
 .theme-dark {

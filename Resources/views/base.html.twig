@@ -5,9 +5,9 @@
 {%- endif -%}
 {%- set current_route = app.request.get('_route') -%}
 
-{% set menu_vertical = qag.config.menu.theme == 'vertical' %}
-{% set menu_horizontal = not menu_vertical  %}
-{% set dark_theme = app.session.get('qag.theme', qag.config.theme.default) == 'dark' %}
+{%- set menu_vertical = qag.config.menu.theme == 'vertical' -%}
+{%- set menu_horizontal = not menu_vertical -%}
+{%- set dark_theme = app.session.get('qag.theme', qag.config.theme.default) == 'dark' -%}
 
 <!doctype html>
 <html lang="{{ app.request.locale }}">
@@ -26,8 +26,19 @@
     <meta name="turbo-root" content="{% block url_turbo_root_prefix '/admin' %}">
 
     {% block css %}
-        <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin>
+
         <link rel="stylesheet" href="{{ "#{qag.config.assets_path}/build/app.css" }}">
+
+        {% block font %}
+            <link rel="preconnect" href="https://fonts.googleapis.com">
+            <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+            <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+            <style>
+                :root {
+                    --tblr-font-sans-serif: inter;
+                }
+            </style>
+        {% endblock %}
     {% endblock %}
 
     {% block head_js %}
