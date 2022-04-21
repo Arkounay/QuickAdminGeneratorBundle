@@ -983,6 +983,12 @@ abstract class Crud extends AbstractController
 
     protected function backUrl(): string
     {
+        if ($this->request->query->get('from') === 'view' && ($id = $this->request->attributes->get('id')) !== null) {
+            $params = $this->getListRouteParams();
+            $params['id'] = $id;
+            unset($params['from']);
+            return $this->generateUrl('qag.' . $this->getRoute() . '_view', $params);
+        }
         return $this->generateUrl('qag.' . $this->getRoute(), $this->getListRouteParams());
     }
 
