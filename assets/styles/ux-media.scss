@@ -12,6 +12,30 @@
     width: 50px;
     min-height: 30px;
   }
+  .icon-tabler-crop {
+    width: 24px;
+    height: 24px;
+  }
+  margin-bottom: 20px !important;
+
+  &+ .invalid-feedback {
+    margin-top: -15px;
+    margin-bottom: 5px;
+  }
+  .btn-collection-remove {
+    margin-left: 10px;
+  }
+
+  .collection-error-message-button {
+    border: none;
+    margin-left: 10px;
+    height: 30px;
+    width: 40px;
+  }
+
+  &.error {
+    border-color: #d63939 !important;
+  }
 }
 
 .theme-dark .ux-media {

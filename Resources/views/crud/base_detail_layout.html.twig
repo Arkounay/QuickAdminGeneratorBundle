@@ -2,7 +2,16 @@
 
 {% block action_name (action_name|trans)|default ~ ' ' ~ name|trans %}
 
-{% block content_title block('action_name') %}
+{% block title %}
+    {{ block('action_name') }}
+{% endblock %}
+
+{% block content_title %}
+    {% if back %}
+        <a title="{{ 'Back'|trans }}" class="btn-link d-flex align-items-center" href="{{ back }}">{{ qag_render_icon('arrow-narrow-left') }}</a>
+    {% endif %}
+    {{ block('action_name') }}
+{% endblock %}
 
 {% block content_title_wrapper %}
     <div class="d-flex flex-column">
@@ -10,10 +19,17 @@
         {% block breadcrumb_wrapper %}
             <nav class="breadcrumb">
                 {% block breadcrumb %}
-                    <a class="breadcrumb-item" href="{{ list ?? back }}">{{ plural_name|trans }}</a>
-                    <span class="breadcrumb-item active">
-                        {{ block('action_name') }}
-                    </span>
+                    {% if breadcrumb is defined %}
+                        {% for item in breadcrumb %}
+                            {% if item.href|default(false) %}
+                                <a class="breadcrumb-item {{ item.active|default(false) ? 'active' }}" href="{{ item.href }}">{{ item.label|trans }}</a>
+                            {% else %}
+                                <span class="breadcrumb-item {{ item.active|default(false) ? 'active' }}">
+                                    {{ item.label|trans }}
+                                </span>
+                            {% endif %}
+                        {% endfor %}
+                    {% endif %}
                 {% endblock %}
             </nav>
         {% endblock %}
@@ -32,13 +48,9 @@
                 {% set sticky = creation is defined and not creation %}
                 <div {% block card_footer_attr %}{% if sticky %}{{ stimulus_controller('sticky_observer', {activeClass: 'card-footer-sticky-active'}) }}{% endif %}{% endblock %} class="{% block card_footer_class %}card-footer px-2 px-md-4 {% if sticky %}card-footer-sticky{% endif %}{% endblock %}">
                     {% block card_footer_content %}
-                        <a class="btn btn-link" href="
-                            {%- if app.request.get('from') == 'view' and entity is defined -%}
-                                {{ path('qag.' ~ app.request.attributes.get('qag.main_controller_route') ~ '_view', {id: entity.id}) }}
-                            {%- else -%}
-                                {{ from ?? back }}
-                            {%- endif -%}
-                        ">{{ qag_render_icon('arrow-narrow-left', 20, 20, 'me-1') }} {{ 'Back'|trans }}</a>
+                        {% if back %}
+                            <a class="btn btn-link" href="{{ back }}">{{ qag_render_icon('arrow-narrow-left', 20, 20, 'me-1') }} {{ 'Back'|trans }}</a>
+                        {% endif %}
                     {% endblock %}
                 </div>
             {% endblock %}

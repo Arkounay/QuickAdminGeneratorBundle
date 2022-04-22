@@ -1,0 +1,14 @@
+.tox-tinymce {
+  border-radius: 4px;
+  transition: all 200ms;
+
+  &.focus {
+    border-color: #90b5e2;
+    outline: 0;
+    box-shadow: 0 0 0 0.25rem rgb(32 107 196 / 25%);
+  }
+
+  .tox-toolbar__group:last-child {
+    margin-left: auto;
+  }
+}
