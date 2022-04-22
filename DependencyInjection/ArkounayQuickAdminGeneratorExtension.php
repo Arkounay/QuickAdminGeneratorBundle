@@ -15,6 +15,7 @@ use Symfony\Component\DependencyInjection\Extension\Extension;
 use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 use Symfony\Component\DependencyInjection\Reference;
 use Symfony\Component\HttpFoundation\RequestStack;
+use Symfony\Component\String\Slugger\SluggerInterface;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use function Symfony\Component\DependencyInjection\Loader\Configurator\expr;
@@ -42,7 +43,8 @@ class ArkounayQuickAdminGeneratorExtension extends Extension
                 new Reference(EventDispatcherInterface::class),
                 new Reference(TranslatorInterface::class),
                 new Reference(TwigLoaderService::class),
-                new Reference(Reader::class)
+                new Reference(Reader::class),
+                new Reference(SluggerInterface::class)
             ]);
 
     }

@@ -4,6 +4,7 @@
 namespace Arkounay\Bundle\QuickAdminGeneratorBundle\Controller;
 
 use Arkounay\Bundle\QuickAdminGeneratorBundle\Extension\FieldService;
+use Arkounay\Bundle\QuickAdminGeneratorBundle\Extension\RouteExtension;
 use Arkounay\Bundle\QuickAdminGeneratorBundle\Extension\TwigLoaderService;
 use Arkounay\Bundle\QuickAdminGeneratorBundle\Model\Action;
 use Arkounay\Bundle\QuickAdminGeneratorBundle\Model\Actions;
@@ -18,14 +19,9 @@ use Doctrine\ORM\Mapping\ClassMetadata;
 use Doctrine\ORM\QueryBuilder;
 use JetBrains\PhpStorm\ExpectedValues;
 use Knp\Component\Pager\PaginatorInterface;
-use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\EventDispatcher\GenericEvent;
-use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
-use Symfony\Component\Form\Extension\Core\Type\DateType;
-use Symfony\Component\Form\Extension\Core\Type\EnumType;
 use Symfony\Component\Form\Extension\Core\Type\FormType;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -36,6 +32,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\PropertyAccess\PropertyAccess;
 use Symfony\Component\String\Inflector\EnglishInflector;
 use Symfony\Component\String\Inflector\InflectorInterface;
+use Symfony\Component\String\Slugger\SluggerInterface;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
@@ -54,6 +51,7 @@ abstract class Crud extends AbstractController
     protected ?Request $request;
     protected EventDispatcherInterface $eventDispatcher;
     protected InflectorInterface $inflector;
+    protected SluggerInterface $slugger;
     protected TranslatorInterface $translator;
     protected TwigLoaderService $twigLoader;
 
@@ -77,7 +75,7 @@ abstract class Crud extends AbstractController
      * Used to set the dependencies.
      * We don't get them through a constructor to make it easier to override it custom dependencies.
      */
-    public function setInternalDependencies(EntityManagerInterface $em, FieldService $fieldService, RequestStack $requestStack, EventDispatcherInterface $eventDispatcher, TranslatorInterface $translator, TwigLoaderService $twigLoader, Reader $reader): void
+    public function setInternalDependencies(EntityManagerInterface $em, FieldService $fieldService, RequestStack $requestStack, EventDispatcherInterface $eventDispatcher, TranslatorInterface $translator, TwigLoaderService $twigLoader, Reader $reader, SluggerInterface $slugger): void
     {
         $this->em = $em;
         $this->fieldService = $fieldService;
@@ -88,6 +86,7 @@ abstract class Crud extends AbstractController
         $this->twigLoader = $twigLoader;
         $this->reader = $reader;
         $this->repository = $em->getRepository($this->getEntity());
+        $this->slugger = $slugger;
     }
 
     /**
@@ -98,7 +97,7 @@ abstract class Crud extends AbstractController
 
     public function getName(): string
     {
-        return (new \ReflectionClass($this->getEntity()))->getShortName();
+        return RouteExtension::humanizeClassName($this->getEntity());
     }
 
     public function getPluralName(): string
@@ -111,7 +110,7 @@ abstract class Crud extends AbstractController
      */
     public function getRoute(): string
     {
-        return strtolower((new \ReflectionClass($this->getEntity()))->getShortName());
+        return strtolower($this->slugger->slug(RouteExtension::humanizeClassName($this->getEntity())));
     }
 
     /**

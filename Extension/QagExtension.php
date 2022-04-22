@@ -33,7 +33,6 @@ class QagExtension extends AbstractExtension implements GlobalsInterface
         return $this->menu->generateMenu();
     }
 
-
     public function getActionHref(Action $action, $entity = null): string
     {
         if ($action->getCustomHref() !== null) {
