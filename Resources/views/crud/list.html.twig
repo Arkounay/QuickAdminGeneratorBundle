@@ -20,7 +20,7 @@
                     <form action="{{ app.request.requestUri }}" method="get" class="search-form w-100 w-sm-auto">
                         <div class="input-group">
                             {% block search_form_content %}
-                                <input type="search" class="form-control" name="search" placeholder="{{ 'search_entity'|trans({'%entity_name%': name|trans}) }}" value="{{ search }}">
+                                <input type="search" class="form-control" name="search" placeholder="{{ 'search_entity'|trans({'%entity_name%': name_sentence|trans}) }}" value="{{ search }}">
                                 <button type="submit" class="btn btn-white">
                                     {{ qag_render_icon('search') }}
                                 </button>

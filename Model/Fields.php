@@ -7,6 +7,7 @@ use Arkounay\Bundle\QuickAdminGeneratorBundle\Extension\FieldService;
 use Doctrine\ORM\Mapping\ClassMetadata;
 
 /**
+ * @template-extends TypedArray<int, Field>
  * @method Field get(string $field)
  */
 class Fields extends TypedArray

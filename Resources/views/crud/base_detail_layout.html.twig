@@ -1,6 +1,6 @@
 {% extends '@ArkounayQuickAdminGenerator/base.html.twig' %}
 
-{% block action_name (action_name|trans)|default ~ ' ' ~ name|trans %}
+{% block action_name (action_name|trans)|default ~ ' ' ~ name_sentence|trans %}
 
 {% block title %}
     {{ block('action_name') }}

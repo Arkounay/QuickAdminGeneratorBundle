@@ -42,7 +42,6 @@ use Symfony\Contracts\Translation\TranslatorInterface;
  */
 abstract class Crud extends AbstractController
 {
-
     private const ITEMS_PER_PAGE = 15;
     protected EntityManagerInterface $em;
     protected ClassMetadata $metadata;
@@ -69,6 +68,7 @@ abstract class Crud extends AbstractController
 
     /** @internal */
     private ?string $_cachedFetchMode = null;
+    private ?string $_cachedName = null;
 
     /**
      * @internal
@@ -91,18 +91,29 @@ abstract class Crud extends AbstractController
 
     /**
      * The entity class FQN
+     * @return class-string<T>
      */
     abstract public function getEntity(): string;
 
-
     public function getName(): string
     {
-        return RouteExtension::humanizeClassName($this->getEntity());
+        if ($this->_cachedName === null) {
+            $this->_cachedName = RouteExtension::humanizeClassName($this->getEntity());
+        }
+        return $this->_cachedName;
     }
 
     public function getPluralName(): string
     {
         return $this->inflector->pluralize($this->getName())[0];
+    }
+
+    /**
+     * get the Crud name when used in sentences (e.g. in action names like create button)
+     */
+    public function getNameSentence(): string
+    {
+        return lcfirst($this->getName());
     }
 
     /**
@@ -122,7 +133,7 @@ abstract class Crud extends AbstractController
 
         if ($this->isCreatable()) {
             $createAction = new Action('create');
-            $createAction->setLabel($this->translator->trans('Create') . ' ' . $this->translator->trans($this->getName()));
+            $createAction->setLabel($this->translator->trans('Create') . ' ' . $this->translator->trans($this->getNameSentence()));
             $createAction->setIcon('plus');
             $createAction->addClasses('btn', 'btn-primary');
             $actions->add($createAction);
@@ -217,7 +228,7 @@ abstract class Crud extends AbstractController
     public function deleteAction($entity): Response
     {
         if (!$this->isCsrfTokenValid('delete', $this->request->request->get('token'))) {
-            $this->addFlash('danger', $this->translator->trans('The CSRF token is invalid. Please try to resubmit the form.'));
+            $this->addFlash('danger', $this->translator->trans('The CSRF token is invalid. Please try to resubmit the form.', [], 'validators'));
             return $this->redirectToList();
         }
         if (!$this->isDeletable($entity)) {
@@ -364,29 +375,7 @@ abstract class Crud extends AbstractController
     {
         $queryBuilder = $this->getListQueryBuilder();
 
-        $isSearchable = $this->isSearchable();
-        $search = null;
-        if ($isSearchable) {
-            $search = $request->query->get('search');
-            if ($search !== null) {
-                $this->search($queryBuilder, $search);
-            }
-        }
-
-        $filters = $request->query->all('filter');
-        $filterForm = null;
-        $activeFiltersNb = 0;
-        if (!empty($filters)) {
-            $filterForm = $this->createFilterForm()->getForm();
-            $filterForm->handleRequest($request);
-            foreach ($this->getFilters() as $f) {
-                /** @var Filter $f */
-                if (isset($filters[$f->getIndex()]) && !$f->getFilterForm()->isEmpty($filters[$f->getIndex()])) {
-                    $f->getFilterForm()->addToQueryBuilder($queryBuilder, $filterForm, $f);
-                    $activeFiltersNb++;
-                }
-            }
-        }
+        [$isSearchable, $search, $filterForm, $activeFiltersNb] = $this->applySearchAndFiltersQueryBuilder($request, $queryBuilder);
 
         $fields = $this->getListingFields();
         $paginationOptions = $this->getPaginationOptions($fields);
@@ -406,7 +395,6 @@ abstract class Crud extends AbstractController
             'batch_actions' => $this->getBatchActions($entities),
             'entities' => $entities,
             'fields' => $fields,
-            'name' => $this->getName(),
             'plural_name' => $this->getPluralName(),
             'description' => $this->getDescription(),
             'search' => $search,
@@ -477,10 +465,8 @@ abstract class Crud extends AbstractController
         $request->attributes->add(['qag.from' => 'view']);
 
         return $this->render($this->viewTwig(), $this->retrieveParams('view', [
-            'name' => $this->getName(),
             'plural_name' => $this->getPluralName(),
             'action_name' => 'View',
-            'list' => $this->backUrl(),
             'back' => $this->backUrl(),
             'fields' => $this->getListingFields(),
             'entity' => $entity,
@@ -498,7 +484,6 @@ abstract class Crud extends AbstractController
         }
 
         $entity = $this->createNew();
-
         $form = $this->getForm($entity, true);
         $form->handleRequest($request);
 
@@ -509,8 +494,6 @@ abstract class Crud extends AbstractController
 
         return $this->renderForm($this->formTwig(true), $this->retrieveParams('create', [
             'creation' => true,
-            'name' => $this->getName(),
-            'plural_name' => $this->getPluralName(),
             'form' => $form,
             'back' => $this->backUrl(),
             'action_name' => 'Create'
@@ -529,9 +512,8 @@ abstract class Crud extends AbstractController
         if ($this->hasQuickListQueryBuilderSecurity() && !$this->entityIsInList($entity)) {
             throw $this->createAccessDeniedException("Entity {$this->getEntity()} #{$entity->getId()} is filtered out.");
         }
-
         if ($entity === null) {
-            throw $this->createNotFoundException("No {$this->getName()} found with id #{$request->attributes->get('id')}");
+            throw $this->createNotFoundException("No {$this->getNameSentence()} found with id #{$request->attributes->get('id')}");
         }
 
         $event = new GenericEvent($entity);
@@ -547,11 +529,8 @@ abstract class Crud extends AbstractController
 
         return $this->renderForm($this->formTwig(false), $this->retrieveParams('edit', [
             'creation' => false,
-            'name' => $this->getName(),
-            'plural_name' => $this->getPluralName(),
             'entity' => $entity,
             'form' => $form,
-            'list' => $this->backUrl(),
             'back' => $this->backUrl(),
             'action_name' => 'Edit'
         ]));
@@ -566,10 +545,14 @@ abstract class Crud extends AbstractController
     {
         $this->em->persist($entity);
         $this->em->flush();
-        $this->addFlash('highlighted_row_id', $entity->getId());
 
         $event = new GenericEvent($entity);
         $this->eventDispatcher->dispatch($event, $creation ? 'qag.events.post_create' : 'qag.events.post_edit');
+
+        if ($event->isPropagationStopped()) {
+            return;
+        }
+        $this->addFlash('highlighted_row_id', $entity->getId());
     }
 
     /**
@@ -579,7 +562,6 @@ abstract class Crud extends AbstractController
     protected function createNew(): object
     {
         $entityClass = $this->getEntity();
-
         return new $entityClass;
     }
 
@@ -603,6 +585,7 @@ abstract class Crud extends AbstractController
             'block_name' => $this->getRoute(),
             'data_class' => $this->getEntity()
         ]);
+
         foreach ($fields as $field) {
             /** @var Field $field */
 
@@ -639,7 +622,6 @@ abstract class Crud extends AbstractController
     protected function getAllEntityFields(): array
     {
         $res = array_merge($this->metadata->getFieldNames(), $this->metadata->getAssociationNames());
-
         $fetchMode = $this->getFieldFetchMode();
         if ($fetchMode !== \Arkounay\Bundle\QuickAdminGeneratorBundle\Annotation\Crud::FETCH_AUTO) {
             // When fetch mode is not automatic, every field needs to have a "Show" annotation to be fetched.
@@ -943,11 +925,10 @@ abstract class Crud extends AbstractController
         if ($this->metadata->hasField('position')) {
             return ['defaultSortFieldName' => 'e.position', 'defaultSortDirection' => 'asc'];
         }
-        if ($this->metadata->hasField('createdAt')) {
-            return ['defaultSortFieldName' => 'e.createdAt', 'defaultSortDirection' => 'desc'];
-        }
-        if ($this->metadata->hasField('id')) {
-            return ['defaultSortFieldName' => 'e.id', 'defaultSortDirection' => 'desc'];
+        foreach (['createdAt', 'startDate', 'date', 'id'] as $field) {
+            if ($this->metadata->hasField($field)) {
+                return ['defaultSortFieldName' => 'e.' . $field, 'defaultSortDirection' => 'desc'];
+            }
         }
 
         return [];
@@ -1039,7 +1020,40 @@ abstract class Crud extends AbstractController
      */
     protected function retrieveParams(string $action, array $params): array
     {
-        return $params;
+        return array_merge([
+            'name' => $this->getName(),
+            'name_sentence' => $this->getNameSentence(),
+            'plural_name' => $this->getPluralName(),
+        ], $params);
+    }
+
+    protected function applySearchAndFiltersQueryBuilder(Request $request, QueryBuilder $queryBuilder): array
+    {
+        $isSearchable = $this->isSearchable();
+        $search = null;
+        if ($isSearchable) {
+            $search = $request->query->get('search');
+            if ($search !== null) {
+                $this->search($queryBuilder, $search);
+            }
+        }
+
+        $filters = $request->query->all('filter');
+        $filterForm = null;
+        $activeFiltersNb = 0;
+        if (!empty($filters)) {
+            $filterForm = $this->createFilterForm()->getForm();
+            $filterForm->handleRequest($request);
+            foreach ($this->getFilters() as $f) {
+                /** @var Filter $f */
+                if (isset($filters[$f->getIndex()]) && !$f->getFilterForm()->isEmpty($filters[$f->getIndex()])) {
+                    $f->getFilterForm()->addToQueryBuilder($queryBuilder, $filterForm, $f);
+                    $activeFiltersNb++;
+                }
+            }
+        }
+
+        return [$isSearchable, $search, $filterForm, $activeFiltersNb];
     }
 
 }
