@@ -186,7 +186,12 @@
                             {% if menu_item.children is not empty %}
                                 <li class="nav-item dropdown {{ menu_item.attributes.class|default }} {{ menu_item.active ? 'active' }}" {% for k, v in menu_item.attributes %}{% if k != 'class' %}{{ k }}="{{ v }}"{% endif %}{% endfor %}>
                                     <a class="nav-link dropdown-toggle {{ menu_vertical and menu_item.active ? 'show' }}" href="#" data-bs-toggle="dropdown" role="button" aria-expanded="{{ menu_vertical and menu_item.active ? 'true' : 'false' }}">
-                                        <span class="nav-link-title">{{ menu_item.label|trans }}</span>
+                                        <span>
+                                            {% if menu_vertical or menu_item.icon is not null %}
+                                                {{ qag_render_icon(menu_item.icon|default('chevron-right'), 16, 16, icon_class) }}
+                                            {% endif %}
+                                            <span class="nav-link-title">{{ menu_item.label|trans }}</span>
+                                        </span>
                                         {% if menu_item.badgeNumber is not null %}
                                             <span class="badge badge-number badge-pill {{ menu_item.badgeClass|default('bg-red') }}">{{ menu_item.badgeNumber }}</span>
                                         {% endif %}
@@ -199,10 +204,12 @@
                                                 {% else %}
                                                     <li>
                                                         <a class="dropdown-item d-flex justify-content-md-between align-items-center {{ menu_item.attributes.class|default }} {{ menu_item.active and menu_vertical ? 'text-white' }} {{ menu_item.active ? 'active' }}" {% for k, v in menu_item.attributes %}{% if k != 'class' %}{{ k }}="{{ v }}"{% endif %}{% endfor %} href="{{ menu_item.url }}">
-                                                            {% if menu_vertical or menu_item.icon is not null %}
-                                                                {{ qag_render_icon(menu_item.icon|default('chevron-right'), 16, 16, icon_class) }}
-                                                            {% endif %}
-                                                            {{ menu_item.label|trans }}
+                                                            <span>
+                                                                {% if menu_vertical or menu_item.icon is not null %}
+                                                                    {{ qag_render_icon(menu_item.icon|default('chevron-right'), 16, 16, icon_class) }}
+                                                                {% endif %}
+                                                                {{ menu_item.label|trans }}
+                                                            </span>
                                                             {% if menu_item.badgeNumber is not null %}
                                                                 <span class="badge badge-number badge-pill {{ menu_item.badgeClass|default('bg-red') }}">{{ menu_item.badgeNumber }}</span>
                                                             {% endif %}
