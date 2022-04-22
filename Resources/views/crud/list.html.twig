@@ -20,7 +20,7 @@
                     <form action="{{ app.request.requestUri }}" method="get" class="search-form w-100 w-sm-auto">
                         <div class="input-group">
                             {% block search_form_content %}
-                                <input type="search" class="form-control" name="search" placeholder="{{ 'search_entity'|trans({'%entity_name%': name_sentence|trans}) }}" value="{{ search }}">
+                                <input type="search" class="form-control" name="search" placeholder="{{ 'search_entity'|trans({'%entity_name%': name_sentence}) }}" value="{{ search }}">
                                 <button type="submit" class="btn btn-white">
                                     {{ qag_render_icon('search') }}
                                 </button>
@@ -30,9 +30,13 @@
                 {% endblock %}
             {% endif %}
             {% for global_action in global_actions|reverse %}
-                <div class="ms-1 ms-sm-2 mt-1 mt-sm-0 mb-sm-1">
-                    {% include '@ArkounayQuickAdminGenerator/crud/actions/global_action.html.twig' with {action: global_action} %}
-                </div>
+                {% block global_actions_buttons_wrapper %}
+                    <div class="ms-1 ms-sm-2 mt-1 mt-sm-0 mb-sm-1">
+                        {% block global_actions_buttons %}
+                            {% include '@ArkounayQuickAdminGenerator/crud/actions/global_action.html.twig' with {action: global_action} %}
+                        {% endblock %}
+                    </div>
+                {% endblock %}
             {% endfor %}
         </div>
     </div>

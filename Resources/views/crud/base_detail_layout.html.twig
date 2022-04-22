@@ -1,16 +1,20 @@
 {% extends '@ArkounayQuickAdminGenerator/base.html.twig' %}
 
-{% block action_name (action_name|trans)|default ~ ' ' ~ name_sentence|trans %}
+{% block action_name (action_name|trans)|default ~ ' ' ~ name_sentence %}
 
 {% block title %}
     {{ block('action_name') }}
 {% endblock %}
 
 {% block content_title %}
-    {% if back %}
-        <a title="{{ 'Back'|trans }}" class="btn-link d-flex align-items-center" href="{{ back }}">{{ qag_render_icon('arrow-narrow-left') }}</a>
-    {% endif %}
-    {{ block('action_name') }}
+    {% block content_title_back %}
+        {% if back %}
+            <a title="{{ 'Back'|trans }}" class="btn-link d-flex align-items-center" href="{{ back }}">{{ qag_render_icon('arrow-narrow-left') }}</a>
+        {% endif %}
+    {% endblock %}
+    {% block content_title_text %}
+        {{ block('action_name') }}
+    {% endblock %}
 {% endblock %}
 
 {% block content_title_wrapper %}

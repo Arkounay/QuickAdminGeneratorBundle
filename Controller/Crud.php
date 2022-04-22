@@ -98,7 +98,7 @@ abstract class Crud extends AbstractController
     public function getName(): string
     {
         if ($this->_cachedName === null) {
-            $this->_cachedName = RouteExtension::humanizeClassName($this->getEntity());
+            $this->_cachedName = $this->translator->trans(RouteExtension::humanizeClassName($this->getEntity()));
         }
         return $this->_cachedName;
     }
@@ -133,7 +133,7 @@ abstract class Crud extends AbstractController
 
         if ($this->isCreatable()) {
             $createAction = new Action('create');
-            $createAction->setLabel($this->translator->trans('Create') . ' ' . $this->translator->trans($this->getNameSentence()));
+            $createAction->setLabel($this->translator->trans('Create') . ' ' . $this->getNameSentence());
             $createAction->setIcon('plus');
             $createAction->addClasses('btn', 'btn-primary');
             $actions->add($createAction);
