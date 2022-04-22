@@ -30,12 +30,37 @@
         <link rel="stylesheet" href="{{ "#{qag.config.assets_path}/build/app.css" }}">
 
         {% block font %}
-            <link rel="preconnect" href="https://fonts.googleapis.com">
-            <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-            <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
             <style>
+                @font-face {
+                    font-family: 'inter';
+                    font-style: normal;
+                    font-weight: 400;
+                    font-display: swap;
+                    src: url({{ "#{qag.config.assets_path}/fonts/Inter-Regular.woff2" }}) format('woff2');
+                }
+                @font-face {
+                    font-family: 'inter';
+                    font-style: normal;
+                    font-weight: 500;
+                    font-display: swap;
+                    src: url({{ "#{qag.config.assets_path}/fonts/Inter-Medium.woff2" }}) format('woff2');
+                }
+                @font-face {
+                    font-family: 'inter';
+                    font-style: normal;
+                    font-weight: 600;
+                    font-display: swap;
+                    src: url({{ "#{qag.config.assets_path}/fonts/Inter-Medium.woff2" }}) format('woff2');
+                }
+                @font-face {
+                    font-family: 'inter';
+                    font-style: normal;
+                    font-weight: 700;
+                    font-display: swap;
+                    src: url({{ "#{qag.config.assets_path}/fonts/Inter-SemiBold.woff2" }}) format('woff2');
+                }
                 :root {
-                    --tblr-font-sans-serif: inter;
+                    --tblr-font-sans-serif: inter, -apple-system, BlinkMacSystemFont, "San Francisco", "Segoe UI", Roboto, "Helvetica Neue", sans-serif;
                 }
             </style>
         {% endblock %}
@@ -162,6 +187,9 @@
                                 <li class="nav-item dropdown {{ menu_item.attributes.class|default }} {{ menu_item.active ? 'active' }}" {% for k, v in menu_item.attributes %}{% if k != 'class' %}{{ k }}="{{ v }}"{% endif %}{% endfor %}>
                                     <a class="nav-link dropdown-toggle {{ menu_vertical and menu_item.active ? 'show' }}" href="#" data-bs-toggle="dropdown" role="button" aria-expanded="{{ menu_vertical and menu_item.active ? 'true' : 'false' }}">
                                         <span class="nav-link-title">{{ menu_item.label|trans }}</span>
+                                        {% if menu_item.badgeNumber is not null %}
+                                            <span class="badge badge-number badge-pill {{ menu_item.badgeClass|default('bg-red') }}">{{ menu_item.badgeNumber }}</span>
+                                        {% endif %}
                                     </a>
                                     <ul class="dropdown-menu {{ menu_vertical and menu_item.active ? 'show' }}">
                                         {% for menu_item in menu_item.children %}
@@ -170,16 +198,14 @@
                                                     <li class="dropdown-divider"></li>
                                                 {% else %}
                                                     <li>
-                                                        <a class="dropdown-item {{ menu_item.attributes.class|default }} {{ menu_item.active and menu_vertical ? 'text-white' }} {{ menu_item.active ? 'active' }}" {% for k, v in menu_item.attributes %}{% if k != 'class' %}{{ k }}="{{ v }}"{% endif %}{% endfor %} href="{{ menu_item.url }}">
+                                                        <a class="dropdown-item d-flex justify-content-md-between align-items-center {{ menu_item.attributes.class|default }} {{ menu_item.active and menu_vertical ? 'text-white' }} {{ menu_item.active ? 'active' }}" {% for k, v in menu_item.attributes %}{% if k != 'class' %}{{ k }}="{{ v }}"{% endif %}{% endfor %} href="{{ menu_item.url }}">
                                                             {% if menu_vertical or menu_item.icon is not null %}
                                                                 {{ qag_render_icon(menu_item.icon|default('chevron-right'), 16, 16, icon_class) }}
                                                             {% endif %}
-                                                            <span>
-                                                                {{ menu_item.label|trans }}
-                                                                {% if menu_item.badgeNumber is not null %}
-                                                                    <span class="badge badge-number badge-pill {{ menu_item.badgeClass|default('bg-red') }}">{{ menu_item.badgeNumber }}</span>
-                                                                {% endif %}
-                                                            </span>
+                                                            {{ menu_item.label|trans }}
+                                                            {% if menu_item.badgeNumber is not null %}
+                                                                <span class="badge badge-number badge-pill {{ menu_item.badgeClass|default('bg-red') }}">{{ menu_item.badgeNumber }}</span>
+                                                            {% endif %}
                                                         </a>
                                                     </li>
                                                 {% endif %}
@@ -198,12 +224,12 @@
                                                 {% if menu_vertical or menu_item.icon is not null %}
                                                     {{ qag_render_icon(menu_item.icon|default('chevron-right'), 16, 16, icon_class) }}
                                                 {% endif %}
-                                                <span>
+                                                <div class="d-flex justify-content-between align-items-center">
                                                     {{ menu_item.label|trans }}
                                                     {% if menu_item.badgeNumber is not null %}
                                                         <span class="badge badge-number badge-pill {{ menu_item.badgeClass|default('bg-red') }}">{{ menu_item.badgeNumber }}</span>
                                                     {% endif %}
-                                                </span>
+                                                </div>
                                             </a>
                                         </li>
                                     {% endif %}
