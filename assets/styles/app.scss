@@ -5,6 +5,7 @@ $input-bg: $white !default;
 @import "ux-media";
 @import "ux-collection";
 @import "select2";
+@import "tinymce";
 
 @mixin card {
   margin-bottom: .5rem;
