@@ -1,6 +1,6 @@
 {% if actions.edit is defined and current_action_name == 'list' %}
     {# Editable : display switch #}
-    <label class="form-check form-switch">
+    <label class="form-check form-switch m-0">
         <input class="form-check-input" data-controller="ajax-switch" data-action="ajax-switch#toggle" type="checkbox" data-url="{{ path(route ~ '_toggle_boolean_post', {id: entity.id}) }}" data-index="{{ field.index }}" {{ value ? 'checked' }}>
     </label>
 {% else %}
