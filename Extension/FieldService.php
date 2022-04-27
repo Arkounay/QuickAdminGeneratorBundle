@@ -157,8 +157,9 @@ class FieldService
             if ($annotationField->sortable !== null) {
                 $field->setSortable($annotationField->sortable);
             }
-            $field->setFormClass($annotationField->formClass);
             $field->setFormType($annotationField->formType);
+            $field->setFormClass($annotationField->formClass);
+            $field->setOptions($annotationField->options);
             $field->setPlaceholder($annotationField->placeholder);
             $field->setHelp($annotationField->help);
             $field->setPosition($annotationField->position);

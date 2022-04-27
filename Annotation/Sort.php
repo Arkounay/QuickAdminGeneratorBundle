@@ -12,7 +12,7 @@ use Doctrine\Common\Annotations\Annotation\NamedArgumentConstructor;
 class Sort
 {
 
-    public $direction;
+    public ?string $direction;
 
     public function __construct(?string $direction = 'desc')
     {

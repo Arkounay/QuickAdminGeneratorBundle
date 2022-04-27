@@ -72,6 +72,11 @@ class Field implements Listable
     protected $formType;
 
     /**
+     * @var array
+     */
+    protected $options = [];
+
+    /**
      * @var string
      */
     protected $formClass;
@@ -224,6 +229,18 @@ class Field implements Listable
         return $this;
     }
 
+    public function getOptions(): array
+    {
+        return $this->options;
+    }
+
+    public function setOptions(array $options): self
+    {
+        $this->options = $options;
+
+        return $this;
+    }
+
     public function getFormClass(): ?string
     {
         return $this->formClass;
@@ -326,6 +343,8 @@ class Field implements Listable
                 $options['by_reference'] = false;
                 break;
         }
+
+        $options = array_merge($options, $this->getOptions());
 
         return $options;
     }
