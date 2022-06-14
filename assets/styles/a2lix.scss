@@ -1,0 +1,22 @@
+.a2lix_translationsLocales.nav.nav-tabs {
+  border-bottom: 0;
+  font-size: 12px;
+
+  .nav-link {
+    padding: 0 15px;
+  }
+
+  .active {
+    font-weight: bold;
+  }
+}
+
+.a2lix_translationsFields.tab-content {
+  border: 1px solid #CBD5E1;
+  padding: 15px 15px 5px;
+  border-radius: 4px;
+
+  &.first-element-active {
+    border-top-left-radius: 0;
+  }
+}

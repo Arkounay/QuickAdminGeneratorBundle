@@ -141,3 +141,46 @@
     {% set attr = attr|merge({'data-controller': controller}) %}
     {{- parent() -}}
 {% endblock %}
+
+{% block a2lix_translations_widget %}
+    <div class="a2lix_translations" {{ stimulus_controller('form_tab') }}>
+        <ul class="a2lix_translationsLocales nav nav-tabs" role="tablist">
+            {% for translationsFields in form %}
+                {% set locale = translationsFields.vars.name %}
+
+                <li class="nav-item">
+                    <a href="#{{ translationsFields.vars.id }}_a2lix_translations-fields" class="nav-link {% if loop.first %}active{% endif %}" data-bs-toggle="tab" role="tab" {{ stimulus_target('form_tab', 'tab') }}>
+
+                        {% set nb_errors = 0 %}
+                        {% for translationField in translationsFields.children %}
+                            {% if translationField.vars.errors is not empty %}
+                                {% set nb_errors = nb_errors + 1 %}
+                            {% endif %}
+                        {% endfor %}
+
+                        {{ translationsFields.vars.label|default(locale|upper)|trans }}
+
+                        {% block a2lix_translations_widget_required %}
+                            {% if translationsFields.vars.required %}<span class="text-red ms-1">*</span>{% endif %}
+                        {% endblock %}
+
+                        {% if nb_errors > 0 %}
+                            <span class="badge badge-pill bg-red ms-1 badge-outline badge-error">{{ nb_errors }}</span>
+                        {% endif %}
+                    </a>
+                </li>
+            {% endfor %}
+        </ul>
+
+        <div class="a2lix_translationsFields tab-content" {{ stimulus_controller('tab_first_selection_watcher') }}>
+            {% for translationsFields in form %}
+                {% set locale = translationsFields.vars.name %}
+
+                <div id="{{ translationsFields.vars.id }}_a2lix_translations-fields" {{ stimulus_target('tab_first_selection_watcher', 'watched') }} class="tab-pane {% if app.request.locale == locale %}show active{% endif %}" role="tabpanel">
+                    {{ form_errors(translationsFields) }}
+                    {{ form_widget(translationsFields) }}
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}
