@@ -5,7 +5,7 @@
     "@hotwired/turbo": "^7.0.1",
     "@symfony/stimulus-bridge": "^3.0.0",
     "@symfony/ux-turbo": "file:vendor/symfony/ux-turbo/Resources/assets",
-    "@symfony/webpack-encore": "^1.7.0",
+    "@symfony/webpack-encore": "^2.1.0",
     "core-js": "^3.0.0",
     "node-sass": "^7.0.1",
     "regenerator-runtime": "^0.13.2",
@@ -15,7 +15,7 @@
   },
   "license": "UNLICENSED",
   "dependencies": {
-    "@tabler/core": "1.0.0-beta9",
+    "@tabler/core": "1.0.0-beta10",
     "jquery": "^3.6.0",
     "select2": "^4.1.0-rc.0",
     "select2-bootstrap-5-theme": "^1.2.0"

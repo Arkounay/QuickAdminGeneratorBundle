@@ -1,7 +1,7 @@
 {
     "name": "arkounay/quick-admin-generator-bundle",
     "type": "symfony-bundle",
-    "description": "QAG is a bundle that allows quick and simple administration backends generation for Symfony applications using Doctrine.",
+    "description": "QAG is a bundle that generates cruds admin for Symfony applications using Doctrine.",
     "keywords": [
         "symfony",
         "bundle",
@@ -42,7 +42,7 @@
         "doctrine/orm": "^2.10",
         "symfony/proxy-manager-bridge": ">=5.1.0",
         "symfony/ux-turbo": "^2.0",
-        "symfony/webpack-encore-bundle": "^1.13",
+        "symfony/webpack-encore-bundle": "^1.14",
         "symfony/monolog-bundle": ">=3.1"
     },
     "autoload": {
