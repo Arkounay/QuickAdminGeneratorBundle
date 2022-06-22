@@ -39,4 +39,9 @@ class ArticleController extends Crud
         ;
     }
 
+    public function isViewable($entity): bool
+    {
+        return true;
+    }
+
 }

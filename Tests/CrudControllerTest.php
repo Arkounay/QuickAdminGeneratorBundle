@@ -83,8 +83,8 @@ class CrudControllerTest extends WebTestCase
 
         $client->request('GET', '/admin/global-search?q=Lorem%200');
         self::assertResponseIsSuccessful();
-        self::assertStringContainsString('<a href="/admin/article-filters/edit/1/', $client->getResponse()->getContent());
-        self::assertStringNotContainsString('<a href="/admin/article-filters/edit/2', $client->getResponse()->getContent());
+        self::assertStringContainsString('<a href="/admin/article-filters/view/1/', $client->getResponse()->getContent());
+        self::assertStringNotContainsString('<a href="/admin/article-filters/view/2', $client->getResponse()->getContent());
     }
 
     public function testEdition(): void
@@ -137,6 +137,30 @@ class CrudControllerTest extends WebTestCase
         self::assertStringContainsString('No result', $client->getResponse()->getContent());
     }
 
+    public function testBatchDeletion(): void
+    {
+        $client = static::createClient();
+
+        $client->request('GET', '/admin/article-filters/edit/5/');
+        self::assertResponseIsSuccessful();
+
+        $client->request('GET', '/admin/article-filters/edit/6/');
+        self::assertResponseIsSuccessful();
+
+        $client->request('GET', '/admin/article-filters/');
+        $client->submitForm('Delete', [
+            'batch-actions[5]' => true,
+            'batch-actions[6]' => true
+        ]);
+
+        $client->request('GET', '/admin/category/edit/5/');
+        self::assertTrue($client->getResponse()->isNotFound());
+
+        $client->request('GET', '/admin/category/edit/6/');
+        self::assertTrue($client->getResponse()->isNotFound());
+    }
+
+
     public function testAnnotations(): void
     {
         $client = static::createClient();
@@ -161,7 +185,7 @@ class CrudControllerTest extends WebTestCase
         self::assertSelectorExists('select[name="filter[published]"]');
 
         $client->request('GET', '/admin/article-filters/');
-        self::assertSelectorTextContains('.table-pagination strong', 24);
+        self::assertSelectorTextContains('.table-pagination strong', 22);
 
         $client->request('GET', '/admin/article-filters/', ([
             'filter' => [
@@ -176,7 +200,32 @@ class CrudControllerTest extends WebTestCase
             ]
         ]));
         self::assertResponseIsSuccessful();
-        self::assertSelectorTextContains('.table-pagination strong', 12);
+        self::assertSelectorTextContains('.table-pagination strong', 11);
+    }
+
+
+    public function testToggleBoolean(): void
+    {
+        $client = static::createClient();
+        $client->request('POST', '/admin/article-filters/toggleBooleanPost/10/', [
+            'index' => 'published',
+            'checked' => true
+        ]);
+        self::assertResponseIsSuccessful();
+
+        $client->request('GET', '/admin/article-filters/edit/10/');
+        self::assertSelectorExists('input[type="checkbox"][name="form[published]"][checked="checked"]');
+    }
+
+    public function testView(): void
+    {
+        $client = static::createClient();
+
+        $client->request('GET', '/admin/article-filters/view/10/');
+        self::assertResponseIsSuccessful();
+
+        $client->request('GET', '/admin/category/view/2/');
+        self::assertResponseStatusCodeSame(401);
     }
 
     public function testRights(): void
