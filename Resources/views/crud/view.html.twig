@@ -10,7 +10,7 @@
                     {% for field in fields %}
                         <tr>
                             <th>{{ field.label|trans }}</th>
-                            <td>{% include field.twig with {value: attribute(entity, field.index)|default()} %}</td>
+                            <td>{% include field.twig with {value: attribute(entity, field.index)|default(), detail: true} %}</td>
                         </tr>
                     {% endfor %}
                 {% endblock %}
