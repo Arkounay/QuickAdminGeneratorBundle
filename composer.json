@@ -44,7 +44,14 @@
         "symfony/ux-turbo": "^2.0",
         "symfony/webpack-encore-bundle": "^1.14",
         "symfony/monolog-bundle": ">=3.1",
-        "symfony/flex": "^2.2"
+        "symfony/flex": "^2"
+    },
+    "config": {
+        "allow-plugins": {
+            "composer/package-versions-deprecated": true,
+            "symfony/flex": true,
+            "symfony/runtime": true
+        }
     },
     "autoload": {
         "psr-4": {
