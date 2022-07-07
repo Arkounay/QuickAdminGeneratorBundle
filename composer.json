@@ -43,7 +43,8 @@
         "symfony/proxy-manager-bridge": ">=5.1.0",
         "symfony/ux-turbo": "^2.0",
         "symfony/webpack-encore-bundle": "^1.14",
-        "symfony/monolog-bundle": ">=3.1"
+        "symfony/monolog-bundle": ">=3.1",
+        "symfony/flex": "^2.2"
     },
     "autoload": {
         "psr-4": {
@@ -58,10 +59,5 @@
         "symfony/browser-kit": ">=5.1.0",
         "symfony/css-selector": ">=5.1.0",
         "symfony/phpunit-bridge": ">=5.3"
-    },
-    "config": {
-        "allow-plugins": {
-            "symfony/flex": true
-        }
     }
 }
