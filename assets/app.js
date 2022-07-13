@@ -19,4 +19,16 @@ function applyTooltip() {
 applyTooltip();
 
 document.addEventListener('turbo:load', () => applyTooltip());
+document.addEventListener('turbo:submit-end', () => {
+    setTimeout(() => {
+        const formErrorMessage = document.querySelector('.form-error-message');
+
+        if (formErrorMessage) {
+            window.scroll({
+                top: formErrorMessage.getBoundingClientRect().top,
+                behavior: 'auto'
+            });
+        }
+    }, 0);
+});
 document.addEventListener('turbo:before-cache', () => document.querySelectorAll('.highlighted').forEach((e) => e.classList.remove('highlighted')));
