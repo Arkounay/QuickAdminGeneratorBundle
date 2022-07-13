@@ -25,7 +25,7 @@ document.addEventListener('turbo:submit-end', () => {
 
         if (formErrorMessage) {
             window.scroll({
-                top: formErrorMessage.getBoundingClientRect().top,
+                top: formErrorMessage.getBoundingClientRect().top + window.scrollY,
                 behavior: 'auto'
             });
         }
