@@ -938,11 +938,11 @@ abstract class Crud extends AbstractController
      * True by default
      * If true, the responsive mode will be simplified, there won't be a table but a simple list that will display entity's toString().
      * This removes batch actions and fields informations.
-     * Return false to use a responsive table instead.
+     * Return false to use a responsive table with more data instead.
      */
     protected function simpleResponsiveMode(): bool
     {
-        return false;
+        return true;
     }
 
     /**
