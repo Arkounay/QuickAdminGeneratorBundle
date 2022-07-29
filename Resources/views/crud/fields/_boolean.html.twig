@@ -4,9 +4,5 @@
         <input class="form-check-input" data-controller="ajax-switch" data-action="ajax-switch#toggle" type="checkbox" data-url="{{ path(route ~ '_toggle_boolean_post', {id: entity.id}) }}" data-index="{{ field.index }}" {{ value ? 'checked' }}>
     </label>
 {% else %}
-    {% if value %}
-        {{ qag_render_icon('check', 30 ,20, 'text-teal') }}
-    {% else %}
-        {{ qag_render_icon('x', 30 , 20, 'text-pink') }}
-    {% endif %}
+    {% include '@ArkounayQuickAdminGenerator/crud/fields/_boolean_readonly.html.twig' %}
 {% endif %}
