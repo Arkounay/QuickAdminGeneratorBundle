@@ -367,3 +367,8 @@ textarea[data-controller~="textarea"] {
 .mt-checkbox {
   margin-top: 2.1rem !important;
 }
+
+// Fix for ux-collection
+.bg-light.text-secondary {
+  color: #626976!important;
+}
