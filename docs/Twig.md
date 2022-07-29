@@ -1,6 +1,7 @@
 ## Twig
 
 * [Theme](#theme)
+* [Interactive command-line helper](#interactive-command-line-helper)
 * [Overriding creation and edition](#overriding-creation-and-edition)
 * [Overriding lists](#overriding-lists)
 * [Overriding the Dashboard](#overriding-the-dashboard)
@@ -12,6 +13,11 @@
 
 This bundle uses [Tabler](github.com/tabler/tabler), which uses [bootstrap](https://getbootstrap.com/). Check out their documentation to see their available classes and components.
 
+
+### Interactive command-line helper
+
+You can use the command line `php bin/console qag:twig` to automatically override some twig files and create them at the proper location. 
+It will ask you if you want to override Base, Crud, Form theme, Field, Dashboard and generate the files accordingly.
 
 ### Overriding creation and edition
 

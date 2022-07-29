@@ -58,28 +58,20 @@ class YourEntityController extends Crud
         </div>
         <div class="card-body">
 
-            To override this, create a file in <pre class="d-inline p-0 text-green">templates/bundles/ArkounayQuickAdminGeneratorBundle/dashboard.html.twig</pre>. <br>
-            For example:
-            <pre class="mt-2">
-                {%- verbatim -%}
-{% extends '@!ArkounayQuickAdminGenerator/dashboard.html.twig' %}
+            <div>
+                You can use the console command <pre class="d-inline p-1 text-gray">php bin/console qag:twig</pre> to quickly override multiple twigs, including this one. <br>
+                It is a helper that will create a file in <em>templates/bundles/ArkounayQuickAdminGeneratorBundle/dashboard.html.twig</em>.
+            </div>
 
-{% block content %}
-    &lt;div class=&quot;card&quot;&gt;
-        &lt;div class=&quot;card-body&quot;&gt;
-            Hi {{ app.user }}
-        &lt;/div&gt;
-    &lt;/div&gt;
-{% endblock %}
-                {%- endverbatim -%}
-            </pre>
-        If you don't need any dashboard, you can redirect towards a route through qag.yaml, i.e:
-            <pre class="mt-2">
-                {%- verbatim -%}
+            <div class="mt-4">If you don't need any dashboard, you can redirect towards a route through qag.yaml, i.e:
+                <pre class="mt-2">
+                    {%- verbatim -%}
 arkounay_quick_admin_generator:
     dashboard_route_redirection: 'qag.news'
-                {%- endverbatim -%}
-            </pre>
+                    {%- endverbatim -%}
+                </pre>
+            </div>
+
         </div>
 
         <div class="card-footer">

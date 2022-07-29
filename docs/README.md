@@ -135,6 +135,7 @@ See :
    * [Redirect to a specific route instead of the Dashboard](#redirect-to-a-specific-route-instead-of-the-dashboard)
 6) [Overriding the rest of the twigs](Twig.md)
    * [Theme](Twig.md#theme)
+   * [Interactive command-line helper](Twig.md#interactive-command-line-helper)
    * [Overriding creation and edition](Twig.md#overriding-creation-and-edition)
    * [Overriding lists](Twig.md#overriding-lists)
    * [Overriding the Dashboard](Twig.md#overriding-the-dashboard)

@@ -57,3 +57,9 @@ services:
         arguments:
             - !tagged_iterator quickadmin.crud
             - '%quick_admin_generator%'
+
+    Arkounay\Bundle\QuickAdminGeneratorBundle\Command\QagTwigCommand:
+        arguments:
+            $projectDir: '%kernel.project_dir%'
+            $cruds: !tagged_iterator quickadmin.crud
+        autowire: true
