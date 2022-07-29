@@ -203,7 +203,7 @@ class FieldService
             throw new \RuntimeException('Filter not supported for type "'.$metadataType.'". Specify filterType manually.');
         }
 
-        return new Filter($filterIndex, $filterForm);
+        return new Filter($filterIndex, $filterForm, $this->formRenderer->humanize($filterIndex));
     }
 
 
