@@ -351,7 +351,7 @@ tr.batch-highlighted {
 }
 
 .card-footer-sticky-active {
-  box-shadow: 1px -3px 5px rgb(50 50 50 / 10%);
+  box-shadow: 1px -3px 5px rgba(50, 50, 50, 0.1);
 }
 
 @include media-breakpoint-up(md) {
