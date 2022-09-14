@@ -14,6 +14,15 @@ class EntityFilterType extends AbstractType
 
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
+        $entityOptions = [
+            'required' => false,
+            'class' => $options['class']
+        ];
+
+        if ($options['query_builder'] ?? false) {
+            $entityOptions['query_builder'] = $options['query_builder'];
+        }
+
         $builder
             ->add('choice', ChoiceType::class, [
                 'required' => false,
@@ -23,16 +32,14 @@ class EntityFilterType extends AbstractType
                     'Different' => '!=',
                 ]
             ])
-            ->add('entity', EntityType::class, [
-                'required' => false,
-                'class' => $options['class']
-            ])
+            ->add('entity', EntityType::class, $entityOptions)
         ;
     }
 
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setRequired('class');
+        $resolver->setDefined('query_builder');
     }
 
 }
