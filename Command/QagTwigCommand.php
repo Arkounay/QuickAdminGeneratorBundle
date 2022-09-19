@@ -81,7 +81,19 @@ class QagTwigCommand extends Command
                 $answer = $io->askQuestion(new ChoiceQuestion('Please select the twig type', ['list', 'form', 'view'], null));
                 $path .= "$answer.html.twig";
 
-                $this->createFile($io, $path, "{% extends '@ArkounayQuickAdminGenerator/crud/$answer.html.twig' %}");
+                if ($answer === 'form') {
+                    $content = <<<TWIG
+                    {% extends '@!ArkounayQuickAdminGenerator/crud/form.html.twig' %}
+                    
+                    {% block form_content %}
+                        {{ form_rest(form) }}
+                    {% endblock %}
+                    TWIG;
+                } else {
+                    $content = "{% extends '@ArkounayQuickAdminGenerator/crud/$answer.html.twig' %}";
+                }
+
+                $this->createFile($io, $path, $content);
 
                 break;
 
