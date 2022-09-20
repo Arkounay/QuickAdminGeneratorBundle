@@ -32,9 +32,47 @@
   .card {
     border-color: var(--tblr-border-color);
   }
+
+  .nav-link.active {
+    background-color: #1B2434;
+  }
 }
 
-// button fix
 .bg-light.text-secondary {
-  color: #626976!important;
+  color: var(--tblr-border-color);
+}
+
+.arkounay-ux-collection .collection-add {
+  border: 1px solid var(--tblr-border-color);
+  &:hover {
+    border: 1px solid var(--btn-border-outline-color);
+  }
+}
+
+.arkounay-ux-collection.arkounay-ux-collection--tabbed .nav-tabs-empty .nav-link {
+  color: var(--tblr-btn-color);
+  border: 1px solid var(--tblr-border-color);
+  &:hover {
+    border: 1px solid var(--btn-border-outline-color);
+  }
+}
+
+.theme-dark .arkounay-ux-collection.arkounay-ux-collection--tabbed {
+  .nav-link.active {
+    background-color: #212836;
+    border-color: #2C3C56;
+    color: white;
+  }
+  .nav-link:hover {
+    border-color: #364660;
+  }
+  .nav-link {
+    color: #626976;
+    &:hover {
+      color: var(--tblr-border-color-text);
+    }
+  }
+  .card {
+    border-color: #2C3C56;
+  }
 }

@@ -23,12 +23,14 @@ $input-bg: $white !default;
 
 .theme-dark {
   --btn-border-color: #2C3C56;
+  --btn-border-outline-color: #67758c;
   --tbl-hover-light: #1B283A;
 }
 
 :root {
   --tblr-body-bg: #f8fafc;
   --btn-border-color: #E6E7E9;
+  --btn-border-outline-color: #b6b6b6;
   --tbl-hover-light: #fcfcfc;
 }
 
