@@ -488,6 +488,12 @@ abstract class Crud extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $event = new GenericEvent($entity, ['request' => $request, 'form' => $form]);
+            $this->eventDispatcher->dispatch($event, 'qag.events.submit_create');
+            if ($event->hasArgument('response')) {
+                return $event->getArgument('response');
+            }
+
             $this->updateEntity($entity, true);
             return $this->redirectToList();
         }
@@ -523,6 +529,12 @@ abstract class Crud extends AbstractController
         $form->handleRequest($this->request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $event = new GenericEvent($entity, ['request' => $request, 'form' => $form]);
+            $this->eventDispatcher->dispatch($event, 'qag.events.submit_edit');
+            if ($event->hasArgument('response')) {
+                return $event->getArgument('response');
+            }
+
             $this->updateEntity($entity, false);
             return $this->redirectToList();
         }
