@@ -89,12 +89,12 @@ public function archiveBatchAction(): RedirectResponse
 
 ![Batch Actions](https://raw.githubusercontent.com/Arkounay/QuickAdminGeneratorBundle/master/docs/images/actions-batch.png)
 
-If you need to remove batch actions, you can simply override getBatchActions and return `null`. This will remove the checkboxes altogether:
+If you need to remove every batch actions, you can simply override getBatchActions and return en empty actions `new Actions()`. This will remove the checkboxes altogether:
 
 ```php
 public function getBatchActions(): Actions
 {
-    return null;
+    return new Actions();
 }
 ```
 
