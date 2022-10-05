@@ -62,6 +62,16 @@ class Field implements Listable
     protected $displayedInForm = true;
 
     /**
+     * @var bool
+     */
+    protected $displayedInView = true;
+
+    /**
+     * @var bool
+     */
+    protected $displayedInExport = true;
+
+    /**
      * @var string - null if not sorted by default
      */
     protected $defaultSortDirection;
@@ -207,6 +217,31 @@ class Field implements Listable
         return $this;
     }
 
+    public function isDisplayedInView(): bool
+    {
+        return $this->displayedInView;
+    }
+
+    public function setDisplayedInView(bool $displayedInView): self
+    {
+        $this->displayedInView = $displayedInView;
+
+        return $this;
+    }
+
+    public function isDisplayedInExport(): bool
+    {
+        return $this->displayedInExport;
+    }
+
+    public function setDisplayedInExport(bool $displayedInExport): self
+    {
+        $this->displayedInExport = $displayedInExport;
+
+        return $this;
+    }
+
+
     public function getDefaultSortDirection(): ?string
     {
         return $this->defaultSortDirection;
@@ -333,8 +368,8 @@ class Field implements Listable
                 break;
             case 'relation':
                 $options['attr']['data-controller'] = 'select2';
-                $options['class'] =  $this->getAssociationMapping();
-                $options['multiple'] =  false;
+                $options['class'] = $this->getAssociationMapping();
+                $options['multiple'] = false;
                 break;
             case 'relation_to_many':
                 $options['attr']['data-controller'] = 'select2';

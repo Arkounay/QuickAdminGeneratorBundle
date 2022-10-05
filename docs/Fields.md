@@ -4,6 +4,8 @@
   - [@QAG\Field](#qagfield)
   - [@QAG\HideInForm](#qaghideinform)
   - [@QAG\HideInList](#qaghideinlist)
+  - [@QAG\HideInView](#qaghideinview)
+  - [@QAG\HideInExport](#qaghideinexport)
   - [@QAG\Ignore](#qagignore)
   - [@QAG\Sort](#qagsort)
   - [@QAG\Crud](#qagcrud)
@@ -66,17 +68,21 @@ You can import the QAG annotations with
 use Arkounay\Bundle\QuickAdminGeneratorBundle\Annotation as QAG;
 ```
 
-There are **9** annotations available:
+There are **13** annotations available:
 
 - @QAG\Field
 - @QAG\HideInForm
 - @QAG\HideInList
+- @QAG\HideInExport
+- @QAG\HideInView
 - @QAG\Ignore
 - @QAG\Sort
 - @QAG\Crud *(class-level)*
 - @QAG\Show (only in manual fetch mode)
 - @QAG\ShowInList (only in manual fetch mode)
 - @QAG\ShowInForm (only in manual fetch mode)
+- @QAG\ShowInView (only in manual fetch mode)
+- @QAG\ShowInExport (only in manual fetch mode)
 
 
 #### @QAG\Field
@@ -98,6 +104,12 @@ Allows you to hide a field in both creation and edition.
 
 #### @QAG\HideInList
 Allows you to hide a field in listing.
+
+#### @QAG\HideInView
+Allows you to hide a field in detail view.
+
+#### @QAG\HideInExport
+Allows you to hide a field in the exported file.
 
 #### @QAG\Ignore
 Allows you to completely ignore a field. It will not be parsed, and thus hidden from listing, creation, and edition.
@@ -126,17 +138,23 @@ You can change that by specifying a manual Fetch Mode.
 In manual mode, you'll have to add @QAG\Show, @QAG\ShowInList and @QAG\ShowInForm to make them appear, otherwise fields will be ignored.
 
 #### @QAG\Show (only in manual fetch mode)
-Will show the field both in listing, creation and edition.
+Will show the field
 
 #### @QAG\ShowInForm (only in manual fetch mode)
-Will show the field both in creation and edition only
+Will show the field both in creation and edition
 
 #### @QAG\ShowInList (only in manual fetch mode)
-Will show the field both in listing only
+Will show the field in listing
+
+#### @QAG\ShowInView (only in manual fetch mode)
+Will show the field in detail view
+
+#### @QAG\ShowInExport (only in manual fetch mode)
+Will show the field in the exported file
 
 
 ## Configure Fields by Attributes
-PHP 8 Attributes are also supported. It's good if your doctrine mapping is configured to use Attributes, e.g:
+PHP 8 Attributes are supported and recommended over doctrine annotations. It's good if your doctrine mapping is configured to use Attributes, e.g:
 ```php
 #[ORM\Entity(repositoryClass: RabbitRepository::class)]
 class Rabbit

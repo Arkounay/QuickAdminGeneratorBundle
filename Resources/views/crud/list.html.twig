@@ -146,7 +146,7 @@
                     {% block tbody %}
                         {% for i, entity in entities %}
                             {% set actions = actions_entities[i]|default([]) %}
-                            <tr {{ entity.id == highlighted_row ? 'class="highlighted"' }}>
+                            <tr {{ entity.id == highlighted_row ? 'class="highlighted"' }} data-id="{{ entity.id }}">
                                 {% if has_batch_actions %}
                                     {% block batch_td %}
                                         <td class="batch-column">
@@ -158,7 +158,7 @@
                                 {% endif %}
                                 {% for field in fields %}
                                     {% block field_td %}
-                                        <td data-label="{{ field.label|trans }}">{% include field.twig with {value: attribute(entity, field.index)|default(), detail: false} %}</td>
+                                        <td data-label="{{ field.label|trans }}">{% include field.twig with {value: attribute(entity, field.index)|default(), detail: false, export: false} %}</td>
                                     {% endblock %}
                                 {% endfor %}
                                 {% block actions %}

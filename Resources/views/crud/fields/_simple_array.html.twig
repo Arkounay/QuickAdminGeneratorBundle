@@ -1,3 +1,7 @@
 {% for v in value %}
-    <span class="badge bg-azure-lt">{{ v }}</span>
+    {% if export %}
+        {{ v }},
+    {% else %}
+        <span class="badge bg-azure-lt">{{ v }}</span>
+    {% endif %}
 {% endfor %}

@@ -122,17 +122,17 @@ In the listing, you can add a description by overriding the `getDescription` met
 
 ### Responsive mode
 
-By default, the responsive mode of the list view will be simplified.
+By default, the responsive mode of the list view will be simplified, showing only an entity's `__toString`.
 
 ![Responsive Simple](https://raw.githubusercontent.com/Arkounay/QuickAdminGeneratorBundle/master/docs/images/responsive-simple.png)
 
 This will disallow batch actions and hide some information, but make the view more simple on mobile devices.
-To enable this, override the `simpleResponsiveMode` method and return true.
+To disable this, override the `simpleResponsiveMode` method and return false.
 
 ```php
 protected function simpleResponsiveMode(): bool
 {
-    return true;
+    return false;
 }
 ```
 
@@ -150,7 +150,8 @@ There are multiple functions that can be overridden to configure permissions:
 - `isEditable($entity)` checks if an element can be edited. If false, will prevent the user from going to the "edit" route and remove the "Edit" action.
 - `isDeletable($entity)` checks if an element can be deleted. If false, will also remove the "Delete" action and the "Delete" batch action.
 - `isSearchable` checks if an element can be searched. If false, will prevent text search and remove the search bar (filters can still be applied if they exist).
-- `isViewable` checks if an element can be viewed. False by default, if true will add a "View" action that displays an entity's detail.
+- `isViewable($entity)` checks if an element can be viewed. False by default, if true will add a "View" action that displays an entity's detail.
+- `isExportable` checks if an element can be exported. False by default, if true will add an "Export" global action that will create a CSV file containing all entities that match the current filter.
 
 
 Example:

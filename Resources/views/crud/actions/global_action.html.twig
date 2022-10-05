@@ -7,7 +7,9 @@
 {% endif %}
 
 {# action \Arkounay\Bundle\QuickAdminGeneratorBundle\Model\Action #}
-{#<a {{ action_renderer.action_attributes(action, action.customHref ?? path(route ~ '_' ~ action.index)) }}>#}
+{% if action.classes is empty %}
+    {% do action.addClass('btn') %}
+{% endif %}
 <a {{ action_renderer.action_attributes(action) }}>
     {% if action.icon %}
         {{ qag_render_icon(action.icon, 17, 17, 'me-1') }}

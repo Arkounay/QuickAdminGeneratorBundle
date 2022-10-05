@@ -1,5 +1,13 @@
-{% if value %}
-    {{ qag_render_icon('check', 30 ,20, 'text-teal') }}
+{% if export %}
+    {% if value %}
+        {{ 'Yes'|trans }}
+    {% else %}
+        {{ 'No'|trans }}
+    {% endif %}
 {% else %}
-    {{ qag_render_icon('x', 30 , 20, 'text-pink') }}
+    {% if value %}
+        {{ qag_render_icon('check', 30 ,20, 'text-teal') }}
+    {% else %}
+        {{ qag_render_icon('x', 30 , 20, 'text-pink') }}
+    {% endif %}
 {% endif %}

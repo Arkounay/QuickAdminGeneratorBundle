@@ -43,6 +43,7 @@ All: Tous
 Dark mode: Thème sombre
 batch_selection_single: '<strong>Un</strong> élément sélectionné :'
 batch_selection_multiple: '<strong>%count%</strong> éléments sélectionnés :'
+Export: Exporter
 
 pagination:
     num_of_result: '<strong> %total_count% </strong> résultats'

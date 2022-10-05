@@ -29,6 +29,7 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\StreamedResponse;
 use Symfony\Component\PropertyAccess\PropertyAccess;
 use Symfony\Component\String\Inflector\EnglishInflector;
 use Symfony\Component\String\Inflector\InflectorInterface;
@@ -127,7 +128,7 @@ abstract class Crud extends AbstractController
     /**
      * Global actions (actions that don't apply to a single existing entity, such as "create".)
      */
-    public function getGlobalActions(): ?Actions
+    public function getGlobalActions(): Actions
     {
         $actions = new Actions();
 
@@ -137,6 +138,15 @@ abstract class Crud extends AbstractController
             $createAction->setIcon('plus');
             $createAction->addClasses('btn', 'btn-primary');
             $actions->add($createAction);
+        }
+
+        if ($this->isExportable()) {
+            $exportAction = new Action('export');
+            $exportAction->addClasses('btn', 'btn-white');
+            $exportAction->setAttributes(['download' => '']);
+            $exportAction->setIcon('download');
+
+            $actions->add($exportAction);
         }
 
         if ($this->isPrimary && !$this->getFilters()->isEmpty()) {
@@ -157,7 +167,7 @@ abstract class Crud extends AbstractController
     /**
      * Actions that can be applied to a single existing entity, such as "Edit" or "Delete"
      */
-    public function getActions($entity): ?Actions
+    public function getActions($entity): Actions
     {
         $actions = new Actions();
 
@@ -203,7 +213,7 @@ abstract class Crud extends AbstractController
     /**
      * The batch actions available for a lit of entities
      */
-    public function getBatchActions(iterable $entities): ?Actions
+    public function getBatchActions(iterable $entities): Actions
     {
         $actions = new Actions();
 
@@ -360,6 +370,14 @@ abstract class Crud extends AbstractController
     }
 
     /**
+     * Checks if an entity is exportable to a file
+     */
+    public function isExportable(): bool
+    {
+        return false;
+    }
+
+    /**
      * The default number of item per pages.
      */
     protected function getItemsPerPage(): int
@@ -468,7 +486,7 @@ abstract class Crud extends AbstractController
             'plural_name' => $this->getPluralName(),
             'action_name' => 'View',
             'back' => $this->backUrl(),
-            'fields' => $this->getListingFields(),
+            'fields' => $this->getViewFields(),
             'entity' => $entity,
             'actions' => $this->getActions($entity)
         ]));
@@ -547,6 +565,59 @@ abstract class Crud extends AbstractController
             'action_name' => 'Edit'
         ]));
     }
+
+    /**
+     * Exports to a file
+     */
+    public function exportAction(Request $request): Response
+    {
+        if (!$this->isExportable()) {
+            throw $this->createAccessDeniedException("Entity {$this->getEntity()} cannot be exported.");
+        }
+
+        $queryBuilder = $this->getListQueryBuilder();
+        $this->applySearchAndFiltersQueryBuilder($request, $queryBuilder);
+        $entities = $queryBuilder->getQuery()->toIterable();
+        /** @var Fields|Field[] $fields */
+        $fields = $this->getExportFields();
+        $header = [];
+        foreach ($fields as $field) {
+            $header[] = $this->translator->trans($field->getLabel());
+        }
+        $propertyAccessor = PropertyAccess::createPropertyAccessor();
+
+        $response = new StreamedResponse();
+        $response->setCallback(function () use ($propertyAccessor, $fields, $header, $entities) {
+            $handle = fopen('php://output', 'w+');
+            fwrite($handle, "\xEF\xBB\xBF");
+            fputcsv($handle, $header, ';');
+            foreach ($entities as $entity) {
+                $row = [];
+                foreach ($fields as $field) {
+                    try {
+                        $value = $propertyAccessor->getValue($entity, $field->getIndex());
+                    } catch (\Exception) {
+                        $value = '';
+                    }
+
+                    $row[] = trim(html_entity_decode($this->renderView($field->getTwig(), ['value' => $value, 'detail' => false, 'export' => true])));
+                }
+                fputcsv($handle, $row, ';');
+            }
+
+            fclose($handle);
+        });
+
+        $response->setStatusCode(200);
+        $response->headers->set('Content-Encoding', 'UTF-8');
+        $response->headers->set('Cache-Control', 'private');
+        $response->headers->set('Content-Type', 'text/csv; application/force-download');
+        $response->headers->set('Content-Disposition', 'attachment; filename="' . strtolower($this->slugger->slug($this->getName())) . '_export.csv"');
+
+        return $response;
+
+    }
+
 
     /**
      * Called when flushing a newly created entity or after updating an existing one.
@@ -709,7 +780,19 @@ abstract class Crud extends AbstractController
      */
     protected function getViewFields(): Fields
     {
-        return $this->getListingFields();
+        return clone $this->fields->filter(static function (Field $field) {
+            return $field->isDisplayedInView();
+        });
+    }
+
+    /**
+     * Fields that will be used for the export of an entity.
+     */
+    protected function getExportFields(): Fields
+    {
+        return clone $this->fields->filter(static function (Field $field) {
+            return $field->isDisplayedInExport();
+        });
     }
 
     /**

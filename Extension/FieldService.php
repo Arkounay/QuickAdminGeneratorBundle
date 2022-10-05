@@ -3,11 +3,16 @@
 namespace Arkounay\Bundle\QuickAdminGeneratorBundle\Extension;
 
 use Arkounay\Bundle\QuickAdminGeneratorBundle\Annotation\Crud;
+use Arkounay\Bundle\QuickAdminGeneratorBundle\Annotation\HideInExport;
 use Arkounay\Bundle\QuickAdminGeneratorBundle\Annotation\HideInForm;
 use Arkounay\Bundle\QuickAdminGeneratorBundle\Annotation\HideInList;
+use Arkounay\Bundle\QuickAdminGeneratorBundle\Annotation\HideInView;
 use Arkounay\Bundle\QuickAdminGeneratorBundle\Annotation\Ignore;
+use Arkounay\Bundle\QuickAdminGeneratorBundle\Annotation\Show;
+use Arkounay\Bundle\QuickAdminGeneratorBundle\Annotation\ShowInExport;
 use Arkounay\Bundle\QuickAdminGeneratorBundle\Annotation\ShowInForm;
 use Arkounay\Bundle\QuickAdminGeneratorBundle\Annotation\ShowInList;
+use Arkounay\Bundle\QuickAdminGeneratorBundle\Annotation\ShowInView;
 use Arkounay\Bundle\QuickAdminGeneratorBundle\Annotation\Sort;
 use Arkounay\Bundle\QuickAdminGeneratorBundle\Model\Field;
 use Arkounay\Bundle\QuickAdminGeneratorBundle\Model\Filter;
@@ -84,16 +89,28 @@ class FieldService
                         if ($hideInList !== null) {
                             $field->setDisplayedInList(false);
                         }
+                        $hideInView = $this->getAttribute($reflectionProperty, HideInView::class);
+                        if ($hideInView !== null) {
+                            $field->setDisplayedInView(false);
+                        }
+                        $hideInExport = $this->getAttribute($reflectionProperty, HideInExport::class);
+                        if ($hideInExport !== null) {
+                            $field->setDisplayedInExport(false);
+                        }
                     }
                     if ($fetchMode === Crud::FETCH_MANUAL) {
 
                         // handle show annotations for manual fetch mode
-                        $showInForm = $this->getAttribute($reflectionProperty, ShowInForm::class);
-                        $showInList = $this->getAttribute($reflectionProperty, ShowInList::class);
-                        if ($showInForm === null && $showInList !== null) {
-                            $field->setDisplayedInForm(false);
-                        } elseif ($showInForm !== null && $showInList === null) {
-                            $field->setDisplayedInList(false);
+                        $show = $this->getAttribute($reflectionProperty, Show::class);
+                        if ($show === null) {
+                            $showInForm = $this->getAttribute($reflectionProperty, ShowInForm::class);
+                            $showInList = $this->getAttribute($reflectionProperty, ShowInList::class);
+                            $showInView = $this->getAttribute($reflectionProperty, ShowInView::class);
+                            $showInExport = $this->getAttribute($reflectionProperty, ShowInExport::class);
+                            $field->setDisplayedInList($showInList !== null);
+                            $field->setDisplayedInForm($showInForm !== null);
+                            $field->setDisplayedInView($showInView !== null);
+                            $field->setDisplayedInExport($showInExport !== null);
                         }
                     }
                     /** @var Sort $sort */

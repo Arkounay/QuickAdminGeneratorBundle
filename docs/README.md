@@ -72,12 +72,14 @@ and now refresh `/admin` in your browser. You should see a new "News" item that 
 
 If you use the symfony command to display routes `php bin/console debug:router`, you'll see that some routes avec been generated for you:
 ```
-qag.category                    ANY      ANY      ANY    /admin/category/                  
-qag.category_create             ANY      ANY      ANY    /admin/category/create            
-qag.category_delete             ANY      ANY      ANY    /admin/category/delete/{id}/      
-qag.category_delete_batch       ANY      ANY      ANY    /admin/category/deleteBatch      
-qag.category_edit               ANY      ANY      ANY    /admin/category/edit/{id}/        
-qag.category_filter_form_ajax   ANY      ANY      ANY    /admin/category/filterFormAjax
+qag.category                       ANY      ANY      ANY    /admin/category/                  
+qag.category_create                ANY      ANY      ANY    /admin/category/create            
+qag.category_delete                ANY      ANY      ANY    /admin/category/delete/{id}/      
+qag.category_delete_batch          ANY      ANY      ANY    /admin/category/deleteBatch      
+qag.category_edit                  ANY      ANY      ANY    /admin/category/edit/{id}/        
+qag.category_export                ANY      ANY      ANY    /admin/category/export
+qag.category_filter_form_ajax      ANY      ANY      ANY    /admin/category/filterFormAjax
+qag.category_toggle_boolean_post   POST     ANY      ANY    /admin/category/toggleBooleanPost/{id}/
 ```
 
 ## Next steps
@@ -91,6 +93,8 @@ See :
       - [@QAG\Field](Fields.md#qagfield)
       - [@QAG\HideInForm](Fields.md#qaghideinform)
       - [@QAG\HideInList](Fields.md#qaghideinlist)
+      - [@QAG\HideInView](Fields.md#qaghideinview)
+      - [@QAG\HideInExport](Fields.md#qaghideinexport)
       - [@QAG\Ignore](Fields.md#qagignore)
       - [@QAG\Sort](Fields.md#qagsort)
       - [@QAG\Crud](Fields.md#qagcrud)
@@ -102,6 +106,7 @@ See :
    * [Metadata](Controllers.md#metadata)
        + [Changing name](Controllers.md#changing-name)
        + [Adding an icon](Controllers.md#adding-an-icon)
+       + [Adding a badge with a number](Controllers.md#adding-a-badge-with-a-number)
        + [Adding a description](Controllers.md#adding-a-description)
        + [Responsive mode](Controllers.md#responsive-mode)
    * [Permissions](Controllers.md#permissions)

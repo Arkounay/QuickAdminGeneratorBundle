@@ -112,7 +112,7 @@ class CrudControllerTest extends WebTestCase
         $client = static::createClient();
 
         $client->request('GET', '/admin/category-extra-actions/create');
-        self::assertResponseStatusCodeSame(404);
+        self::assertResponseStatusCodeSame(401);
 
         $client->request('GET', '/admin/category-extra-actions/');
         self::assertResponseIsSuccessful();
@@ -233,7 +233,7 @@ class CrudControllerTest extends WebTestCase
         $client = static::createClient();
 
         $client->request('GET', '/admin/category-extra-actions/create');
-        self::assertResponseStatusCodeSame(404);
+        self::assertResponseStatusCodeSame(401);
 
         $client->request('GET', '/admin/disabled/');
         self::assertResponseStatusCodeSame(401);

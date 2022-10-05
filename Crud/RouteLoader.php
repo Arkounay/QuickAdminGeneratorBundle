@@ -8,6 +8,8 @@ use Arkounay\Bundle\QuickAdminGeneratorBundle\Controller\DashboardController;
 use Arkounay\Bundle\QuickAdminGeneratorBundle\Controller\GlobalSearchController;
 use Arkounay\Bundle\QuickAdminGeneratorBundle\Controller\ThemeController;
 use Arkounay\Bundle\QuickAdminGeneratorBundle\Model\Action;
+use ReflectionClass;
+use ReflectionFunction;
 use Symfony\Bundle\FrameworkBundle\Routing\RouteLoaderInterface;
 use Symfony\Component\Routing\Route;
 use Symfony\Component\Routing\RouteCollection;
@@ -32,11 +34,14 @@ class RouteLoader implements RouteLoaderInterface
         $this->config = $config;
     }
 
-    public function __invoke($resource, string $type = null)
+    public function __invoke($resource, string $type = null): RouteCollection
     {
         $routes = new RouteCollection();
 
         foreach ($this->cruds as $crud) {
+            $class = get_class($crud);
+            $reflectionClass = new ReflectionClass($class);
+
             foreach ($crud->getAllActions() as $action) {
                 // create routes from the entity's actions.
                 $suffix = $action;
@@ -47,30 +52,33 @@ class RouteLoader implements RouteLoaderInterface
                 if ($isBatch) {
                     $suffix = substr($suffix, 0, -5) . 'Batch';
                 }
-                $route = new Route("/{$crud->getRoute()}/{$suffix}", ['_controller' => get_class($crud) . "::{$action}Action"]);
+                $route = new Route("/{$crud->getRoute()}/{$suffix}", ['_controller' => $class . "::{$action}Action"]);
                 $routeName = "qag.{$crud->getRoute()}";
                 if ($suffix) {
                     $routeName .= '_' . u($suffix)->snake();
-                    try {
-                        $globalActions = $crud->getGlobalActions();
-                    } catch (\Exception) {
-                        throw new \RuntimeException("Could not retrieve global actions, make sure you're using " . '"$this->isPrimary"' . " if you're using the router to generate a custom href");
-                    }
-                    $globalActionsIndexes = [];
-                    if ($globalActions !== null) {
-                        foreach ($globalActions as $a) {
-                            /** @var Action $a */
-                            $globalActionsIndexes[] = $a->getIndex();
+
+                    $method = $reflectionClass->getMethod("{$action}Action");
+                    $parameters = $method->getParameters();
+                    $entityInjected = false;
+                    foreach ($parameters as $parameter) {
+                        if ($parameter->getType() === null || $parameter->getType()->getName() === $crud->getEntity()) {
+                            $entityInjected = true;
+                            break;
                         }
                     }
+
                     if (!$isBatch) {
-                        if (!in_array($action, $globalActionsIndexes, true) && !u($route->getPath())->containsAny(['Global', 'Ajax'])) {
+                        $uAction = u($action);
+                        if ($entityInjected) {
                             $route->setPath($route->getPath().'/{id}/');
                         }
-                        if (u($action)->endsWith('Post')) {
+                        if ($uAction->containsAny('Post')) {
                             $route->setMethods('POST');
-                        } elseif (u($action)->endsWith('Get')) {
+                        } elseif ($uAction->containsAny('Get')) {
                             $route->setMethods('GET');
+                        }
+                        if ($uAction->containsAny(['Json', 'Api'])) {
+                            $route->setDefault('_format', 'json');
                         }
                     }
                 }

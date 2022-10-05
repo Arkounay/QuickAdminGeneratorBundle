@@ -27,7 +27,7 @@ class CategoryExtraActionController extends Crud
         return 'category-extra-actions';
     }
 
-    public function getActions($entity): ?Actions
+    public function getActions($entity): Actions
     {
         $res = parent::getActions($entity)->add('custom');
         if ($res->contains('custom')) {
@@ -36,16 +36,16 @@ class CategoryExtraActionController extends Crud
         return $res;
     }
 
-    public function getGlobalActions(): ?Actions
+    public function getGlobalActions(): Actions
     {
         return parent::getGlobalActions()
-            ->add((new Action('export'))->addClass('custom-global-action'))
-            ->add((new Action('export 2'))->setLabel('My custom action label'))
-            ->moveToFirstPosition('export 2')
+            ->add((new Action('stats'))->addClass('custom-global-action'))
+            ->add((new Action('stats 2'))->setLabel('My custom action label'))
+            ->moveToFirstPosition('stats 2')
         ;
     }
 
-    public function exportAction(): Response
+    public function statsAction(): Response
     {
         return new Response(1);
     }
