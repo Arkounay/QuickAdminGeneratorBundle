@@ -4,6 +4,7 @@
 - [Batch actions](#batch-actions)
 - [Global actions](#global-actions)
 - [Customizing how actions are rendered](#customizing-how-actions-are-rendered)
+- [Modals](#modals)
 - [Routing shorcuts](#routing-shorcuts)
 
 ---      
@@ -124,6 +125,58 @@ qag.category_stats           ANY      ANY      ANY    /admin/category/stats
 ```
 
 There is no `/{id}`, because QAG detects that `statsAction` doesn't have a dependency on an untyped parameter or a parameter that is the same type as the entity's controller.
+
+
+#### Modals
+
+Through a built-in stimulus controller, you can configure an action to open a modal instead of a link. The `Modal` class can help you to do that easily.
+
+```php
+public function getActions($entity): Actions
+{
+    $actions = parent::getActions($entity);
+
+    // create a modal with custom html
+    $modalAction = new Action('modal');
+    $modal = new Modal($this->translator, $entity->getName());
+    $modal->setHtml("Hi, my name is <strong>{$entity->getName()}</strong>");
+    $modalAction->setModal($modal);
+    $actions->add($modalAction);
+
+    // or through ajax
+    $ajaxModalAction = new Action('Ajax modal');
+    $modal = new Modal($this->translator, 'Ajax modal');
+    $modal->setAjaxTarget($this->generateUrl('qag.category_modal_detail', ['id' => $entity->getId()]));
+    $ajaxModalAction->setModal($modal);
+    $actions->add($ajaxModalAction);
+
+    return $actions;
+}
+```
+
+The modal class has many options and uses bootstrap's modal system:
+
+- `setTitle`: The title of the modal
+- `setAjaxTarget`: The optional url that will be fetched when the modal opens, its data will replace the modal's body. Emty by default.
+- `setHtml`: The HTML that will be displayed when the modal opens. By default, it's a loader.
+- `setModalClasses`: The classes that will be appended after `modal-dialog`. For example, specify `modal-dialog-centered` to vertically center a modal (checkout bootstrap's documention for more information)
+- `setHasUpperRightCloseButton`: If the modal has an upper right close button (x)
+- `setHasCloseButton`: If the modal has a close button
+- `setCloseButtonLabel`: The label of the close button
+- `setCloseButtonClass`: The class of the close button
+- `setHasSaveButton`: If the modal has a save button. When a save button is pressed, the form inside the modal's body will be submitted if there is one.
+- `setSaveButtonlabel`: The label of the save button
+- `setSaveButtonClass`: The class of the save button (default "btn-primary")
+- `setBackdrop`: The backdrop value (check bootstrap's documentation to know more)
+- `setKeyboard`: If the modal can be closed by pressing esc
+- `setFocus`: If the modal takes the focus when it opens
+
+A modal can also be open by calling the corresponding stimulus controller manually:
+```html
+<button data-controller="modal" data-modal-title-value="Modal" data-modal-html-value="Simple modal">
+    Simple modal
+</button>
+```
 
 
 #### Customizing how actions are rendered

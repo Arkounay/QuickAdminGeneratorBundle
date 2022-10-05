@@ -129,6 +129,11 @@ class Action implements Listable
         return $this;
     }
 
+    public function setModal(Modal $modal): void
+    {
+        $this->attributes = array_merge($this->attributes, $modal->toAttributes());
+    }
+
     /**
      * @param string[] $classes
      */
