@@ -7,9 +7,9 @@ namespace Arkounay\Bundle\QuickAdminGeneratorBundle\Tests\TestApp\src\Controller
 use Arkounay\Bundle\QuickAdminGeneratorBundle\Controller\Crud;
 use Arkounay\Bundle\QuickAdminGeneratorBundle\Model\Action;
 use Arkounay\Bundle\QuickAdminGeneratorBundle\Model\Actions;
+use Arkounay\Bundle\QuickAdminGeneratorBundle\Model\Modal;
 use Arkounay\Bundle\QuickAdminGeneratorBundle\Tests\TestApp\src\Entity\Category;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
 
 /**
  * Most basic Crud
@@ -29,11 +29,20 @@ class CategoryExtraActionController extends Crud
 
     public function getActions($entity): Actions
     {
-        $res = parent::getActions($entity)->add('custom');
-        if ($res->contains('custom')) {
-            $res['custom']->setLabel('My custom action');
+        $actions = parent::getActions($entity)->add('custom');
+        if ($actions->contains('custom')) {
+            $actions['custom']->setLabel('My custom action');
         }
-        return $res;
+
+        $modalAction = new Action('modal');
+        $modal = new Modal($this->translator, $entity->getName());
+        $modal->setHtml("This is the category <strong>{$entity->getName()}</strong>");
+        $modal->setHasUpperRightCloseButton(false);
+        $modal->setModalClasses('modal-dialog-centered');
+        $modalAction->setModal($modal);
+        $actions->add($modalAction);
+
+        return $actions;
     }
 
     public function getGlobalActions(): Actions
