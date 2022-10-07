@@ -20,6 +20,7 @@ use Arkounay\Bundle\QuickAdminGeneratorBundle\Model\Form\Filter\BooleanFilter;
 use Arkounay\Bundle\QuickAdminGeneratorBundle\Model\Form\Filter\DateFilter;
 use Arkounay\Bundle\QuickAdminGeneratorBundle\Model\Form\Filter\DateTimeFilter;
 use Arkounay\Bundle\QuickAdminGeneratorBundle\Model\Form\Filter\EntityFilter;
+use Arkounay\Bundle\QuickAdminGeneratorBundle\Model\Form\Filter\EnumFilter;
 use Arkounay\Bundle\QuickAdminGeneratorBundle\Model\Form\Filter\IntegerFilter;
 use Arkounay\Bundle\QuickAdminGeneratorBundle\Model\Form\Filter\StringFilter;
 use Doctrine\Common\Annotations\Reader;
@@ -192,12 +193,26 @@ class FieldService
     public function createFilter(ClassMetadata $metadata, string $filterIndex): Filter
     {
         $filterForm = null;
-        $metadataType = $this->getType($metadata, $filterIndex);
-        switch ($metadataType) {
+        $fieldMapping = null;
+        $type = null;
+        try {
+            $fieldMapping = $metadata->getFieldMapping($filterIndex);
+            $type = $fieldMapping['type'] ?? null;
+            if (isset($fieldMapping['enumType'])) {
+                $type = 'enum';
+            }
+        } catch (\Exception){
+            $type = $this->getType($metadata, $filterIndex);
+        }
+
+        switch ($type) {
             case 'virtual':
                 throw new \RuntimeException('Filters are not supported for virtual fields');
             case 'date':
                 $filterForm = new DateFilter();
+                break;
+            case 'enum':
+                $filterForm = new EnumFilter($fieldMapping['enumType']);
                 break;
             case 'datetime':
                 $filterForm = new DateTimeFilter();
@@ -217,7 +232,7 @@ class FieldService
         }
 
         if ($filterForm === null) {
-            throw new \RuntimeException('Filter not supported for type "'.$metadataType.'". Specify filterType manually.');
+            throw new \RuntimeException('Filter not supported for type "'.$type.'". Specify filterType manually.');
         }
 
         return new Filter($filterIndex, $filterForm, $this->formRenderer->humanize($filterIndex));
