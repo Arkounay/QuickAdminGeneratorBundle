@@ -349,24 +349,20 @@ class Field implements Listable
         return $options;
     }
 
-    public function guessFormType(): string
+    public function guessFormType(): ?string
     {
-        switch ($this->getType()) {
-            case 'decimal':
-                return TextType::class;
-            case 'enum':
-                return EnumType::class;
-            case 'date':
-                return $this->getFormType() ?? DateType::class;
-            case 'datetime_immutable':
-            case 'datetime':
-                return $this->getFormType() ?? DateTimeType::class;
-            case 'relation_to_many':
-            case 'relation':
-                return $this->getFormType() ?? EntityType::class;
-            default:
-                return $this->getFormType();
+        if ($this->getFormType() !== null) {
+            return $this->getFormType();
         }
+
+        return match ($this->getType()) {
+            'decimal' => TextType::class,
+            'enum' => EnumType::class,
+            'date' => $this->getFormType() ?? DateType::class,
+            'datetime_immutable', 'datetime' => $this->getFormType() ?? DateTimeType::class,
+            'relation_to_many', 'relation' => $this->getFormType() ?? EntityType::class,
+            default => null,
+        };
     }
 
 }

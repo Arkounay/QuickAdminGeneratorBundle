@@ -608,7 +608,7 @@ abstract class Crud extends AbstractController
                 continue;
             }
 
-            $builder->add($field->getIndex(), $field->getFormType(), $field->guessFormOptions());
+            $builder->add($field->getIndex(), $field->guessFormType(), $field->guessFormOptions());
         }
 
         return $builder;
