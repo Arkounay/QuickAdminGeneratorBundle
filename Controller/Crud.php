@@ -577,6 +577,7 @@ abstract class Crud extends AbstractController
 
         $queryBuilder = $this->getListQueryBuilder();
         $this->applySearchAndFiltersQueryBuilder($request, $queryBuilder);
+        $queryBuilder->distinct();
         $entities = $queryBuilder->getQuery()->toIterable();
         /** @var Fields|Field[] $fields */
         $fields = $this->getExportFields();
