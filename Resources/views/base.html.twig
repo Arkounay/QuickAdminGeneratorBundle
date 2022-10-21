@@ -100,7 +100,7 @@
                         <div class="d-none d-md-block">
                             {% block global_search %}
                                 {% if qag.config.global_search %}
-                                    <div class="global-search-item me-2 {{ menu_horizontal ? 'mt-2' }}">
+                                    <div class="global-search-item {{ menu_horizontal ? 'mx-2 mt-2' }}">
                                         <form action="{{ path('qag.global_search') }}" method="get" data-controller="global-search" data-global-search-index-value="0">
                                             <div class="input-icon">
                                                 <span class="input-icon-addon">
@@ -116,7 +116,7 @@
                         </div>
                     {% endif %}
                     <div class="nav-item dropdown">
-                        <a href="#" class="nav-link d-flex lh-1 text-reset p-0" data-bs-toggle="dropdown" data-bs-auto-close="outside">
+                        <a href="#" class="nav-link d-flex lh-1 text-muted p-0" data-bs-toggle="dropdown" data-bs-auto-close="outside">
                             {% block user_menu_username %}
                                 {% if app.user is not null %}
                                     {% if app.user.username is defined %}
@@ -177,7 +177,7 @@
                     {% block menu_items %}
                         {% set icon_class = menu_vertical ? 'me-2' : 'me-1' %}
                         {% if menu_vertical %}
-                            <li class="nav-item d-md-none">
+                            <li class="nav-item d-lg-none">
                                 {{ block('global_search') }}
                             </li>
                         {% endif %}
@@ -261,7 +261,7 @@
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar-menu">
                     <span class="navbar-toggler-icon"></span>
                 </button>
-                <a href="{{ path('qag.dashboard') }}" class="navbar-brand navbar-brand-autodark d-none-navbar-horizontal pe-0 pe-md-3">
+                <a href="{{ path('qag.dashboard') }}" class="navbar-brand navbar-brand-autodark d-none-navbar-horizontal pe-0 pe-md-3 navbar-vertical">
                     {{ block('header_title') }}
                 </a>
             {% else %}

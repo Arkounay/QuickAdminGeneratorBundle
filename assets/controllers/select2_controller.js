@@ -8,6 +8,9 @@ export default class extends Controller {
             theme: 'bootstrap-5',
             width: '100%'
         });
+        this.select.on('select2:open', () => {
+            document.querySelector('.select2-search__field').focus();
+        })
     }
 
     disconnect() {

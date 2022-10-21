@@ -32,6 +32,7 @@ $input-bg: $white !default;
   --btn-border-color: #E6E7E9;
   --btn-border-outline-color: #b6b6b6;
   --tbl-hover-light: #fcfcfc;
+  --tblr-navbar-color: rgba(30, 41, 59, 0.7);
 }
 
 body .markdown > table > thead > tr > body th, body .table > thead > tr > th {
@@ -55,7 +56,6 @@ body .markdown > table > thead > tr > body th, body .table > thead > tr > th {
     width: auto !important;
   }
   .table-card {
-    @include card;
   }
   .table-responsive {
     overflow: auto;
@@ -98,7 +98,7 @@ body .markdown > table > thead > tr > body th, body .table > thead > tr > th {
 
     & > table.table {
 
-      background-color: var(--tblr-body-bg) !important;
+      background-color: var(--tblr-body-bg);
       box-shadow: none;
 
       thead {
@@ -107,6 +107,7 @@ body .markdown > table > thead > tr > body th, body .table > thead > tr > th {
 
       tr {
         @include card;
+        background-color: var(--tblr-bg-surface) !important;
       }
 
       td {
@@ -368,4 +369,19 @@ textarea[data-controller~="textarea"] {
 
 .mt-checkbox {
   margin-top: 2.1rem !important;
+}
+
+
+// fix tabler
+.navbar .navbar-nav .nav-link {
+  --tblr-navbar-color: rgba(30, 41, 59, 0.7);
+  color: var(--tblr-navbar-color);
+}
+
+.navbar-vertical .navbar-nav .nav-link {
+  --tblr-navbar-color: rgb(255 255 255 / 70%);
+}
+
+.navbar-vertical .nav-item.active {
+  background: var(--tblr-navbar-active-bg);
 }
