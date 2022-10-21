@@ -1,0 +1,6 @@
+{% extends '@ArkounayQuickAdminGenerator/form/form_theme.html.twig' %}
+
+{%- block form_start -%}
+    {% set attr = attr|merge({'data-controller': 'form-entity', 'data-action': 'form-entity#onSubmit'}) %}
+    {{ parent() }}
+{%- endblock form_start -%}

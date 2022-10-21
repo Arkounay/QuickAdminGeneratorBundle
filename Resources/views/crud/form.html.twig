@@ -1,5 +1,9 @@
 {% extends '@ArkounayQuickAdminGenerator/crud/base_detail_layout.html.twig' %}
 
+{% block form_theme %}
+    {% form_theme form '@ArkounayQuickAdminGenerator/form/form_theme_entity.html.twig' %}
+{% endblock %}
+
 {% block content %}
     {{ form_start(form) }}
     {{ parent() }}
