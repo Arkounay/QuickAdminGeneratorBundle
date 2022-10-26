@@ -18,9 +18,19 @@
   @extend .my-0
 }
 
-.arkounay-ux-collection .btn-outline-secondary:hover {
-  color: inherit;
+.arkounay-ux-collection .btn-outline-secondary {
+  @extend .btn-light;
+  box-shadow: none;
 }
+
+.arkounay-ux-collection.arkounay-ux-collection--tabbed .nav-tabs-empty .nav-link {
+  box-shadow: none;
+  border: 1px solid var(--tblr-border-color);
+  color: var(--tblr-btn-color);
+  height: 36px;
+  font-weight: 500;
+}
+
 
 .theme-dark .arkounay-ux-collection {
   .btn {
@@ -29,12 +39,24 @@
       color: var(--tblr-btn-color-text);
     }
   }
+  .btn-collection {
+    color: #626976;
+  }
+  .btn-outline-secondary {
+    @extend .btn-dark;
+  }
   .card {
     border-color: var(--tblr-border-color);
   }
 
   .nav-link.active {
     background-color: #1B2434;
+  }
+  .btn-secondary,.btn-primary {
+    color: var(--tblr-btn-color);
+  }
+  .ux-crop-modal .btn-outline-secondary:hover svg {
+    stroke: white !important;
   }
 }
 
@@ -43,14 +65,6 @@
 }
 
 .arkounay-ux-collection .collection-add {
-  border: 1px solid var(--tblr-border-color);
-  &:hover {
-    border: 1px solid var(--btn-border-outline-color);
-  }
-}
-
-.arkounay-ux-collection.arkounay-ux-collection--tabbed .nav-tabs-empty .nav-link {
-  color: var(--tblr-btn-color);
   border: 1px solid var(--tblr-border-color);
   &:hover {
     border: 1px solid var(--btn-border-outline-color);

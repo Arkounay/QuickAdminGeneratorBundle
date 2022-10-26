@@ -2,10 +2,14 @@
   .icon {
     margin: 0;
   }
-  .btn:focus {
-    border: 1px solid hsla(213,8%,43%,.24);
+  .btn {
+    box-shadow: none;
   }
   .btn-group {
+    &>.btn {
+      --tblr-btn-hover-bg: rgba(var(--tblr-light-rgb), .3);
+      border: 1px solid var(--btn-border-color);
+    }
     height: 36px !important;
   }
   .img-preview svg {
@@ -23,6 +27,7 @@
     margin-bottom: 5px;
   }
   .btn-collection-remove {
+    height: 36px;
     margin-left: 10px;
   }
 
