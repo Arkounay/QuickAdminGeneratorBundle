@@ -209,12 +209,14 @@ class FieldService
             case 'virtual':
                 throw new \RuntimeException('Filters are not supported for virtual fields');
             case 'date':
+            case 'date_immutable':
                 $filterForm = new DateFilter();
                 break;
             case 'enum':
                 $filterForm = new EnumFilter($fieldMapping['enumType']);
                 break;
             case 'datetime':
+            case 'datetime_immutable':
                 $filterForm = new DateTimeFilter();
                 break;
             case 'string':
@@ -224,6 +226,7 @@ class FieldService
                 $filterForm = new BooleanFilter();
                 break;
             case 'integer':
+            case 'decimal':
                 $filterForm = new IntegerFilter();
                 break;
             case 'relation':
