@@ -48,7 +48,6 @@ services:
 
     Arkounay\Bundle\QuickAdminGeneratorBundle\Extension\QagExtension:
         arguments:
-            $cruds: !tagged_iterator quickadmin.crud
             $config: '%quick_admin_generator%'
         tags:
             - 'twig.extension'

@@ -2,13 +2,11 @@
 
 namespace Arkounay\Bundle\QuickAdminGeneratorBundle\Extension;
 
-use Arkounay\Bundle\QuickAdminGeneratorBundle\Controller\Crud;
 use Arkounay\Bundle\QuickAdminGeneratorBundle\Menu\MenuInterface;
 use Arkounay\Bundle\QuickAdminGeneratorBundle\Model\Action;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Routing\RouterInterface;
-use Symfony\Contracts\Translation\TranslatorInterface;
 use Twig\Environment;
 use Twig\Extension\AbstractExtension;
 use Twig\Extension\GlobalsInterface;
@@ -18,15 +16,12 @@ class QagExtension extends AbstractExtension implements GlobalsInterface
 {
 
     public function __construct(
-        /** @var Crud[] */ iterable $cruds,
         private array $config,
         private RouterInterface $router,
         private RequestStack $requestStack,
         private MenuInterface $menu,
         private Environment $twig
-    ) {
-        $this->cruds = $cruds;
-    }
+    ) {}
 
     private function getMenuItems(): iterable
     {
