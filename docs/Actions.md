@@ -4,7 +4,7 @@
 - [Batch actions](#batch-actions)
 - [Global actions](#global-actions)
 - [Customizing how actions are rendered](#customizing-how-actions-are-rendered)
-- [Entity actions display mode (dropdown / expanded)](#entity-actions-display-mode--dropdown--expanded-)
+- [Entity actions display mode (dropdown / expanded)](#entity-actions-display-mode-dropdown--expanded)
 - [Modals](#modals)
 - [Routing shorcuts](#routing-shorcuts)
 
