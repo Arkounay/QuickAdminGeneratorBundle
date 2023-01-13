@@ -4,6 +4,7 @@
 - [Batch actions](#batch-actions)
 - [Global actions](#global-actions)
 - [Customizing how actions are rendered](#customizing-how-actions-are-rendered)
+- [Entity actions display mode (dropdown / expanded)](#entity-actions-display-mode--dropdown--expanded-)
 - [Modals](#modals)
 - [Routing shorcuts](#routing-shorcuts)
 
@@ -201,6 +202,23 @@ This can be useful to change a button's appearance.
 Note that Actions have multiple variables, such as icon, class, dropdown class, custom href... that can be used or not depending on the context. 
 
 For more control over how actions are displayed, you will need to override their corresponding twig. 
+
+
+#### Entity actions display mode (dropdown / expanded)
+
+It is possible to override the method `getListEntityActionsDisplayMode` to change how actions are displayed by returning an enum, there are three choices possible : `Dropdown`, `ExpandedGroup` and `Expanded`
+
+```php
+public function getListEntityActionsDisplayMode(): EntityActionsDisplayMode
+{
+    return EntityActionsDisplayMode::Expanded;
+}
+```
+
+will display 
+
+![Expanded actions](https://raw.githubusercontent.com/Arkounay/QuickAdminGeneratorBundle/master/docs/images/actions_expanded.png)
+
 
 
 #### Routing shorcuts

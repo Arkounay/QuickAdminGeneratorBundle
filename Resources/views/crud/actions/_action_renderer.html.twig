@@ -1,6 +1,9 @@
 {% macro action_a(action, entity = null, path = null, extra_classes = [], is_dropdown = false) %}
     {# action \Arkounay\Bundle\QuickAdminGeneratorBundle\Model\Action #}
     <a {{ _self.action_attributes(action, entity, path, extra_classes, is_dropdown) }}>
+        {% if action.icon %}
+            {{ qag_render_icon(action.icon, 16, 16, 'me-1') }}
+        {% endif %}
         {{ action.label|humanize|trans }}
     </a>
 {% endmacro %}

@@ -6,6 +6,7 @@ namespace Arkounay\Bundle\QuickAdminGeneratorBundle\Controller;
 use Arkounay\Bundle\QuickAdminGeneratorBundle\Extension\FieldService;
 use Arkounay\Bundle\QuickAdminGeneratorBundle\Extension\RouteExtension;
 use Arkounay\Bundle\QuickAdminGeneratorBundle\Extension\TwigLoaderService;
+use Arkounay\Bundle\QuickAdminGeneratorBundle\Menu\EntityActionsDisplayMode;
 use Arkounay\Bundle\QuickAdminGeneratorBundle\Model\Action;
 use Arkounay\Bundle\QuickAdminGeneratorBundle\Model\Actions;
 use Arkounay\Bundle\QuickAdminGeneratorBundle\Model\Field;
@@ -233,6 +234,14 @@ abstract class Crud extends AbstractController
     }
 
     /**
+     * Changes the entity actions button display mode in list.
+     */
+    public function getListEntityActionsDisplayMode(): EntityActionsDisplayMode
+    {
+        return EntityActionsDisplayMode::Dropdown;
+    }
+
+    /**
      * Removes an entity
      */
     public function deleteAction($entity): Response
@@ -424,7 +433,8 @@ abstract class Crud extends AbstractController
             'filter_form_twig' => $this->filterFormTwig(),
             'is_simple_responsive_mode' => $this->simpleResponsiveMode(),
             'has_actions' => $this->hasActions($actionsEntities),
-            'badge_number' => $this->getBadgeNumber()
+            'badge_number' => $this->getBadgeNumber(),
+            'entity_actions_display_mode' => $this->getListEntityActionsDisplayMode()
         ]));
     }
 

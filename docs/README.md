@@ -120,6 +120,7 @@ See :
    - [Batch actions](Actions.md#batch-actions)
    - [Global actions](Actions.md#global-actions)
    - [Customizing how actions are rendered](Actions.md#customizing-how-actions-are-rendered)
+   - [Entity actions display mode (dropdown / expanded)](Actions.md#entity-actions-display-mode--dropdown--expanded-)
    - [Routing shorcuts](Actions.md#routing-shorcuts)
 4) [Forms](Forms.md)
    * [Overriding the Form Builder directly](Forms.md#overriding-the-form-builder-directly)
