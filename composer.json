@@ -18,7 +18,7 @@
         }
     ],
     "require": {
-        "php": ">=8.0.0",
+        "php": ">=8.1.0",
         "knplabs/knp-paginator-bundle": ">=5.3",
         "doctrine/annotations": ">=1.0",
         "doctrine/doctrine-bundle": ">=2.1",
