@@ -1,4 +1,4 @@
-import { Controller } from '@hotwired/stimulus';
+import {Controller} from '@hotwired/stimulus';
 
 export default class extends Controller {
 
@@ -46,7 +46,7 @@ export default class extends Controller {
                 },
                 body: value ? 'dark' : 'light'
             });
-            window.Turbo.clearCache();
+            window.Turbo.cache.clear();
         }
         this.checkTarget.checked = value;
     }
