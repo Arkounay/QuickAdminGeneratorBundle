@@ -1,4 +1,4 @@
-import { Controller } from '@hotwired/stimulus';
+import {Controller} from '@hotwired/stimulus';
 
 /**
  * @property {HTMLInputElement} selectAllCheckboxTarget
@@ -29,9 +29,33 @@ export default class extends Controller {
     }
 
     selectOne(event) {
+        const currentSelectedIndex = this.rowCheckboxTargets.indexOf(event.target);
+        const checked = event.target.checked;
+        if (event.shiftKey && this.lastSelectedIndex !== undefined) {
+            const start = Math.min(currentSelectedIndex, this.lastSelectedIndex);
+            const end = Math.max(currentSelectedIndex, this.lastSelectedIndex);
+            for (let i = start; i < end; i++) {
+                this.rowCheckboxTargets[i].checked = checked;
+                this.updateRowHighlighting(this.rowCheckboxTargets[i]);
+            }
+
+            if (this.lastGroupedSelectionIndex !== undefined) {
+                const start = Math.min(this.lastGroupedSelectionIndex, currentSelectedIndex);
+                const end = Math.max(this.lastGroupedSelectionIndex, currentSelectedIndex);
+                for (let i = start; i <= end; i++) {
+                    this.rowCheckboxTargets[i].checked = checked;
+                }
+                event.target.checked = true;
+            }
+            this.lastGroupedSelectionIndex = currentSelectedIndex;
+        }
+        if (!event.shiftKey) {
+            this.lastGroupedSelectionIndex = undefined;
+        }
         this.updateRowHighlighting(event.target);
         this.selectAllCheckboxTarget.checked = this.allAreSelected;
         this.updateActionContainerVisibility();
+        this.lastSelectedIndex = currentSelectedIndex;
     }
 
     updateActionContainerVisibility() {
@@ -80,6 +104,5 @@ export default class extends Controller {
 
         return res;
     }
-
 
 }

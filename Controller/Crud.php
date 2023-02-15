@@ -842,6 +842,7 @@ abstract class Crud extends AbstractController
 
     /**
      * Creates a Fields object without any field by default
+     * Not used but by default but can be called when overriding getListingFields from scratch for example
      */
     protected function createFields(): Fields
     {

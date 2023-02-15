@@ -28,7 +28,6 @@
         "symfony/intl": ">=5.1.0",
         "symfony/property-info": ">=5.1.0",
         "symfony/yaml": ">=5.1.0",
-        "sensio/framework-extra-bundle": ">=5.1",
         "symfony/expression-language": ">=5.1",
         "symfony/asset": ">=5.1",
         "symfony/security-bundle": ">=5.1",
@@ -38,7 +37,6 @@
         "twig/intl-extra": "^3.3",
         "twig/extra-bundle": "^3.3",
         "twig/twig": "^2.12|^3.0",
-        "composer/package-versions-deprecated": "1.11.99.4",
         "doctrine/doctrine-migrations-bundle": "^3.1",
         "doctrine/orm": "^2.10",
         "symfony/proxy-manager-bridge": ">=5.1.0",
@@ -49,7 +47,6 @@
     },
     "config": {
         "allow-plugins": {
-            "composer/package-versions-deprecated": true,
             "symfony/flex": true,
             "symfony/runtime": true
         }

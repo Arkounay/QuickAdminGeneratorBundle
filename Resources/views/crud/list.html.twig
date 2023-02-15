@@ -151,7 +151,7 @@
                                     {% block batch_td %}
                                         <td class="batch-column">
                                             <label class="custom-control-label" for="batch-action-{{ entity.id }}">
-                                                <input type="checkbox" class="batch-action form-check-input" name="batch-actions[{{ entity.id }}]" id="batch-action-{{ entity.id }}" form="batch-form" {{ stimulus_target('batch_actions', 'rowCheckbox') }} {{ stimulus_action('batch_actions', 'selectOne', 'change') }}>
+                                                <input type="checkbox" class="batch-action form-check-input" name="batch-actions[{{ entity.id }}]" id="batch-action-{{ entity.id }}" form="batch-form" {{ stimulus_target('batch_actions', 'rowCheckbox') }} {{ stimulus_action('batch_actions', 'selectOne', 'click') }}>
                                             </label>
                                         </td>
                                     {% endblock %}
