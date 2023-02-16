@@ -375,32 +375,6 @@ textarea[data-controller~="textarea"] {
   display: inline-block;
 }
 
-.theme-dark .arkounay-ux-collection .btn {
-  color: #b6bbc5;
-}
-
-.btn-link {
-  --tblr-primary: #D3C1F4;
-}
-
-.a2lix_translations {
-  .nav-link.active {
-    background-color: #1A2234;
-  }
-
-  .a2lix_translationsFields {
-    border-color: #262E3F !important;
-  }
-}
-
-.tox-tinymce {
-  border-color: #243049;
-  &.focus {
-    border-color: #243049;
-    //box-shadow: 0 0 0 0.25rem rgba(32, 107, 196, 0.25);
-  }
-}
-
 .theme-dark input[type="number"] {
   border: 1px solid #D7CDBA;
   background-color: #E5DDCB;
