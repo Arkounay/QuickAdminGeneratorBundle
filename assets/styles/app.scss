@@ -196,6 +196,15 @@ tr.highlighted {
   }
 }
 
+@keyframes highlighted-row-refresh-dark {
+  from {
+    background-color: #364257;
+  }
+  to {
+    background-color: inherit;
+  }
+}
+
 .position input {
   max-width: 55px;
 }
@@ -254,7 +263,6 @@ tr.highlighted {
   .list-group {
     background-color: var(--tblr-body-bg)
   }
-
 }
 
 .global-search-item {
@@ -386,13 +394,9 @@ textarea[data-controller~="textarea"] {
 }
 
 .theme-dark {
-  @keyframes highlighted-row-refresh {
-    from {
-      background-color: #364257;
-    }
-    to {
-      background-color: inherit;
-    }
+
+  tr.highlighted {
+    animation: highlighted-row-refresh-dark 0.4s ease-in-out forwards;
   }
 
   .arkounay-ux-collection .btn {
@@ -424,15 +428,6 @@ textarea[data-controller~="textarea"] {
     filter: invert(1);
     &:focus {
       box-shadow: 0 0 0 0.25rem #a1a182;
-    }
-  }
-
-  @keyframes highlighted-row-refresh {
-    from {
-      background-color: #364257;
-    }
-    to {
-      background-color: inherit;
     }
   }
 
