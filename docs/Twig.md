@@ -11,7 +11,7 @@
 
 ### Theme
 
-This bundle uses [Tabler](github.com/tabler/tabler), which uses [bootstrap](https://getbootstrap.com/). Check out their documentation to see their available classes and components.
+This bundle uses [Tabler](https://github.com/tabler/tabler), which uses [bootstrap](https://getbootstrap.com/). Check out their documentation to see their available classes and components.
 
 
 ### Interactive command-line helper
