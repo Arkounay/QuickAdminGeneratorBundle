@@ -611,7 +611,7 @@ abstract class Crud extends AbstractController
                         $value = '';
                     }
 
-                    $row[] = trim(html_entity_decode($this->renderView($field->getTwig(), ['value' => $value, 'detail' => false, 'export' => true])));
+                    $row[] = trim(html_entity_decode($this->renderView($field->getTwig(), ['value' => $value, 'detail' => false, 'export' => true, 'entity' => $entity])));
                 }
                 fputcsv($handle, $row, ';');
             }
