@@ -15,7 +15,7 @@ Every action will require its own route that can be quickly generated automatica
 
 #### Normal actions
 
-Normal actions are action that can be used against a single item.
+Normal actions are actions that can be used against a single item.
 
 To add a normal action, override the `getActions()` method.
 ```php
@@ -45,9 +45,7 @@ That's because QAG Admin assumes every function ending with "Action" are a new r
 You are not forced to use the `Action` suffix, you can create routes the Classic symfony way:
 
 ```php
-/**
- * @Route("/admin/custom-route/{id}", name="qag.category_custom")
- */
+#[Route('/admin/custom-route/{id}'), name: 'qag.category_custom']
 public function customAction($entity)
 {
     $this->addFlash('success', "Custom action for entity #{$entity->getId()} triggered!");
@@ -65,7 +63,7 @@ Extra actions are automatically put in a dropdown.
 
 #### Batch actions
 
-Batch actions works the same way as regular action, except they can affect multiple entities at once. Here's an example:
+Batch actions work the same way as regular actions, except they can affect multiple entities at once. Here's an example:
 
 ```php
 public function getBatchActions(): Actions
@@ -91,7 +89,7 @@ public function archiveBatchAction(): RedirectResponse
 
 ![Batch Actions](https://raw.githubusercontent.com/Arkounay/QuickAdminGeneratorBundle/master/docs/images/actions-batch.png)
 
-If you need to remove every batch actions, you can simply override getBatchActions and return en empty actions `new Actions()`. This will remove the checkboxes altogether:
+If you need to remove every batch actions, you can simply override getBatchActions and return an empty actions `new Actions()`. This will remove the checkboxes altogether:
 
 ```php
 public function getBatchActions(): Actions

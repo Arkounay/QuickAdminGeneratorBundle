@@ -21,6 +21,8 @@
 
 You can add annotations directly to an entity to configure how it's going to be parsed. This is the quickest way to customize a Crud, but has some limitations.
 
+?> [Attributes](#configure-fields-by-attributes) are now recommended over annotations
+
 Let's take a look at an example, here's a simple `Category` entity:
 
 ```php

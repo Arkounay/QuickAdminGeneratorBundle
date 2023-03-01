@@ -24,7 +24,7 @@ also make sure the following line was added in `config/bundles.php`:
 Arkounay\Bundle\QuickAdminGeneratorBundle\ArkounayQuickAdminGeneratorBundle::class => ['all' => true],
 ```
 
-and that assets were installed: ` php bin/console assets:install --symlink`.
+and that assets were installed: `php bin/console assets:install --symlink`.
 
 
 Finally, add the following route configuration, for example in `config/routes.yaml`:
@@ -36,7 +36,7 @@ qag_routes:
     prefix: '/admin'
 ```
 
-You will probably want secure the /admin route prefix, to do so you can add the following line in your `security.yaml`:
+You will probably want to secure the /admin route prefix, to do so you can add the following line in your `security.yaml`:
 
 ```yaml
 access_control:
@@ -51,7 +51,7 @@ For example, let's say you have a `News` entity.
 
 !> Make sure your entity implements `__toString()`!
 
-Create a controller for instance `src/Controller/Admin/NewsController.php`, with the following code:
+Create a controller, for instance `src/Controller/Admin/NewsController.php`, with the following code:
 
 ```php
 namespace App\Controller\Admin;
@@ -70,7 +70,7 @@ class NewsController extends Crud
     
 and now refresh `/admin` in your browser. You should see a new "News" item that appeared in the menu, and you should now be able to create, edit, and delete news.
 
-If you use the symfony command to display routes `php bin/console debug:router`, you'll see that some routes avec been generated for you:
+If you use the symfony command to display routes `php bin/console debug:router`, you'll see that some routes have been generated for you:
 ```
 qag.category                       ANY      ANY      ANY    /admin/category/                  
 qag.category_create                ANY      ANY      ANY    /admin/category/create            

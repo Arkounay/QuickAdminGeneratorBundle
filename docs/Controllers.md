@@ -90,7 +90,7 @@ By default, the plural name will be guessed automatically using an inflector. Yo
 
 ### Adding an icon
 
-You can add an icon by setting its name. Use a name that is valid in [tabler](https://preview-dev.tabler.io/icons.html).
+You can add an icon by setting its name. Use a name that is valid in [tabler](https://tabler-icons.io/).
 ```php
 public function getIcon(): ?string
 {
@@ -336,4 +336,4 @@ abstract class Crud extends BaseCrud
 }
 ```
 
-Every entity extending this controller will have a "MovePost" action, that can be called for every entity that has a setPosition method. You can imagine overriding the field's twig and add a form that will allow to move their position for example.
+Every entity extending this controller will have a "MovePost" action, that can be called for every entity that has a setPosition method. You could override the field's twig and add a form that will allow to move their position for example.
