@@ -65,7 +65,7 @@ class Menu implements MenuInterface
         }
 
         if (!isset($this->config['menu']['items'])) {
-            // Generate menu from all the cruds if nothing is specifying in yaml, alphabetically
+            // Generate menu from all the cruds if nothing is specified in yaml, alphabetically
             $cruds = [];
             foreach ($this->cruds as $crud) {
                 /** @var Crud $crud */
@@ -152,6 +152,9 @@ class Menu implements MenuInterface
             if (isset($node['route'])) {
                 $routeParams = $node['route_params'] ?? [];
                 $menuItem->setUrl($this->router->generate($node['route'], $routeParams));
+                if (str_contains($this->requestStack->getCurrentRequest()?->get('_route'), $node['route'])) {
+                    $menuItem->setActive(true);
+                }
             }
             if (isset($node['icon'])) {
                 $menuItem->setIcon($node['icon']);
