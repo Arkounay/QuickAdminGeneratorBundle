@@ -446,3 +446,7 @@ textarea[data-controller~="textarea"] {
 .navbar-vertical .nav-item.active {
   background: var(--tblr-navbar-active-bg);
 }
+
+.btn-group-sm>.btn, .btn-sm {
+  --tblr-btn-padding-x: 0.55rem;
+}
