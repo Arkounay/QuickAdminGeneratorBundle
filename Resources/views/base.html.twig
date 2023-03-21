@@ -119,16 +119,27 @@
                         <a href="#" class="nav-link d-flex lh-1 text-muted p-0" data-bs-toggle="dropdown" data-bs-auto-close="outside">
                             {% block user_menu_username %}
                                 {% if app.user is not null %}
-                                    {% if app.user.username is defined %}
-                                        <span class="avatar avatar-sm">{{ app.user.username[:1] }}</span>
-                                    {% endif %}
-                                    <div class="d-none d-xl-block ps-2">
+                                    {% block user_avatar %}
+                                        {% set avatar = null %}
                                         {% if app.user.username is defined %}
-                                            <div>{{ app.user.username|title }}</div>
-                                        {% else %}
-                                            <div>{{ app.user|title }}</div>
+                                            {% set avatar = app.user.username[:1] %}
+                                        {% elseif app.user.userIdentifier is defined %}
+                                            {% set avatar = app.user.userIdentifier[:1] %}
                                         {% endif %}
-                                        {% if app.user.email is defined %}
+                                        {% if avatar %}
+                                            <span class="avatar avatar-sm">{{ avatar }}</span>
+                                        {% endif %}
+                                    {% endblock %}
+
+                                    <div class="d-none d-xl-block ps-2">
+                                        {% set username = null %}
+                                        {% if app.user.username is defined %}
+                                            {% set username = app.user.username|title %}
+                                        {% else %}
+                                            {% set username = app.user|title %}
+                                        {% endif %}
+                                        <div>{{ username }}</div>
+                                        {% if app.user.email is defined and app.user.email != username %}
                                             <div class="mt-1 small text-muted">{{ app.user.email }}</div>
                                         {% endif %}
                                     </div>
@@ -166,7 +177,6 @@
                                     {% endif %}
                                 {% endblock %}
                             {% endblock %}
-
                         </div>
                     </div>
                 {% endblock %}
