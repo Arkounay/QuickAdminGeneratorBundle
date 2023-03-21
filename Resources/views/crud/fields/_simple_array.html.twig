@@ -1,7 +1,9 @@
-{% for v in value %}
-    {% if export %}
-        {{ v }},
-    {% else %}
-        <span class="badge bg-azure-lt">{{ v }}</span>
-    {% endif %}
-{% endfor %}
+<div class="d-flex flex-wrap gap-1">
+    {% for v in value %}
+        {% if export %}
+            {{ v }},
+        {% else %}
+            <span class="badge bg-azure-lt">{{ v }}</span>
+        {% endif %}
+    {% endfor %}
+</div>
