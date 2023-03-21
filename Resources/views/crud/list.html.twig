@@ -132,9 +132,9 @@
                         {# fields \Arkounay\Bundle\QuickAdminGeneratorBundle\Crud\Field[] #}
                         {% for field in fields %}
                             {% if field.sortable %}
-                                <th>{{ knp_pagination_sortable(entities, field.label|trans, field.sortQuery, [], [], '@ArkounayQuickAdminGenerator/crud/tabler_sortable_link.html.twig') }}</th>
+                                <th>{{ knp_pagination_sortable(entities, block('th_field_label') , field.sortQuery, {'title': false}, [], '@ArkounayQuickAdminGenerator/crud/tabler_sortable_link.html.twig') }}</th>
                             {% else %}
-                                <th>{{ field.label|trans }}</th>
+                                <th>{% block th_field_label field.label|trans %}</th>
                             {% endif %}
                         {% endfor %}
                         {% if has_actions %}

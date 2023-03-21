@@ -1,5 +1,5 @@
-<a{% for attr, value  in options %} {{ attr }}="{{ value }}"{% endfor %}>
-    {{ title }}
+<a{% for attr, value in options|filter(v => v) %} {{ attr }}="{{ value }}"{% endfor %}>
+    {{ title|raw }}
     {% if sorted %}
         {% if direction == 'desc' %}
             {{ qag_render_icon('arrow-down') }}
