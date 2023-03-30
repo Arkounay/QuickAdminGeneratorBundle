@@ -110,6 +110,7 @@ See :
        + [Adding a description](Controllers.md#adding-a-description)
        + [Responsive mode](Controllers.md#responsive-mode)
    * [Permissions](Controllers.md#permissions)
+       + [Security checker](Controllers.md#security-checker)
    * [Filtering the list](Controllers.md#filtering-the-list)
        + [Filtering through Query Builder](Controllers.md#filtering-through-query-builder)
        + [Filtering through Filters](Controllers.md#filtering-through-filters)

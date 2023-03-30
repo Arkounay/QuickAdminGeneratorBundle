@@ -31,7 +31,9 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\StreamedResponse;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\PropertyAccess\PropertyAccess;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\String\Inflector\EnglishInflector;
 use Symfony\Component\String\Inflector\InflectorInterface;
 use Symfony\Component\String\Slugger\SluggerInterface;
@@ -250,12 +252,8 @@ abstract class Crud extends AbstractController
             $this->addFlash('danger', $this->translator->trans('The CSRF token is invalid. Please try to resubmit the form.', [], 'validators'));
             return $this->redirectToList();
         }
-        if (!$this->isDeletable($entity)) {
-            throw $this->createAccessDeniedException("Entity {$this->getEntity()} is not removable.");
-        }
-        if ($this->hasQuickListQueryBuilderSecurity() && !$this->entityIsInList($entity)) {
-            throw $this->createAccessDeniedException("Entity {$this->getEntity()} #{$entity->getId()} is filtered out.");
-        }
+
+
         $this->removeEntity($entity);
         $this->em->flush();
 
@@ -281,12 +279,7 @@ abstract class Crud extends AbstractController
         foreach ($checked as $k => $v) {
             /** @var T $entity */
             $entity = $this->repository->find($k);
-            if (!$this->isDeletable($entity)) {
-                throw $this->createAccessDeniedException("Entity {$this->getEntity()} is not removable.");
-            }
-            if ($this->hasQuickListQueryBuilderSecurity() && !$this->entityIsInList($entity)) {
-                throw $this->createAccessDeniedException("Entity {$this->getEntity()} #{$entity->getId()} is filtered out.");
-            }
+            $this->checkSecurity('delete', $entity);
             $this->removeEntity($entity);
         }
         $this->em->flush();
@@ -305,19 +298,13 @@ abstract class Crud extends AbstractController
 
     public function toggleBooleanPostAction(Request $request, $entity): Response
     {
-        if (!$this->isEditable($entity)) {
-            throw $this->createAccessDeniedException("Entity {$this->getEntity()} cannot be edited.");
-        }
-        if ($this->hasQuickListQueryBuilderSecurity() && !$this->entityIsInList($entity)) {
-            throw $this->createAccessDeniedException("Entity {$this->getEntity()} #{$entity->getId()} is filtered out.");
-        }
 
         $index = $request->request->get('index');
         $value = $request->request->getBoolean('checked');
         $propertyAccessor = PropertyAccess::createPropertyAccessor();
         try {
             $propertyAccessor->setValue($entity, $index, $value);
-        } catch (\Exception $e) {
+        } catch (\Exception) {
             throw $this->createAccessDeniedException("Entity {$this->getEntity()}'s property $index cannot be read or written");
         }
 
@@ -481,15 +468,6 @@ abstract class Crud extends AbstractController
      */
     public function viewAction(Request $request, $entity): Response
     {
-        if (!$this->isViewable($entity)) {
-            throw $this->createAccessDeniedException("Entity {$this->getEntity()} cannot be viewed.");
-        }
-        if ($this->hasQuickListQueryBuilderSecurity() && !$this->entityIsInList($entity)) {
-            throw $this->createAccessDeniedException("Entity {$this->getEntity()} #{$entity->getId()} is filtered out.");
-        }
-        if ($entity === null) {
-            throw $this->createNotFoundException("No {$this->getName()} found with id #{$request->attributes->get('id')}");
-        }
         $request->attributes->add(['qag.from' => 'view']);
 
         return $this->render($this->viewTwig(), $this->retrieveParams('view', [
@@ -507,10 +485,6 @@ abstract class Crud extends AbstractController
      */
     public function createAction(Request $request): Response
     {
-        if (!$this->isCreatable()) {
-            throw $this->createAccessDeniedException("Entity {$this->getEntity()} cannot be created.");
-        }
-
         $entity = $this->createNew();
         $form = $this->getForm($entity, true);
         $form->handleRequest($request);
@@ -540,16 +514,6 @@ abstract class Crud extends AbstractController
      */
     public function editAction(Request $request, $entity): Response
     {
-        if (!$this->isEditable($entity)) {
-            throw $this->createAccessDeniedException("Entity {$this->getEntity()} cannot be edited.");
-        }
-        if ($this->hasQuickListQueryBuilderSecurity() && !$this->entityIsInList($entity)) {
-            throw $this->createAccessDeniedException("Entity {$this->getEntity()} #{$entity->getId()} is filtered out.");
-        }
-        if ($entity === null) {
-            throw $this->createNotFoundException("No {$this->getNameSentence()} found with id #{$request->attributes->get('id')}");
-        }
-
         $event = new GenericEvent($entity);
         $this->eventDispatcher->dispatch($event, 'qag.events.pre_edit');
 
@@ -581,10 +545,6 @@ abstract class Crud extends AbstractController
      */
     public function exportAction(Request $request): Response
     {
-        if (!$this->isExportable()) {
-            throw $this->createAccessDeniedException("Entity {$this->getEntity()} cannot be exported.");
-        }
-
         $queryBuilder = $this->getListQueryBuilder();
         $this->applySearchAndFiltersQueryBuilder($request, $queryBuilder);
         $queryBuilder->distinct();
@@ -626,7 +586,6 @@ abstract class Crud extends AbstractController
         $response->headers->set('Content-Disposition', 'attachment; filename="' . strtolower($this->slugger->slug($this->getName())) . '_export.csv"');
 
         return $response;
-
     }
 
 
@@ -1007,6 +966,10 @@ abstract class Crud extends AbstractController
      */
     public function guessEntity()
     {
+        if (!$this->request->attributes->has('id')) {
+            return null;
+        }
+
         return $this->repository->find($this->request->attributes->get('id'));
     }
 
@@ -1116,10 +1079,10 @@ abstract class Crud extends AbstractController
     protected function entityIsInList($entity): bool
     {
         return $this->getListQueryBuilder()
-                ->andWhere('e.id = :id')
-                ->setParameter('id', $entity->getId())
-                ->getQuery()
-                ->getOneOrNullResult() !== null;
+            ->andWhere('e.id = :id')
+            ->setParameter('id', $entity->getId())
+            ->getQuery()
+            ->getOneOrNullResult() !== null;
     }
 
     /**
@@ -1161,6 +1124,72 @@ abstract class Crud extends AbstractController
         }
 
         return [$isSearchable, $search, $filterForm, $activeFiltersNb];
+    }
+
+
+    /**
+     * Checks if an action can be executed, throws an exception otherwise
+     * Automatically called when accessing any routed crud methods through controller
+     *
+     * @param string $action, the method name, without 'Action'
+     * @param T|null $entity
+     * @throws AccessDeniedException|NotFoundHttpException
+     */
+    public function checkSecurity(string $action, $entity = null): void
+    {
+        switch ($action) {
+            case 'create':
+                if (!$this->isCreatable()) {
+                    throw $this->createAccessDeniedException("Entity {$this->getEntity()} cannot be created.");
+                }
+                break;
+            case 'edit':
+                if (!$this->isEditable($entity)) {
+                    throw $this->createAccessDeniedException("Entity {$this->getEntity()} cannot be edited.");
+                }
+                if ($this->hasQuickListQueryBuilderSecurity() && !$this->entityIsInList($entity)) {
+                    throw $this->createAccessDeniedException("Entity {$this->getEntity()} #{$entity->getId()} is filtered out.");
+                }
+                if ($entity === null) {
+                    throw $this->createNotFoundException("No {$this->getNameSentence()} found with id #{$this->request->attributes->get('id')}");
+                }
+                break;
+            case 'export':
+                if (!$this->isExportable()) {
+                    throw $this->createAccessDeniedException("Entity {$this->getEntity()} cannot be exported.");
+                }
+                break;
+            case 'delete':
+                if (!$this->isDeletable($entity)) {
+                    throw $this->createAccessDeniedException("Entity {$this->getEntity()} is not removable.");
+                }
+                if ($this->hasQuickListQueryBuilderSecurity() && !$this->entityIsInList($entity)) {
+                    throw $this->createAccessDeniedException("Entity {$this->getEntity()} #{$entity->getId()} is filtered out.");
+                }
+                break;
+            case 'view':
+                if (!$this->isViewable($entity)) {
+                    throw $this->createAccessDeniedException("Entity {$this->getEntity()} cannot be viewed.");
+                }
+                if ($this->hasQuickListQueryBuilderSecurity() && !$this->entityIsInList($entity)) {
+                    throw $this->createAccessDeniedException("Entity {$this->getEntity()} #{$entity->getId()} is filtered out.");
+                }
+                if ($entity === null) {
+                    throw $this->createNotFoundException("No {$this->getName()} found with id #{$this->request->attributes->get('id')}");
+                }
+                break;
+            case 'toggleBoolean':
+                if (!$this->isEditable($entity)) {
+                    throw $this->createAccessDeniedException("Entity {$this->getEntity()} cannot be edited.");
+                }
+                if ($this->hasQuickListQueryBuilderSecurity() && !$this->entityIsInList($entity)) {
+                    throw $this->createAccessDeniedException("Entity {$this->getEntity()} #{$entity->getId()} is filtered out.");
+                }
+                break;
+        }
+
+        $event = new GenericEvent($action, ['entity' => $entity]);
+        $this->eventDispatcher->dispatch($event, 'qag.events.security');
     }
 
 }

@@ -21,6 +21,10 @@ services:
     Arkounay\Bundle\QuickAdminGeneratorBundle\Crud\CrudListener:
         autowire: true
 
+    Arkounay\Bundle\QuickAdminGeneratorBundle\EventSubscriber\ControllerSubscriber:
+        autowire: true
+        autoconfigure: true
+
     Arkounay\Bundle\QuickAdminGeneratorBundle\Menu\Menu:
         arguments:
             $cruds: !tagged_iterator quickadmin.crud

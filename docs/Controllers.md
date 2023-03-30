@@ -8,6 +8,7 @@
   + [Adding a description](#adding-a-description)
   + [Responsive mode](#responsive-mode)
 * [Permissions](#permissions)
+  + [Security checker](#security-checker)
 * [Filtering the list](#filtering-the-list)
   + [Filtering through Query Builder](#filtering-through-query-builder)
   + [Filtering through Filters](#filtering-through-filters)
@@ -153,7 +154,6 @@ There are multiple functions that can be overridden to configure permissions:
 - `isViewable($entity)` checks if an element can be viewed. False by default, if true will add a "View" action that displays an entity's detail.
 - `isExportable` checks if an element can be exported. False by default, if true will add an "Export" global action that will create a CSV file containing all entities that match the current filter.
 
-
 Example:
 ```php
 public function isEnabled(): bool
@@ -161,6 +161,21 @@ public function isEnabled(): bool
     return $this->isGranted('ROLE_SUPERADMIN');
 }
 ```
+
+### Security checker
+
+When accessing a route action, the `checkSecurity(string $action, $entity = null)` method is automatically called before actually entering the action method.
+This method uses the above permissions and throws exceptions if the conditions are not met.
+
+For example, when accessing `viewAction`, `checkSecurity` is called with `view` as $action parameter.
+
+`checkSecurity` will ensure that the entity `isViewable` etc.
+Then `viewAction` is called after  `checkSecurity`.
+
+This way, when completely overriding `viewAction`, you don't need to manually for permissions.
+
+If you create a custom route withing a controller that extends Crud, you can either check permissions there or extend the `checkSecurity` function and add the checks there.
+
     
 ## Filtering the list
 
