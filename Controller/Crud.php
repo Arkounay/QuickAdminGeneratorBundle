@@ -25,7 +25,6 @@ use Symfony\Component\EventDispatcher\GenericEvent;
 use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormInterface;
-use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
@@ -310,7 +309,7 @@ abstract class Crud extends AbstractController
 
         $this->em->flush();
 
-        return new JsonResponse();
+        return new Response();
     }
 
     /**

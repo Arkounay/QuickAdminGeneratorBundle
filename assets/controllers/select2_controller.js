@@ -1,24 +1,16 @@
-import { Controller } from '@hotwired/stimulus';
-import 'select2';
+import {Controller} from '@hotwired/stimulus';
+import SlimSelect from "slim-select";
 
 export default class extends Controller {
 
     connect() {
-        this.select.select2({
-            theme: 'bootstrap-5',
-            width: '100%'
-        });
-        this.select.on('select2:open', () => {
-            document.querySelector('.select2-search__field').focus();
+        this.select = new SlimSelect({
+            select: this.element
         })
     }
 
     disconnect() {
-        this.select.select2('destroy');
-    }
-
-    get select() {
-        return $(this.element);
+        this.select.destroy();
     }
 
 }

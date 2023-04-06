@@ -1,21 +1,20 @@
-import { Controller } from '@hotwired/stimulus';
+import {Controller} from '@hotwired/stimulus';
+import Modal from 'bootstrap/js/src/modal';
 
 export default class extends Controller {
-    $filterModal;
-    $filterForm;
-    ajaxFilterUrl;
 
     connect() {
-        this.$filterModal = $('#filter-modal');
-        this.$filterForm = this.$filterModal.find('#filter-form');
+        this.filterElement = document.querySelector('#filter-modal');
+        this.filterModal = new Modal(this.filterElement);
+        this.filterForm = this.filterElement.querySelector('#filter-form');
         this.ajaxFilterUrl = this.element.dataset.ajaxRoute;
 
-        if (this.$filterForm.find('.is-invalid').length) {
+        if (this.filterForm.querySelectorAll('.is-invalid').length) {
             setTimeout(() => this.open(null), 0)
         }
 
-        this.$filterModal.find('form').on('submit', () => {
-            this.$filterModal.modal('hide');
+        this.filterElement.querySelector('form').addEventListener('submit', () => {
+            this.filterModal.hide();
         })
     }
 
@@ -23,22 +22,25 @@ export default class extends Controller {
         if (event !== null) {
             event.preventDefault();
         }
-        const $filterForm = this.$filterForm;
-        this.$filterModal.modal('show');
-        if ($filterForm.html().trim() === '') {
-            $.ajax({
-                url: this.ajaxFilterUrl,
-                type: "GET",
-                success: function (res) {
-                    $filterForm.html(res);
-                    $filterForm.trigger('filter_shown');
-                },
-                error: function (res) {
-                    alert('An error occurred.');
-                }
-            });
+        this.filterModal.show();
+        if (this.filterForm.innerHTML.trim() === '') {
+            fetch(this.ajaxFilterUrl)
+                .then((response) => {
+                    if (response.ok) {
+                        return response.text();
+                    } else {
+                        throw new Error('An error occurred.');
+                    }
+                })
+                .then((html) => {
+                    this.filterForm.innerHTML = html;
+                    this.filterForm.dispatchEvent(new Event('filter_shown'));
+                })
+                .catch((error) => {
+                    alert(error.message);
+                });
         } else {
-            $filterForm.trigger('filter_shown');
+            this.filterElement.dispatchEvent(new Event('filter_shown'));
         }
     }
 
