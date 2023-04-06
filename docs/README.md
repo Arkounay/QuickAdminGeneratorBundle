@@ -1,6 +1,10 @@
 # QAG - Quick Admin Generator Bundle
 
-[![Build Status](https://travis-ci.org/Arkounay/QuickAdminGeneratorBundle.svg?branch=master)](https://travis-ci.org/Arkounay/QuickAdminGeneratorBundle) [![codecov](https://codecov.io/gh/Arkounay/QuickAdminGeneratorBundle/branch/master/graph/badge.svg?token=8HOIPA6PMI)](https://codecov.io/gh/Arkounay/QuickAdminGeneratorBundle)
+![GitHub release (latest SemVer)](https://img.shields.io/github/v/release/arkounay/QuickAdminGeneratorBundle)
+![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/arkounay/QuickAdminGeneratorBundle/tests.yaml)
+![MIT License](https://img.shields.io/github/license/arkounay/QuickAdminGeneratorBundle)
+[![codecov](https://codecov.io/gh/Arkounay/QuickAdminGeneratorBundle/branch/master/graph/badge.svg?token=8HOIPA6PMI)](https://codecov.io/gh/Arkounay/QuickAdminGeneratorBundle)
+
 
 QAG is a bundle that allows quick and simple administration backends generation for Symfony applications using Doctrine.
 
