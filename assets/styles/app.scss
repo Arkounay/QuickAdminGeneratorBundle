@@ -4,7 +4,7 @@ $input-bg: $white !default;
 @import '~@tabler/core';
 @import "ux-media";
 @import "ux-collection";
-@import "select2";
+@import "slim-select";
 @import "tinymce";
 @import "a2lix";
 
@@ -164,10 +164,6 @@ body .markdown > table > thead > tr > body th, body .table > thead > tr > th {
 
 html, body {
   height: 100%;
-}
-
-.select2-results__option {
-  min-height: 30px;
 }
 
 // tmp fix :

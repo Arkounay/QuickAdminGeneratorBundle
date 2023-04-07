@@ -1,0 +1,63 @@
+@import "../../node_modules/slim-select/dist/slimselect.css";
+
+.ss-main {
+  display: flex;
+  padding-right: 0.5rem;
+  padding-left: 0.5rem;
+  background-image: none;
+  height: 36px;
+  border: 1px solid var(--tblr-border-color);
+  cursor: initial;
+
+  .ss-deselect {
+    height: 36px;
+    padding-top: 14px;
+    svg path {
+      transition: stroke 200ms ease-in-out;
+    }
+    cursor: pointer;
+
+    &:hover {
+      --ss-font-color: black;
+    }
+  }
+}
+
+.ss-arrow, .ss-deselect {
+  --ss-font-color: #A5A9B1;
+}
+
+.ss-values {
+  --ss-primary-color: var(--tblr-azure);
+}
+
+.ss-value {
+  padding-left: 5px;
+  padding-right: 5px;
+  pointer-events: none;
+  transition: background 200ms ease-in-out;
+
+  .ss-value-delete {
+    border-left: none;
+    pointer-events: auto;
+  }
+}
+
+.ss-max {
+  --ss-spacing-m: 10px;
+}
+
+.ss-value:hover {
+  background: var(--tblr-danger) !important;
+}
+
+.theme-dark {
+  .ss-main, .ss-list, .ss-search, .ss-search input, .ss-content {
+    background-color: #1a2234;
+    border-color: #243049;
+    --ss-font-color: #f8fafc;
+  }
+  .ss-values {
+    --ss-primary-color: var(--tblr-azure-darken);
+  }
+}

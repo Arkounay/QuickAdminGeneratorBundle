@@ -1,19 +1,20 @@
-import { Controller } from '@hotwired/stimulus';
+import {Controller} from '@hotwired/stimulus';
+import Modal from 'bootstrap/js/src/modal';
 
 export default class extends Controller {
 
     connect() {
-        this.$targetModal = $(this.element.dataset.target);
+        this.targetModal = document.querySelector(this.element.dataset.target);
     }
 
     open(event) {
         event.preventDefault();
         const name = this.element.dataset.name;
         if (name) {
-            this.$targetModal.find('.js-entity-to-string').text(name);
+            this.targetModal.querySelector('.js-entity-to-string').textContent = name;
         }
-        this.$targetModal.modal('show');
-        this.$targetModal.find('form').attr('action', this.element.href);
+        new Modal(this.targetModal).show()
+        this.targetModal.querySelector('form').setAttribute('action', this.element.href);
     }
 
 }

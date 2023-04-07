@@ -1,9 +1,10 @@
-import { Controller } from '@hotwired/stimulus';
+import {Controller} from '@hotwired/stimulus';
+import Tooltip from 'bootstrap/js/src/tooltip';
 
 export default class extends Controller {
 
     connect() {
-        $(this.element).tooltip();
+        new Tooltip(this.element)
     }
 
 }

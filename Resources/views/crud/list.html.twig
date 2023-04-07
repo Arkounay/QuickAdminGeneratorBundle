@@ -215,7 +215,7 @@
             </table>
         {% endblock %}
         {% if entities is empty %}
-            <div class="p-3">{{ 'No result'|trans }}</div>
+            <div class="p-3">{{ 'No results'|trans }}</div>
         {% endif %}
         <form method="post" data-turbo="false" id="batch-form" action="{{ path(route ~ '_delete_batch', app.request.query.all) }}">
             <input type="hidden" name="token" value="{{ csrf_token('batch') }}" />

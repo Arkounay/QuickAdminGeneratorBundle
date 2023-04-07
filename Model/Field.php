@@ -367,12 +367,11 @@ class Field implements Listable
                 $options['widget'] = 'single_text';
                 break;
             case 'relation':
-                $options['attr']['data-controller'] = 'select2';
+                $options['block_prefix'] = 'slim_select';
                 $options['class'] = $this->getAssociationMapping();
                 $options['multiple'] = false;
                 break;
             case 'relation_to_many':
-                $options['attr']['data-controller'] = 'select2';
                 $options['class'] = $this->getAssociationMapping();
                 $options['multiple'] = true;
                 $options['by_reference'] = false;

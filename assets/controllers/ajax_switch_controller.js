@@ -1,29 +1,36 @@
-import { Controller } from '@hotwired/stimulus';
+import {Controller} from '@hotwired/stimulus';
 
 export default class extends Controller {
 
-    connect() {
-        this.$switch = $(this.element);
-    }
-
     toggle() {
-        const $switch = this.$switch;
-        if (!$switch.data('changing')) {
-            $switch.data('changing', true);
-
-            $.ajax({
-                url: $switch.data('url'),
-                type: 'POST',
-                data: {index: $switch.data('index'), checked: $switch.is(':checked')},
-                success: function () {
-                    $switch.data('changing', false);
-                },
-                error: function () {
-                    console.log("An error occurred");
-                    $switch.click();
-                }
-            });
+        if (this.element.dataset.changing === 'true') {
+            return
         }
+
+        this.element.dataset.changing = 'true';
+
+        const data = new URLSearchParams();
+        data.append('index', this.element.dataset.index);
+        data.append('checked', this.element.checked);
+
+        fetch(this.element.dataset.url, {
+            method: 'POST',
+            headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+            body: data
+        })
+        .then(response => {
+            if (!response.ok) {
+                console.log("An error occurred");
+                this.element.click();
+            }
+        })
+        .catch(error => {
+            console.log("An error occurred:", error);
+            this.element.click();
+        })
+        .finally(() => {
+            this.element.dataset.changing = 'false';
+        });
     }
 
 }

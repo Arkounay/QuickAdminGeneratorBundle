@@ -1,4 +1,4 @@
-import { Controller } from '@hotwired/stimulus';
+import {Controller} from '@hotwired/stimulus';
 
 export default class extends Controller {
 
@@ -7,22 +7,28 @@ export default class extends Controller {
     }
 
     change(event) {
-        const $this = $(this.element);
-        const $parent = $this.closest('.filter-row');
-        const $multiple = $parent.find('.js-filter-multiple');
-        const $single = $parent.find('.js-filter-single');
-        switch ($this.val()) {
+        const parent = this.element.closest('.filter-row');
+        const multiples = parent.querySelectorAll('.js-filter-multiple');
+        const singles = parent.querySelectorAll('.js-filter-single');
+        switch (this.element.value) {
             case '=':
             case '!=':
             case '<':
             case '>':
-                $multiple.hide();
-                $single.show();
+                this.#toggleMultiple(multiples, singles, false)
                 break;
             default:
-                $multiple.show();
-                $single.hide();
+                this.#toggleMultiple(multiples, singles, true)
         }
+    }
+
+    #toggleMultiple(multiples, singles, val) {
+        multiples.forEach((i) => {
+            i.hidden = !val;
+        })
+        singles.forEach((i) => {
+            i.hidden = val;
+        })
     }
 
 
