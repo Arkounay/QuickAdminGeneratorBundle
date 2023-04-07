@@ -116,5 +116,4 @@ If you don't use stimulus and need to trigger javascript at page load, it's poss
 {% endblock %}
 ```
 
-You can disable turbo by override the whole's bundle's js (you can use the sources at `assets/app.js` to override them), or by adding `data-turbo="false"` to the body attribute for example : `{% block body_attributes 'data-turbo="false"' %}`
-
+You can disable turbo by overriding the whole's bundle's js (you can use the sources at `assets/app.js` to override them), or by adding `data-turbo="false"` to the body attribute for example : `{% block body_attributes 'data-turbo="false"' %}`
