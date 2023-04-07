@@ -36,7 +36,7 @@
             {% endfor %}
             {% if results is empty %}
                 <div class="p-3">
-                    {{ 'no_result_for'|trans({'%query%': app.request.query.get('q')}) }}
+                    {{ 'no_results_for'|trans({'%query%': app.request.query.get('q')}) }}
                 </div>
             {% endif %}
         </div>

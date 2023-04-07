@@ -1,11 +1,10 @@
 import './styles/app.scss';
 
-import $ from "jquery";
 import 'bootstrap';
 import Tooltip from 'bootstrap/js/src/tooltip';
 import './bootstrap';
 
-global.$ = global.jQuery = $;
+window.bootstrap = require('bootstrap');
 
 function applyTooltip() {
     const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))

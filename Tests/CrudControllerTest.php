@@ -8,8 +8,6 @@ use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Output\BufferedOutput;
-use Symfony\Component\HttpFoundation\Session\Session;
-use Symfony\Component\HttpFoundation\Session\Storage\MockFileSessionStorage;
 
 class CrudControllerTest extends WebTestCase
 {
@@ -134,7 +132,7 @@ class CrudControllerTest extends WebTestCase
         $client->followRedirect();
         self::assertResponseIsSuccessful();
         self::assertStringContainsString('successfully deleted', $client->getResponse()->getContent());
-        self::assertStringContainsString('No result', $client->getResponse()->getContent());
+        self::assertStringContainsString('No results', $client->getResponse()->getContent());
     }
 
     public function testBatchDeletion(): void

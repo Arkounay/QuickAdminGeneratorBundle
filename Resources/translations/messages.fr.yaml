@@ -3,7 +3,7 @@ one_entity_deleted: 'Un élément a été supprimé.'
 multiple_entity_deleted: '<strong>%count%</strong> éléments ont été supprimés.'
 are_you_sure: 'Êtes-vous sûr de vouloir supprimer cet élément ? <br> Cette opération est irréversible.'
 are_you_sure_batch: 'Êtes-vous sûr de vouloir supprimer ces éléments ? <br> Cette opération est irréversible.'
-no_result_for: 'Aucun résultat pour « %query% ».'
+no_results_for: 'Aucun résultat pour « %query% ».'
 search_for: 'Recherche de « %query% »'
 search_entity: Rechercher %entity_name%
 
@@ -15,7 +15,7 @@ Back: Retour
 Save: Enregistrer
 Search: Rechercher
 Global search: Recherche globale
-No result: Aucun résultat
+No results: Aucun résultat
 An error occured: Une erreur est survenue
 Remove: Supprimer
 Cancel: Annuler
@@ -44,6 +44,7 @@ Dark mode: Thème sombre
 batch_selection_single: '<strong>Un</strong> élément sélectionné :'
 batch_selection_multiple: '<strong>%count%</strong> éléments sélectionnés :'
 Export: Exporter
+'{number} values selected': '{number} éléments selectionnés'
 
 pagination:
     num_of_result: '<strong> %total_count% </strong> résultats'
