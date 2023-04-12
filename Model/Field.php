@@ -372,6 +372,7 @@ class Field implements Listable
                 $options['multiple'] = false;
                 break;
             case 'relation_to_many':
+                $options['block_prefix'] = 'slim_select';
                 $options['class'] = $this->getAssociationMapping();
                 $options['multiple'] = true;
                 $options['by_reference'] = false;

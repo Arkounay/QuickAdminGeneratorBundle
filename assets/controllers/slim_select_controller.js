@@ -7,6 +7,7 @@ export default class extends Controller {
         searchText: String,
         searchPlaceholder: String,
         maxValuesMessage: String,
+        maxValuesShown: Number,
         required: Boolean
     }
 
@@ -19,7 +20,7 @@ export default class extends Controller {
                 searchText: this.searchTextValue,
                 searchPlaceholder: this.searchPlaceholderValue,
                 closeOnSelect: !this.element.multiple,
-                maxValuesShown: 2,
+                maxValuesShown: this.maxValuesShownValue,
                 maxValuesMessage: this.maxValuesMessageValue,
             }
         })

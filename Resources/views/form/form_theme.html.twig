@@ -195,14 +195,21 @@
     {% if attr['data-slim-select-max-values-message-value'] is not defined %}
         {% set attr = attr|merge({'data-slim-select-max-values-message-value': '{number} values selected'|trans}) %}
     {% endif %}
+    {% if attr['data-slim-select-max-values-shown-value'] is not defined %}
+        {% set attr = attr|merge({'data-slim-select-max-values-shown-value': 20}) %}
+    {% endif %}
     {%- if required and placeholder is none and not placeholder_in_choices and not multiple and (attr.size is not defined or attr.size <= 1) -%}
         {% set required = false %}
     {%- endif -%}
+
     <select {{ block('widget_attributes') }}{% if multiple %} multiple="multiple"{% endif %}>
         {% if placeholder is none %}
             {% set placeholder = attr['data-placeholder']|default(null) %}
         {% endif %}
-        {%- if placeholder -%}
+        {% if not placeholder and required %}
+            {% set placeholder = '' %}
+        {% endif %}
+        {%- if placeholder is not null -%}
             <option data-placeholder="true" value=""{% if required and value is empty %} selected="selected"{% endif %}>{{ placeholder != '' ? (translation_domain is same as(false) ? placeholder : placeholder|trans({}, translation_domain)) }}</option>
         {%- endif -%}
         {%- if preferred_choices|length > 0 -%}
