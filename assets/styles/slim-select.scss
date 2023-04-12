@@ -66,3 +66,19 @@
     --ss-primary-color: var(--tblr-azure-darken);
   }
 }
+
+select[required].slimselect {
+  display: block !important;
+  position: relative;
+  clip: rect(0, 0, 0, 0);
+  pointer-events: none;
+  height: 2px;
+  opacity: 0;
+  left: 0;
+  right: 0;
+  top: 16px;
+  border: 0;
+  padding: 0;
+  margin: -2px 0 0;
+  width: 100%;
+}

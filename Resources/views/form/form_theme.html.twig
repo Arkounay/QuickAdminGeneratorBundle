@@ -190,8 +190,9 @@
         |merge({'data-controller': 'slim-select'})
         |merge({'data-slim-select-search-text-value': 'No results'|trans})
         |merge({'data-slim-select-search-placeholder-value': 'Search'|trans})
-        |merge({'data-slim-select-required-value': required})
+        |merge({'data-slim-select-required-value': required and not multiple})
     %}
+    {%- set attr = attr|merge({class: (attr.class|default('') ~ ' slimselect')|trim}) -%}
     {% if attr['data-slim-select-max-values-message-value'] is not defined %}
         {% set attr = attr|merge({'data-slim-select-max-values-message-value': '{number} values selected'|trans}) %}
     {% endif %}
