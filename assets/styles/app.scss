@@ -446,3 +446,13 @@ textarea[data-controller~="textarea"] {
 .btn-group-sm>.btn, .btn-sm {
   --tblr-btn-padding-x: 0.55rem;
 }
+
+:root {
+  scroll-behavior: initial;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  body {
+    scroll-behavior: smooth;
+  }
+}
