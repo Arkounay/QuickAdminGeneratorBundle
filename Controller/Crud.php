@@ -451,11 +451,19 @@ abstract class Crud extends AbstractController
      */
     public function getListQueryBuilder(): QueryBuilder
     {
-        $associations = $this->metadata->getAssociationNames();
-
         $queryBuilder = $this->repository->createQueryBuilder('e');
-        foreach ($associations as $association) {
-            $queryBuilder->leftJoin("e.$association", $association);
+
+        // add a left join when sorting an association through KNP Paginator
+        $sort = $this->request->query->get('sort');
+        if ($sort) {
+            $associations = $this->metadata->getAssociationNames();
+            if (str_contains($sort, '.')) {
+                $sort = explode('.', $sort)[0];
+            }
+            if (in_array($sort, $associations, true)) {
+                $queryBuilder->leftJoin("e.$sort", $sort);
+                $queryBuilder->groupBy('e.id');
+            }
         }
 
         return $queryBuilder;
