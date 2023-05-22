@@ -642,7 +642,7 @@ abstract class Crud extends AbstractController
         $fields = $this->getFormFields();
 
         $builder = $this->createFormBuilder($entity, [
-            'block_name' => $this->getRoute(),
+            'block_name' => str_replace('/', '_', $this->getRoute()),
             'data_class' => $this->getEntity()
         ]);
 
