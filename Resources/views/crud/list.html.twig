@@ -115,7 +115,7 @@
         </div>
     {% endif %}
 
-    <div class="{{ is_simple_responsive_mode ? 'd-none' }} d-sm-block table-card table-responsive" {{ stimulus_controller({'position/list': {}, 'batch_actions': {}}) }}>
+    <div class="{{ is_simple_responsive_mode ? 'd-none' }} d-sm-block table-card table-responsive" {{ stimulus_controller('position/list')|stimulus_controller('batch_actions') }}>
         {% block table %}
             <table class="table align-middle mb-0 table-hover-light">
                 {% do entities.setSortableTemplate('@KnpPaginator/Pagination/twitter_bootstrap_v4_font_awesome_sortable_link.html.twig') %}
