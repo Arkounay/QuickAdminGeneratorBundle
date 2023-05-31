@@ -1,6 +1,6 @@
 <?php
 
-namespace Arkounay\Bundle\QuickAdminGeneratorBundle\Extension;
+namespace Arkounay\Bundle\QuickAdminGeneratorBundle\Twig\Runtime;
 
 use Arkounay\Bundle\QuickAdminGeneratorBundle\Menu\MenuInterface;
 use Arkounay\Bundle\QuickAdminGeneratorBundle\Model\Action;
@@ -8,12 +8,11 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Routing\RouterInterface;
 use Twig\Environment;
-use Twig\Extension\AbstractExtension;
-use Twig\Extension\GlobalsInterface;
-use Twig\TwigFunction;
+use Twig\Extension\RuntimeExtensionInterface;
 
-class QagExtension extends AbstractExtension implements GlobalsInterface
+class QagExtensionRuntime implements RuntimeExtensionInterface
 {
+    private ?array $_cache = null;
 
     public function __construct(
         private array $config,
@@ -22,7 +21,7 @@ class QagExtension extends AbstractExtension implements GlobalsInterface
         private MenuInterface $menu,
         private Environment $twig
     ) {}
-
+    
     private function getMenuItems(): iterable
     {
         return $this->menu->generateMenu();
@@ -63,17 +62,12 @@ class QagExtension extends AbstractExtension implements GlobalsInterface
         ]);
     }
 
-    public function getFunctions(): array
+    public function getQag(): array
     {
-        return [
-            new TwigFunction('qag_action_href', [$this, 'getActionHref']),
-            new TwigFunction('qag_render_icon', [$this, 'icon'], ['is_safe' => ['html']]),
-        ];
-    }
-
-    public function getGlobals(): array
-    {
-        return ['qag' => ['menu_items' => $this->getMenuItems(), 'config' => $this->config]];
+        if ($this->_cache === null) {
+            $this->_cache = ['menu_items' => $this->getMenuItems(), 'config' => $this->config];
+        }
+        return $this->_cache;
     }
 
 }
