@@ -15,7 +15,7 @@
   },
   "license": "UNLICENSED",
   "dependencies": {
-    "@tabler/core": "1.0.0-beta16",
+    "@tabler/core": "1.0.0-beta19",
     "slim-select": "^2.4.5"
   },
   "scripts": {

@@ -56,7 +56,7 @@
   background: var(--tblr-danger) !important;
 }
 
-.theme-dark {
+[data-bs-theme=dark] {
   .ss-main, .ss-list, .ss-search, .ss-search input, .ss-content {
     background-color: #1a2234;
     border-color: #243049;

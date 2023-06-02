@@ -43,7 +43,7 @@
   }
 }
 
-.theme-dark .ux-media {
+[data-bs-theme=dark] .ux-media {
   &.bg-white {
     background-color: var(--tblr-body-bg) !important;
   }

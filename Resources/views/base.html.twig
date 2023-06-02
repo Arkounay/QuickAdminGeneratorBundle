@@ -8,7 +8,7 @@
 
 {%- set menu_vertical = qag.config.menu.theme == 'vertical' -%}
 {%- set menu_horizontal = not menu_vertical -%}
-{%- set dark_theme = app.session.get('qag.theme', qag.config.theme.default) == 'dark' -%}
+{%- set theme = app.session.get('qag.theme', qag.config.theme.default) -%}
 
 <!doctype html>
 <html lang="{{ app.request.locale }}">
@@ -80,7 +80,7 @@
 
 </head>
 
-<body class="{{ dark_theme ? 'theme-dark' }} {% block body_extra_class '' %}" {% block body_attributes stimulus_controller('theme', {theme: app.session.get('qag.theme', qag.config.theme.default), watchForChange: qag.config.theme.default == 'auto'}) %}>
+<body {% if theme == 'dark' %}data-bs-theme="dark"{% endif %} class="{% block body_extra_class '' %}" {% block body_attributes '' %}>
 {% block body %}
     {% if menu_vertical %}
     <aside class="navbar navbar-vertical navbar-expand-lg navbar-dark">
@@ -159,10 +159,21 @@
                                 {% endblock %}
                                 {% if qag.config.theme.allow_switch %}
                                     {% block dark_mode_switcher %}
-                                        <div class="dark-mode-switcher dropdown-item form-check form-switch ps-2" {{ stimulus_controller('theme_switch', {url: path('qag.switch_theme'), darkMode: dark_theme}) }} {{ stimulus_action('theme_switch', 'toggle', 'click') }}>
-                                            <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault" {{ stimulus_target('theme_switch', 'check') }}>
-                                            <label class="form-check-label" for="flexSwitchCheckDefault">{{ 'Dark mode'|trans }}</label>
+                                <div {{ stimulus_controller('theme_switch', {url: path('qag.switch_theme'), theme: theme, uncheckedIcon: qag_render_icon('square', 14, 14, 'me-1'), checkedIcon: qag_render_icon('checkbox', 14, 14, 'me-1')}) }}>
+                                    {% for classes in ['d-none d-md-block dropstart', 'd-md-none dropdown'] %}
+                                        <div class="{{ classes}} theme-dropdown">
+                                            <a class="dropdown-item dropdown-toggle" href="#" data-bs-toggle="dropdown" data-bs-auto-close="outside" role="button" aria-expanded="false">
+                                                {{ qag_render_icon('brightness', 14, 14, 'dropdown-item-icon') }}
+                                                {{ 'theme.label'|trans }}
+                                            </a>
+                                            <div class="dropdown-menu dropdown-menu-lg-start">
+                                                <button class="dropdown-item" {{ stimulus_target('theme_switch', 'item') }} {{ stimulus_action('theme_switch', 'selectTheme', null, {theme: 'light'}) }}><span></span>{{ 'theme.light'|trans }}</button>
+                                                <button class="dropdown-item" {{ stimulus_target('theme_switch', 'item') }} {{ stimulus_action('theme_switch', 'selectTheme', null, {theme: 'dark'}) }}><span></span>{{ 'theme.dark'|trans }}</button>
+                                                <button class="dropdown-item" {{ stimulus_target('theme_switch', 'item') }} {{ stimulus_action('theme_switch', 'selectTheme', null, {theme: 'auto'}) }}><span></span>{{ 'theme.auto'|trans }}</button>
+                                            </div>
                                         </div>
+                                    {% endfor %}
+                                </div>
                                     {% endblock %}
                                 {% endif %}
                                 {% block user_menu_dropdown_logout %}
@@ -272,7 +283,7 @@
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar-menu">
                     <span class="navbar-toggler-icon"></span>
                 </button>
-                <a href="{{ path('qag.dashboard') }}" class="navbar-brand navbar-brand-autodark d-none-navbar-horizontal pe-0 pe-md-3 navbar-vertical">
+                <a href="{{ path('qag.dashboard') }}" class="navbar-brand navbar-brand-autodark d-none-navbar-horizontal pe-0 pe-md-3 navbar-vertical fs-3">
                     {{ block('header_title') }}
                 </a>
             {% else %}

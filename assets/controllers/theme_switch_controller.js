@@ -2,41 +2,40 @@ import {Controller} from '@hotwired/stimulus';
 
 export default class extends Controller {
 
-    static targets = ['check']
+    static targets = ['item']
 
     static values = {
         url: String,
-        darkMode: Boolean
+        theme: String,
+        checkedIcon: String,
+        uncheckedIcon: String,
     }
 
     connect() {
-        this.darkModeValue = document.body.classList.contains('theme-dark');
-        this.observer = new MutationObserver((event) => this.darkModeValue = document.body.classList.contains('theme-dark'));
-        this.observer.observe(document.body, {
-            attributes: true,
-            attributeFilter: ['class'],
-            childList: false,
-            characterData: false
+        window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', event => {
+            if (this.themeValue === 'auto') {
+                this.refreshTheme();
+            }
         })
+        this.element.classList.remove("dropstart");
+        this.element.classList.add("dropdown");
     }
 
-    disconnect() {
-        this.observer.disconnect();
+    selectTheme(event) {
+        this.themeValue = event.params.theme;
     }
 
-    toggle(e) {
-        if (e.target.tagName === 'LABEL') {
-            e.preventDefault();
-        }
-        this.darkModeValue = !this.darkModeValue;
-    }
-
-    darkModeValueChanged(value) {
-        if (value) {
-            document.body.classList.add('theme-dark');
+    refreshTheme() {
+        if (this.themeValue === 'dark' || this.themeValue === 'auto' && window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+            document.body.dataset.bsTheme = 'dark';
         } else {
-            document.body.classList.remove('theme-dark');
+            delete document.body.dataset.bsTheme;
         }
+    }
+
+    themeValueChanged(value) {
+        console.log("ayao="+value);
+        this.refreshTheme();
 
         if (!document.documentElement.hasAttribute('data-turbo-preview')) {
             fetch(this.urlValue, {
@@ -44,11 +43,19 @@ export default class extends Controller {
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: value ? 'dark' : 'light'
+                body: value
             });
             window.Turbo.cache.clear();
         }
-        this.checkTarget.checked = value;
+
+        for (const item of this.itemTargets) {
+            if (item.dataset.themeSwitchThemeParam === value) {
+                item.firstChild.innerHTML = this.checkedIconValue;
+            } else {
+                item.firstChild.innerHTML = this.uncheckedIconValue;
+            }
+        }
+
     }
 
 }

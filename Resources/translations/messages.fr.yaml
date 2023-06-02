@@ -49,3 +49,8 @@ Export: Exporter
 pagination:
     num_of_result: '<strong> %total_count% </strong> résultats'
 
+theme:
+    label: Thème
+    light: Clair
+    dark: Sombre
+    auto: Automatique
