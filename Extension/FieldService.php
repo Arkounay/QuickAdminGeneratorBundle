@@ -135,6 +135,13 @@ class FieldService
                     }
                     $field->setRequired(!$nullable);
                 }
+            } else {
+                // virtual fields
+                $attributes = $metadata->getReflectionClass()?->getMethod($fieldIndex)->getAttributes(\Arkounay\Bundle\QuickAdminGeneratorBundle\Annotation\Field::class);
+                if (isset($attributes[0])) {
+                    $annotationField = $attributes[0]->newInstance();
+                    $field->setDisplayedInForm(false);
+                }
             }
         }
 
@@ -194,7 +201,6 @@ class FieldService
     {
         $filterForm = null;
         $fieldMapping = null;
-        $type = null;
         try {
             $fieldMapping = $metadata->getFieldMapping($filterIndex);
             $type = $fieldMapping['type'] ?? null;

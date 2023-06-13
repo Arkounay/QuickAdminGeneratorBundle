@@ -710,6 +710,12 @@ abstract class Crud extends AbstractController
                 }
             }
         }
+        $methods = $this->metadata->getReflectionClass()?->getMethods(\ReflectionMethod::IS_PUBLIC);
+        foreach ($methods as $method) {
+            if (\count($method->getAttributes(\Arkounay\Bundle\QuickAdminGeneratorBundle\Annotation\Field::class)) === 1) {
+                $res[] = $method->getName();
+            }
+        }
 
         return $res;
     }

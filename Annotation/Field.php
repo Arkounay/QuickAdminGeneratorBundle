@@ -8,7 +8,7 @@ use Doctrine\Common\Annotations\Annotation\NamedArgumentConstructor;
  * @Annotation
  * @NamedArgumentConstructor
  */
-#[\Attribute(\Attribute::TARGET_PROPERTY)]
+#[\Attribute(\Attribute::TARGET_PROPERTY|\Attribute::TARGET_METHOD)]
 class Field
 {
 
