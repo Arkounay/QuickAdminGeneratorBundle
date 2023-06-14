@@ -3,6 +3,7 @@
 
 namespace Arkounay\Bundle\QuickAdminGeneratorBundle\Controller;
 
+use Doctrine\ORM\Tools\Pagination\Paginator;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\EventDispatcher\GenericEvent;
 use Symfony\Component\HttpFoundation\Request;
@@ -13,27 +14,13 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 class GlobalSearchController extends AbstractController
 {
 
-    /**
-     * @var iterable|Crud[]
-     */
-    private $cruds;
-
-    /**
-     * @var EventDispatcherInterface
-     */
-    private $eventDispatcher;
-
-    /**
-     * @var TranslatorInterface
-     */
-    private $translator;
-
-    public function __construct(iterable $cruds, EventDispatcherInterface $eventDispatcher, TranslatorInterface $translator)
-    {
-        $this->cruds = $cruds;
-        $this->eventDispatcher = $eventDispatcher;
-        $this->translator = $translator;
-    }
+    public function __construct(
+        /** @var iterable|Crud[] */
+        private iterable $cruds,
+        private EventDispatcherInterface $eventDispatcher,
+        private TranslatorInterface $translator
+    )
+    {}
 
     public function search(Request $request): Response
     {
@@ -59,7 +46,7 @@ class GlobalSearchController extends AbstractController
                 $queryBuilder = $crud->getListQueryBuilder();
                 $crud->search($queryBuilder, $query);
                 $queryBuilder->setMaxResults(10);
-                $paginator = new \Doctrine\ORM\Tools\Pagination\Paginator($queryBuilder);
+                $paginator = new Paginator($queryBuilder);
                 $paginator->getQuery()->setFirstResult(0)->setMaxResults($maxResults);
 
                 $count = count($paginator);

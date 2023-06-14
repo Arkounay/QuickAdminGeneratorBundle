@@ -7,9 +7,7 @@ use Arkounay\Bundle\QuickAdminGeneratorBundle\Controller\Crud;
 use Arkounay\Bundle\QuickAdminGeneratorBundle\Controller\DashboardController;
 use Arkounay\Bundle\QuickAdminGeneratorBundle\Controller\GlobalSearchController;
 use Arkounay\Bundle\QuickAdminGeneratorBundle\Controller\ThemeController;
-use Arkounay\Bundle\QuickAdminGeneratorBundle\Model\Action;
 use ReflectionClass;
-use ReflectionFunction;
 use Symfony\Bundle\FrameworkBundle\Routing\RouteLoaderInterface;
 use Symfony\Component\Routing\Route;
 use Symfony\Component\Routing\RouteCollection;
@@ -39,7 +37,7 @@ class RouteLoader implements RouteLoaderInterface
         $routes = new RouteCollection();
 
         foreach ($this->cruds as $crud) {
-            $class = get_class($crud);
+            $class = $crud::class;
             $reflectionClass = new ReflectionClass($class);
 
             foreach ($crud->getAllActions() as $action) {

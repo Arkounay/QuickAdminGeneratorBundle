@@ -13,24 +13,9 @@ use Doctrine\ORM\Mapping\ClassMetadata;
 class Filters extends TypedArray
 {
 
-    /**
-     * @var FieldService
-     */
-    private $fieldService;
+    public function __construct(private ClassMetadata $metadata, private FieldService $fieldService) {}
 
-    /**
-     * @var ClassMetadata
-     */
-    private $metadata;
-
-
-    public function __construct(ClassMetadata $metadata, FieldService $fieldService)
-    {
-        $this->fieldService = $fieldService;
-        $this->metadata = $metadata;
-    }
-
-    protected function createFromIndexName(string $index): Listable
+    public function createFromIndexName(string $index): Listable
     {
         return $this->fieldService->createFilter($this->metadata, $index);
     }

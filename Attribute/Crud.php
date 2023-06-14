@@ -1,25 +1,19 @@
 <?php
 
-namespace Arkounay\Bundle\QuickAdminGeneratorBundle\Annotation;
+namespace Arkounay\Bundle\QuickAdminGeneratorBundle\Attribute;
 
-use Doctrine\Common\Annotations\Annotation\NamedArgumentConstructor;
-
-/**
- * @Annotation
- * @NamedArgumentConstructor
- */
 #[\Attribute(\Attribute::TARGET_CLASS)]
 class Crud
 {
 
-    public const FETCH_AUTO = 'auto';
-    public const FETCH_MANUAL = 'manual';
+    final public const FETCH_AUTO = 'auto';
+    final public const FETCH_MANUAL = 'manual';
 
     /**
      * @var string auto|manual
      * Check if fields should be fetched automatically or manually
      */
-    public $fetchMode;
+    public ?string $fetchMode;
 
     public function __construct(?string $fetchMode = self::FETCH_AUTO)
     {

@@ -8,45 +8,29 @@ use function Symfony\Component\String\u;
 class Action implements Listable
 {
 
-    /**
-     * @var string
-     */
-    protected $index;
+    protected ?string $label = null;
 
-    /**
-     * @var string
-     */
-    protected $label;
+    protected ?string $icon = null;
 
-    /**
-     * @var string
-     */
-    protected $icon;
+    /** @var string[] */
+    protected array $classes = [];
 
     /**
      * @var string[]
      */
-    protected $classes = [];
+    protected array $dropdownClasses = [];
 
     /**
      * @var string[]
      */
-    protected $dropdownClasses = [];
-
-    /**
-     * @var string[]
-     */
-    protected $attributes = [];
+    protected array $attributes = [];
 
     /**
      * @var string
      */
-    protected $customHref;
+    protected ?string $customHref = null;
 
-    public function __construct(string $index)
-    {
-        $this->index = $index;
-    }
+    public function __construct(protected readonly string $index) {}
 
     public function getIndex(): string
     {

@@ -47,7 +47,7 @@ class QagExtensionRuntime implements RuntimeExtensionInterface
                 }
             }
             return $this->router->generate("qag.{$route}_{$action->getIndex()}", $params);
-        } catch (\Exception $ignored) {}
+        } catch (\Exception) {}
 
         return '#';
     }

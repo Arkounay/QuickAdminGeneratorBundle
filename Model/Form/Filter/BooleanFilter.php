@@ -4,7 +4,6 @@ namespace Arkounay\Bundle\QuickAdminGeneratorBundle\Model\Form\Filter;
 
 
 use Arkounay\Bundle\QuickAdminGeneratorBundle\Model\Filter;
-use Arkounay\Bundle\QuickAdminGeneratorBundle\Model\Form\Filter\Type\EntityFilterType;
 use Doctrine\ORM\QueryBuilder;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\FormInterface;

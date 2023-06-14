@@ -34,7 +34,6 @@ export default class extends Controller {
     }
 
     themeValueChanged(value) {
-        console.log("ayao="+value);
         this.refreshTheme();
 
         if (!document.documentElement.hasAttribute('data-turbo-preview')) {
@@ -45,6 +44,12 @@ export default class extends Controller {
                 },
                 body: value
             });
+
+            const customEvent = new CustomEvent('theme-switch', {
+                detail: { message: value }
+            });
+            document.body.dispatchEvent(customEvent);
+
             window.Turbo.cache.clear();
         }
 
