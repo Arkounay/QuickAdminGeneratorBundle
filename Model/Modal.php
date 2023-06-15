@@ -12,8 +12,6 @@ class Modal
 {
 
     private string $controller = 'modal';
-
-    private string $title;
     private ?string $ajaxTarget = null;
     private ?string $html = '<div class="spinner-border mx-auto d-flex" role="status"></div>';
 
@@ -32,10 +30,9 @@ class Modal
     private bool $keyboard = true;
     private bool $focus = true;
 
-    public function __construct(TranslatorInterface $translator, string $title) {
+    public function __construct(TranslatorInterface $translator, private string $title) {
         $this->closeButtonLabel = $translator->trans('Close');
         $this->saveButtonlabel = $translator->trans('Save');
-        $this->title = $title;
     }
 
     public function getTitle(): string

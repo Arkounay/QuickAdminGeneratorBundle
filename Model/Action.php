@@ -25,9 +25,6 @@ class Action implements Listable
      */
     protected array $attributes = [];
 
-    /**
-     * @var string
-     */
     protected ?string $customHref = null;
 
     public function __construct(protected readonly string $index) {}
