@@ -16,7 +16,7 @@ abstract class TypedArray implements \IteratorAggregate, \ArrayAccess, \Countabl
     /**
      * @var Listable[]
      */
-    protected $items = [];
+    protected array $items = [];
 
     /**
      * @return T
