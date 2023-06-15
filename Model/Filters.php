@@ -13,7 +13,7 @@ use Doctrine\ORM\Mapping\ClassMetadata;
 class Filters extends TypedArray
 {
 
-    public function __construct(private ClassMetadata $metadata, private FieldService $fieldService) {}
+    public function __construct(private readonly ClassMetadata $metadata, private readonly FieldService $fieldService) {}
 
     public function createFromIndexName(string $index): Listable
     {

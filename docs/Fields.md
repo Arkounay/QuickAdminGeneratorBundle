@@ -1,14 +1,14 @@
 # Fields configuration
 
 * [Configure Fields by Attributes](#configure-fields-by-attributes)
-  - [@QAG\Field](#qagfield)
-  - [@QAG\HideInForm](#qaghideinform)
-  - [@QAG\HideInList](#qaghideinlist)
-  - [@QAG\HideInView](#qaghideinview)
-  - [@QAG\HideInExport](#qaghideinexport)
-  - [@QAG\Ignore](#qagignore)
-  - [@QAG\Sort](#qagsort)
-  - [@QAG\Crud](#qagcrud)
+  - [QAG\Field](#qagfield)
+  - [QAG\HideInForm](#qaghideinform)
+  - [QAG\HideInList](#qaghideinlist)
+  - [QAG\HideInView](#qaghideinview)
+  - [QAG\HideInExport](#qaghideinexport)
+  - [QAG\Ignore](#qagignore)
+  - [QAG\Sort](#qagsort)
+  - [QAG\Crud](#qagcrud)
 * [Configure Fields by overriding controllers](#configure-fields-by-overriding-controllers)
 * [Configure Fields by using Listeners](#configure-fields-by-using-listeners)
   
@@ -136,7 +136,7 @@ It has 1 attribute, `fetchMode`.
 
 By default, any property added in a doctrine class will be converted into a Field.
 You can change that by specifying a manual Fetch Mode.
-In manual mode, you'll have to add @QAG\Show, @QAG\ShowInList and @QAG\ShowInForm to make them appear, otherwise fields will be ignored.
+In manual mode, you'll have to add `#[QAG\Show]`, `#[QAG\ShowInList]` and `#[QAG\ShowInForm]` to make them appear, otherwise fields will be ignored.
 
 #### QAG\Show (only in manual fetch mode)
 Will show the field
@@ -156,7 +156,7 @@ Will show the field in the exported file
 ## Configure Fields by overriding controllers
 Another way to configure a field is by overriding the entity's crud controller that refers to this field.
 This gives more control than attributes.
-For example, in a Category crud controller, you can do this :
+For example, in a Category crud controller, you can do this:
 
 ```php
 namespace App\Controller\Admin;
@@ -196,14 +196,14 @@ class CategoryController extends Crud
 ```
 
 In this example:
-- In listing mode, a new field will be created : 'slug'. This is a virtual field (Category has a `getSlug()` method). The 'name' field will be removed.
+- In listing mode, a new field called 'slug' will be created. This is a virtual field (Category has a `getSlug()` method). The 'name' field will be removed.
 - In creation and edition, the field 'name' will have a special label.
 
 
 ## Configure Fields by using Listeners
 It's also possible to configure fields using listener. This is useful if you wish to add special rules for fields that can be applied globally.
-To do that, you have to listen at the `qag.events.field_generation` event.
-The event's subject is the field.
+To do that, you need to listen to the `qag.events.field_generation` event.
+The event's subject is the field itself.
 
 Here's an example:
 ```php
@@ -242,4 +242,4 @@ class FormPositionListener implements EventSubscriberInterface
 
 }
 ``` 
-Here, everytime an entity has a property named `position` with the type `integer`, it will use a special twig without any extra configuration per controllers or entities.
+Here, whenever an entity has a property named `position` with the type `integer`, it will automatically use a special Twig template without requiring any extra configuration per controllers or entities.

@@ -33,7 +33,10 @@ abstract class TypedArray implements \IteratorAggregate, \ArrayAccess, \Countabl
         return $this->items[$field];
     }
 
-    public function add($field): self
+    /**
+     * @param T|string $field
+     */
+    public function add(Listable|string $field): self
     {
         $type = $this->getType();
         if ($field instanceof $type) {

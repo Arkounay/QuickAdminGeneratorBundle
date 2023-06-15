@@ -6,7 +6,7 @@
 [![codecov](https://codecov.io/gh/Arkounay/QuickAdminGeneratorBundle/branch/master/graph/badge.svg?token=8HOIPA6PMI)](https://codecov.io/gh/Arkounay/QuickAdminGeneratorBundle)
 
 
-QAG is a bundle that allows quick and simple administration backends generation for Symfony applications using Doctrine.
+QAG is a bundle that allows quick and simple generation of administration backends for Symfony applications using Doctrine.
 
 - [Documentaton](https://arkounay.github.io/QuickAdminGeneratorBundle/#/)
 - [Simple online demo](https://qag-demo.outerark.com/) 
@@ -22,7 +22,7 @@ Install the dependency:
 composer require arkounay/quick-admin-generator-bundle
 ```
 
-also make sure the following line was added in `config/bundles.php`:
+also, make sure the following line was added in `config/bundles.php`:
 
 ```php
 Arkounay\Bundle\QuickAdminGeneratorBundle\ArkounayQuickAdminGeneratorBundle::class => ['all' => true],
@@ -40,7 +40,7 @@ qag_routes:
     prefix: '/admin'
 ```
 
-You will probably want to secure the /admin route prefix, to do so you can add the following line in your `security.yaml`:
+You will probably want to secure the /admin route prefix. To do so, you can add the following line in your `security.yaml`:
 
 ```yaml
 access_control:
@@ -89,19 +89,19 @@ qag.category_toggle_boolean_post   POST     ANY      ANY    /admin/category/togg
 ## Next steps
 
 There are multiple ways to configure and override things in QAG Bundle, depending on the complexity of the project.
-You can use [attributes](Fields.md#configure-fields-by-annotations) for simple and quick tweaks regarding entities fields, override twigs to change appearance, add listeners to create special rules that applies when parsing entities, etc.
+You can use [attributes](Fields.md#configure-fields-by-annotations) for simple and quick tweaks regarding entity fields, override Twig templates to change the appearance, add listeners to create special rules that apply when parsing entities, and more.
 
 See :
 1) [Fields configuration](Fields.md)
     * [Configure Fields by Annotations](Fields.md#configure-fields-by-annotations)
-      - [@QAG\Field](Fields.md#qagfield)
-      - [@QAG\HideInForm](Fields.md#qaghideinform)
-      - [@QAG\HideInList](Fields.md#qaghideinlist)
-      - [@QAG\HideInView](Fields.md#qaghideinview)
-      - [@QAG\HideInExport](Fields.md#qaghideinexport)
-      - [@QAG\Ignore](Fields.md#qagignore)
-      - [@QAG\Sort](Fields.md#qagsort)
-      - [@QAG\Crud](Fields.md#qagcrud)
+      - [QAG\Field](Fields.md#qagfield)
+      - [QAG\HideInForm](Fields.md#qaghideinform)
+      - [QAG\HideInList](Fields.md#qaghideinlist)
+      - [QAG\HideInView](Fields.md#qaghideinview)
+      - [QAG\HideInExport](Fields.md#qaghideinexport)
+      - [QAG\Ignore](Fields.md#qagignore)
+      - [QAG\Sort](Fields.md#qagsort)
+      - [QAG\Crud](Fields.md#qagcrud)
     * [Configure Fields by Attributes](Fields.md#configure-fields-by-attributes)
     * [Configure Fields by overriding controllers](Fields.md#configure-fields-by-overriding-controllers)
     * [Configure Fields by using Listeners](Fields.md#configure-fields-by-using-listeners)
