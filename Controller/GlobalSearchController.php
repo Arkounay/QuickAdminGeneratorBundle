@@ -16,9 +16,9 @@ class GlobalSearchController extends AbstractController
 
     public function __construct(
         /** @var iterable|Crud[] */
-        private iterable $cruds,
-        private EventDispatcherInterface $eventDispatcher,
-        private TranslatorInterface $translator
+        private readonly iterable $cruds,
+        private readonly EventDispatcherInterface $eventDispatcher,
+        private readonly TranslatorInterface $translator
     )
     {}
 

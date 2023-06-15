@@ -2,7 +2,7 @@
 
 namespace Arkounay\Bundle\QuickAdminGeneratorBundle\Extension;
 
-class RouteExtension
+readonly class RouteExtension
 {
 
     public static function humanizeClassName(string $class): string

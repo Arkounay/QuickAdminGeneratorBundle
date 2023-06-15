@@ -3,7 +3,7 @@
 namespace Arkounay\Bundle\QuickAdminGeneratorBundle\Attribute;
 
 #[\Attribute(\Attribute::TARGET_PROPERTY)]
-class HideInExport
+readonly class HideInExport
 {
 
 }

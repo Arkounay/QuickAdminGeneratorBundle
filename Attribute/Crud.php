@@ -3,7 +3,7 @@
 namespace Arkounay\Bundle\QuickAdminGeneratorBundle\Attribute;
 
 #[\Attribute(\Attribute::TARGET_CLASS)]
-class Crud
+readonly class Crud
 {
 
     final public const FETCH_AUTO = 'auto';

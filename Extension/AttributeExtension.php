@@ -2,7 +2,7 @@
 
 namespace Arkounay\Bundle\QuickAdminGeneratorBundle\Extension;
 
-class AttributeExtension
+readonly class AttributeExtension
 {
 
     /**

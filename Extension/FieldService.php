@@ -29,30 +29,10 @@ use Symfony\Component\Form\FormRenderer;
 use Symfony\Component\Form\FormRendererInterface;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
-class FieldService
+readonly class FieldService
 {
 
-    /**
-     * @var TwigLoaderService
-     */
-    private $twigLoader;
-
-    /**
-     * @var EventDispatcherInterface
-     */
-    private $dispatcher;
-
-    /**
-     * @var FormRendererInterface
-     */
-    private $formRenderer;
-
-    public function __construct(TwigLoaderService $twigLoader, EventDispatcherInterface $dispatcher, FormRenderer $formRenderer)
-    {
-        $this->twigLoader = $twigLoader;
-        $this->dispatcher = $dispatcher;
-        $this->formRenderer = $formRenderer;
-    }
+    public function __construct(private TwigLoaderService $twigLoader, private EventDispatcherInterface $dispatcher, private FormRenderer $formRenderer) {}
 
     public function createField(ClassMetadata $metadata, string $fieldIndex, bool $automatic = false, string $fetchMode = Crud::FETCH_AUTO): ?Field
     {

@@ -5,7 +5,7 @@ namespace Arkounay\Bundle\QuickAdminGeneratorBundle\Extension;
 use Twig\Environment;
 use Twig\Loader\LoaderInterface;
 
-class TwigLoaderService
+readonly class TwigLoaderService
 {
 
     private LoaderInterface $twigLoader;

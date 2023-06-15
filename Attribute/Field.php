@@ -3,7 +3,7 @@
 namespace Arkounay\Bundle\QuickAdminGeneratorBundle\Attribute;
 
 #[\Attribute(\Attribute::TARGET_PROPERTY|\Attribute::TARGET_METHOD)]
-class Field
+readonly class Field
 {
 
     public function __construct(
@@ -17,7 +17,7 @@ class Field
         public ?string $help = null,
         public ?string $placeholder = null,
         public ?int $position = null,
-        public $payload = null
+        public mixed $payload = null
     ) {}
 
 }

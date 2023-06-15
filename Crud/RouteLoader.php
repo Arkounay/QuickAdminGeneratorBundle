@@ -13,18 +13,12 @@ use Symfony\Component\Routing\Route;
 use Symfony\Component\Routing\RouteCollection;
 use function Symfony\Component\String\u;
 
-class RouteLoader implements RouteLoaderInterface
+readonly class RouteLoader implements RouteLoaderInterface
 {
 
-    /**
-     * @var iterable|Crud[]
-     */
-    private $cruds;
+    private iterable $cruds;
 
-    /**
-     * @var array
-     */
-    private $config;
+    private array $config;
 
     public function __construct(iterable $cruds, array $config)
     {

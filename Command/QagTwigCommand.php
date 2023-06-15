@@ -26,7 +26,7 @@ class QagTwigCommand extends Command
     private const ANSWER_DASHBOARD = 'Dashboard';
     private const ANSWER_CANCEL = 'Cancel';
 
-    public function __construct(private string $projectDir, private iterable $cruds)
+    public function __construct(private readonly string $projectDir, private readonly iterable $cruds)
     {
         parent::__construct();
     }

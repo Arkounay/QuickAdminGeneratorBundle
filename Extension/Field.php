@@ -2,7 +2,7 @@
 
 namespace Arkounay\Bundle\QuickAdminGeneratorBundle\Extension;
 
-class Field
+readonly class Field
 {
 
     public static function twigPath(string $name): string

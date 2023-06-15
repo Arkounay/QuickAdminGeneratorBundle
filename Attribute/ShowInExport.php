@@ -4,7 +4,7 @@ namespace Arkounay\Bundle\QuickAdminGeneratorBundle\Attribute;
 
 /** Only used when fetch mode is manual */
 #[\Attribute(\Attribute::TARGET_PROPERTY)]
-class ShowInExport
+readonly class ShowInExport
 {
 
 }

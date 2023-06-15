@@ -12,10 +12,7 @@ use Symfony\Component\HttpKernel\KernelEvents;
 class CrudListener implements EventSubscriberInterface
 {
 
-    /**
-     * @var Crud
-     */
-    private $activeCrud;
+    private ?Crud $activeCrud = null;
 
     public static function getSubscribedEvents(): array
     {
