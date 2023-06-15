@@ -32,4 +32,29 @@ class Fields extends TypedArray
         return $this;
     }
 
+
+    public function moveToLastPosition(string $index): self
+    {
+        $maxPosition = 0;
+        foreach ($this as $field) {
+            if ($field->getPosition() > $maxPosition) {
+                $maxPosition = $field->getPosition();
+            }
+        }
+        $this->items[$index]->setPosition($maxPosition + 1);
+        return $this;
+    }
+
+    public function moveToFirstPosition(string $index): self
+    {
+        $minPosition = 0;
+        foreach ($this as $field) {
+            if ($field->getPosition() < $minPosition) {
+                $minPosition = $field->getPosition();
+            }
+        }
+        $this->items[$index]->setPosition($minPosition - 1);
+        return $this;
+    }
+
 }

@@ -396,7 +396,7 @@ abstract class Crud extends AbstractController
 
         [$isSearchable, $search, $filterForm, $activeFiltersNb] = $this->applySearchAndFiltersQueryBuilder($request, $queryBuilder);
 
-        $fields = $this->getListingFields();
+        $fields = $this->getListingFields()->sortByPosition();
         $paginationOptions = $this->getPaginationOptions($fields);
         $entities = $paginator->paginate(
             $queryBuilder->getQuery(),
@@ -695,7 +695,7 @@ abstract class Crud extends AbstractController
                 $ignoreField = true;
                 $attributes = $reflectionProperty->getAttributes();
                 foreach ($attributes as $attribute) {
-                    if (str_starts_with($attribute->getName(), 'Arkounay\Bundle\QuickAdminGeneratorBundle\Annotation\Show')) {
+                    if (str_starts_with($attribute->getName(), 'Arkounay\Bundle\QuickAdminGeneratorBundle\Attribute\Show')) {
                         $ignoreField = false;
                         break;
                     }

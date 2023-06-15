@@ -113,6 +113,22 @@ class Action implements Listable
         return $this;
     }
 
+    public function addAttribute(string $key, string $content): self
+    {
+        if (isset($this->attributes[$key])) {
+            $this->attributes[$key] .= " $content";
+        } else {
+            $this->attributes[$key] = $content;
+        }
+        return $this;
+    }
+
+    public function addAttributes(array $attributes): self
+    {
+        $this->attributes = array_merge($this->attributes, $attributes);
+        return $this;
+    }
+
     public function setModal(Modal $modal): void
     {
         $this->attributes = array_merge($this->attributes, $modal->toAttributes());
