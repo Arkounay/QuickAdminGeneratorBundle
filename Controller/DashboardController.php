@@ -9,7 +9,7 @@ use Symfony\Component\HttpFoundation\Response;
 class DashboardController extends AbstractController
 {
 
-    public function __construct(private array $config){}
+    public function __construct(private readonly array $config){}
 
     public function dashboard(): Response
     {

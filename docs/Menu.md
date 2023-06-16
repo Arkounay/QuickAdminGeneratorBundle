@@ -12,7 +12,7 @@
 ---
 
 ?> By default, the menu is generated automatically.
-One menu item will be created for each Crud Controllers detected, and it will be sorted alphabetically.
+One menu item will be created for each detected Crud Controllers, and they will be sorted alphabetically.
 
 You can however change how it's done, and even add child items.
 
@@ -130,7 +130,7 @@ You can modify the results with the `qag.events.quick_search_item` and `qag.even
 
 ## Switch to dark Mode
 
-You can allow users to switch to dark mode, or set it as default :
+You can allow users to switch to dark mode, or set it as default:
 
 ```yaml
 arkounay_quick_admin_generator:
@@ -139,9 +139,11 @@ arkounay_quick_admin_generator:
         allow_switch: true # will display a toggle to change the theme on user menu
 ```
 
+When switching mode, a customer event `theme-switch` will be dispatched on the `<body>`.
+
 ## Redirect to a specific route instead of the Dashboard
 
-This will redirect to a specified route instead of the Dashbaord, and will remove the Dashboard menu item automatically :
+This will redirect to a specified route instead of the Dashboard, and will remove the Dashboard menu item automatically:
 
 ```yaml
 arkounay_quick_admin_generator:

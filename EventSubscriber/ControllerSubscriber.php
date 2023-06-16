@@ -8,7 +8,7 @@ use Symfony\Component\HttpKernel\Event\ControllerEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
 use function Symfony\Component\String\u;
 
-class ControllerSubscriber implements EventSubscriberInterface
+readonly class ControllerSubscriber implements EventSubscriberInterface
 {
 
     public static function getSubscribedEvents(): array
@@ -35,6 +35,5 @@ class ControllerSubscriber implements EventSubscriberInterface
             $controller->checkSecurity($method, $controller->guessEntity());
         }
     }
-
 
 }

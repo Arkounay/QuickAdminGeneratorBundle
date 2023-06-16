@@ -13,7 +13,6 @@ use Arkounay\Bundle\QuickAdminGeneratorBundle\Model\Field;
 use Arkounay\Bundle\QuickAdminGeneratorBundle\Model\Fields;
 use Arkounay\Bundle\QuickAdminGeneratorBundle\Model\Filter;
 use Arkounay\Bundle\QuickAdminGeneratorBundle\Model\Filters;
-use Doctrine\Common\Annotations\Reader;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Mapping\ClassMetadata;
@@ -48,9 +47,8 @@ abstract class Crud extends AbstractController
     private const ITEMS_PER_PAGE = 15;
     protected EntityManagerInterface $em;
     protected ClassMetadata $metadata;
-    private Reader $reader;
     protected FieldService $fieldService;
-    protected ?Request $request;
+    protected ?Request $request = null;
     protected EventDispatcherInterface $eventDispatcher;
     protected InflectorInterface $inflector;
     protected SluggerInterface $slugger;
@@ -71,15 +69,24 @@ abstract class Crud extends AbstractController
 
     /** @internal */
     private ?string $_cachedFetchMode = null;
+
+    /** @internal */
     private ?string $_cachedName = null;
 
     /**
      * @internal
      * Used to set the dependencies.
-     * We don't get them through a constructor to make it easier to override it custom dependencies.
+     * We don't get them through a constructor to make it easier to import custom dependencies.
      */
-    public function setInternalDependencies(EntityManagerInterface $em, FieldService $fieldService, RequestStack $requestStack, EventDispatcherInterface $eventDispatcher, TranslatorInterface $translator, TwigLoaderService $twigLoader, Reader $reader, SluggerInterface $slugger): void
-    {
+    public function setInternalDependencies(
+        EntityManagerInterface $em,
+        FieldService $fieldService,
+        RequestStack $requestStack,
+        EventDispatcherInterface $eventDispatcher,
+        TranslatorInterface $translator,
+        TwigLoaderService $twigLoader,
+        SluggerInterface $slugger
+    ): void {
         $this->em = $em;
         $this->fieldService = $fieldService;
         $this->request = $requestStack->getCurrentRequest();
@@ -87,7 +94,6 @@ abstract class Crud extends AbstractController
         $this->inflector = new EnglishInflector();
         $this->translator = $translator;
         $this->twigLoader = $twigLoader;
-        $this->reader = $reader;
         $this->repository = $em->getRepository($this->getEntity());
         $this->slugger = $slugger;
     }
@@ -136,7 +142,7 @@ abstract class Crud extends AbstractController
 
         if ($this->isCreatable()) {
             $createAction = new Action('create');
-            $createAction->setLabel($this->translator->trans('Create') . ' ' . $this->getNameSentence());
+            $createAction->setLabel($this->translator->trans('entity_create', ['%name%' => $this->getNameSentence()]));
             $createAction->setIcon('plus');
             $createAction->addClasses('btn', 'btn-primary');
             $actions->add($createAction);
@@ -390,7 +396,7 @@ abstract class Crud extends AbstractController
 
         [$isSearchable, $search, $filterForm, $activeFiltersNb] = $this->applySearchAndFiltersQueryBuilder($request, $queryBuilder);
 
-        $fields = $this->getListingFields();
+        $fields = $this->getListingFields()->sortByPosition();
         $paginationOptions = $this->getPaginationOptions($fields);
         $entities = $paginator->paginate(
             $queryBuilder->getQuery(),
@@ -507,7 +513,7 @@ abstract class Crud extends AbstractController
             return $this->redirectToList();
         }
 
-        return $this->renderForm($this->formTwig(true), $this->retrieveParams('create', [
+        return $this->render($this->formTwig(true), $this->retrieveParams('create', [
             'creation' => true,
             'form' => $form,
             'back' => $this->backUrl(),
@@ -538,7 +544,7 @@ abstract class Crud extends AbstractController
             return $this->redirectToList();
         }
 
-        return $this->renderForm($this->formTwig(false), $this->retrieveParams('edit', [
+        return $this->render($this->formTwig(false), $this->retrieveParams('edit', [
             'creation' => false,
             'entity' => $entity,
             'form' => $form,
@@ -557,7 +563,7 @@ abstract class Crud extends AbstractController
         $queryBuilder->distinct();
         $entities = $queryBuilder->getQuery()->toIterable();
         /** @var Fields|Field[] $fields */
-        $fields = $this->getExportFields();
+        $fields = $this->getExportFields()->sortByPosition();
         $header = [];
         foreach ($fields as $field) {
             $header[] = $this->translator->trans($field->getLabel());
@@ -586,7 +592,7 @@ abstract class Crud extends AbstractController
             fclose($handle);
         });
 
-        $response->setStatusCode(200);
+        $response->setStatusCode(Response::HTTP_OK);
         $response->headers->set('Content-Encoding', 'UTF-8');
         $response->headers->set('Cache-Control', 'private');
         $response->headers->set('Content-Type', 'text/csv; application/force-download');
@@ -599,7 +605,6 @@ abstract class Crud extends AbstractController
     /**
      * Called when flushing a newly created entity or after updating an existing one.
      * @param T $entity
-     * @param bool $creation
      */
     protected function updateEntity($entity, bool $creation): void
     {
@@ -639,7 +644,7 @@ abstract class Crud extends AbstractController
      */
     protected function buildForm($entity, bool $creation): FormBuilderInterface
     {
-        $fields = $this->getFormFields();
+        $fields = $this->getFormFields()->sortByPosition();
 
         $builder = $this->createFormBuilder($entity, [
             'block_name' => str_replace('/', '_', $this->getRoute()),
@@ -681,28 +686,18 @@ abstract class Crud extends AbstractController
      */
     protected function getAllEntityFields(): array
     {
-        $res = array_merge($this->metadata->getFieldNames(), $this->metadata->getAssociationNames());
+        $res = [...$this->metadata->getFieldNames(), ...$this->metadata->getAssociationNames()];
         $fetchMode = $this->getFieldFetchMode();
-        if ($fetchMode !== \Arkounay\Bundle\QuickAdminGeneratorBundle\Annotation\Crud::FETCH_AUTO) {
+        if ($fetchMode !== \Arkounay\Bundle\QuickAdminGeneratorBundle\Attribute\Crud::FETCH_AUTO) {
             // When fetch mode is not automatic, every field needs to have a "Show" annotation to be fetched.
             foreach ($res as $k => $property) {
                 $reflectionProperty = $this->metadata->getReflectionProperty($property);
-                $annotations = $this->reader->getPropertyAnnotations($reflectionProperty);
                 $ignoreField = true;
-                if (empty($annotations)) {
-                    $attributes = $reflectionProperty->getAttributes();
-                    foreach ($attributes as $attribute) {
-                        if (str_starts_with($attribute->getName(), 'Arkounay\Bundle\QuickAdminGeneratorBundle\Annotation\Show')) {
-                            $ignoreField = false;
-                            break;
-                        }
-                    }
-                } else {
-                    foreach ($annotations as $annotation) {
-                        if (str_contains(get_class($annotation), 'Arkounay\Bundle\QuickAdminGeneratorBundle\Annotation\Show')) {
-                            $ignoreField = false;
-                            break;
-                        }
+                $attributes = $reflectionProperty->getAttributes();
+                foreach ($attributes as $attribute) {
+                    if (str_starts_with($attribute->getName(), 'Arkounay\Bundle\QuickAdminGeneratorBundle\Attribute\Show')) {
+                        $ignoreField = false;
+                        break;
                     }
                 }
                 if ($ignoreField) {
@@ -712,7 +707,7 @@ abstract class Crud extends AbstractController
         }
         $methods = $this->metadata->getReflectionClass()?->getMethods(\ReflectionMethod::IS_PUBLIC);
         foreach ($methods as $method) {
-            if (\count($method->getAttributes(\Arkounay\Bundle\QuickAdminGeneratorBundle\Annotation\Field::class)) === 1) {
+            if (\count($method->getAttributes(\Arkounay\Bundle\QuickAdminGeneratorBundle\Attribute\Field::class)) === 1) {
                 $res[] = $method->getName();
             }
         }
@@ -724,23 +719,17 @@ abstract class Crud extends AbstractController
      * The Field Fetch mode. Auto by default (all attributes will be turned into fields).
      * Can be set to manual, so all fields will require to be manually added either through annotations or through the getListingFields and getFormFields methods
      */
-    #[ExpectedValues([\Arkounay\Bundle\QuickAdminGeneratorBundle\Annotation\Crud::FETCH_AUTO, \Arkounay\Bundle\QuickAdminGeneratorBundle\Annotation\Crud::FETCH_MANUAL])]
+    #[ExpectedValues([\Arkounay\Bundle\QuickAdminGeneratorBundle\Attribute\Crud::FETCH_AUTO, \Arkounay\Bundle\QuickAdminGeneratorBundle\Attribute\Crud::FETCH_MANUAL])]
     protected function getFieldFetchMode(): string
     {
         if ($this->_cachedFetchMode === null) {
-            $fetchMode = \Arkounay\Bundle\QuickAdminGeneratorBundle\Annotation\Crud::FETCH_AUTO;
+            $fetchMode = \Arkounay\Bundle\QuickAdminGeneratorBundle\Attribute\Crud::FETCH_AUTO;
             $reflectionClass = $this->metadata->getReflectionClass();
-            $crudAnnotation = $this->reader->getClassAnnotation($reflectionClass, \Arkounay\Bundle\QuickAdminGeneratorBundle\Annotation\Crud::class);
-            if ($crudAnnotation !== null) {
-                /** @var \Arkounay\Bundle\QuickAdminGeneratorBundle\Annotation\Crud $crudAnnotation */
-                $fetchMode = $crudAnnotation->fetchMode;
-            } else {
-                $attributes = $reflectionClass->getAttributes(\Arkounay\Bundle\QuickAdminGeneratorBundle\Annotation\Crud::class);
-                if (!empty($attributes)) {
-                    /** @var \Arkounay\Bundle\QuickAdminGeneratorBundle\Annotation\Crud $crudAttribute */
-                    $crudAttribute = $attributes[0]->newInstance();
-                    $fetchMode = $crudAttribute->fetchMode;
-                }
+            $attributes = $reflectionClass->getAttributes(\Arkounay\Bundle\QuickAdminGeneratorBundle\Attribute\Crud::class);
+            if (!empty($attributes)) {
+                /** @var \Arkounay\Bundle\QuickAdminGeneratorBundle\Attribute\Crud $crudAttribute */
+                $crudAttribute = $attributes[0]->newInstance();
+                $fetchMode = $crudAttribute->fetchMode;
             }
             $this->_cachedFetchMode = $fetchMode;
         }
@@ -753,9 +742,7 @@ abstract class Crud extends AbstractController
      */
     protected function getListingFields(): Fields
     {
-        return clone $this->fields->filter(static function (Field $field) {
-            return $field->isDisplayedInList();
-        });
+        return clone $this->fields->filter(static fn(Field $field) => $field->isDisplayedInList());
     }
 
     /**
@@ -763,9 +750,7 @@ abstract class Crud extends AbstractController
      */
     protected function getViewFields(): Fields
     {
-        return clone $this->fields->filter(static function (Field $field) {
-            return $field->isDisplayedInView();
-        });
+        return clone $this->fields->filter(static fn(Field $field) => $field->isDisplayedInView());
     }
 
     /**
@@ -773,9 +758,7 @@ abstract class Crud extends AbstractController
      */
     protected function getExportFields(): Fields
     {
-        return clone $this->fields->filter(static function (Field $field) {
-            return $field->isDisplayedInExport();
-        });
+        return clone $this->fields->filter(static fn(Field $field) => $field->isDisplayedInExport());
     }
 
     /**
@@ -783,9 +766,7 @@ abstract class Crud extends AbstractController
      */
     protected function getFormFields(): Fields
     {
-        return clone $this->fields->filter(static function (Field $field) {
-            return $field->isDisplayedInForm();
-        });
+        return clone $this->fields->filter(static fn(Field $field) => $field->isDisplayedInForm());
     }
 
     protected function getFilters(): Filters
@@ -814,7 +795,6 @@ abstract class Crud extends AbstractController
 
     /**
      * Creates a Fields object without any field by default
-     * Not used but by default but can be called when overriding getListingFields from scratch for example
      */
     protected function createFields(): Fields
     {
@@ -826,7 +806,7 @@ abstract class Crud extends AbstractController
      */
     protected function createFieldsFromMetadata(): Fields
     {
-        $fields = new Fields($this->metadata, $this->fieldService);
+        $fields = $this->createFields();
         $items = [];
         $positions = [];
         foreach ($this->getAllEntityFields() as $fieldIndex) {
@@ -900,7 +880,7 @@ abstract class Crud extends AbstractController
         $form = $this->createFilterForm()->getForm();
         $form->handleRequest($request);
 
-        return $this->renderForm($this->filterFormTwig(), [
+        return $this->render($this->filterFormTwig(), [
             'form' => $form
         ]);
     }

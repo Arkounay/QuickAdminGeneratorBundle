@@ -16,17 +16,27 @@ abstract class TypedArray implements \IteratorAggregate, \ArrayAccess, \Countabl
     /**
      * @var Listable[]
      */
-    protected $items = [];
+    protected array $items = [];
 
-    abstract protected function createFromIndexName(string $index): Listable;
+    /**
+     * @return T
+     */
+    abstract public function createFromIndexName(string $index): Listable;
+
     abstract protected function getType(): string;
 
+    /**
+     * @return T
+     */
     public function get(string $field): Listable
     {
         return $this->items[$field];
     }
 
-    public function add($field): self
+    /**
+     * @param T|string $field
+     */
+    public function add(Listable|string $field): self
     {
         $type = $this->getType();
         if ($field instanceof $type) {
@@ -39,7 +49,7 @@ abstract class TypedArray implements \IteratorAggregate, \ArrayAccess, \Countabl
                 $this->items[$field] = $this->createFromIndexName($field);
             }
         } else {
-            throw new \UnexpectedValueException("Added Listable can only be an instance $type or a String. Found : " . get_class($field));
+            throw new \UnexpectedValueException("Added Listable can only be an instance $type or a String. Found: " . $field::class);
         }
 
         return $this;
@@ -58,10 +68,9 @@ abstract class TypedArray implements \IteratorAggregate, \ArrayAccess, \Countabl
     }
 
     /**
-     * @param mixed $offset
      * @param Listable $value
      */
-    public function offsetSet($offset, $value): void
+    public function offsetSet(mixed $offset, $value): void
     {
         if (is_null($offset)) {
             $this->add($value);

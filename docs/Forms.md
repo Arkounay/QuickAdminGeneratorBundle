@@ -178,9 +178,9 @@ public function formTwig(): string
 
 ### Disabling turbo on form submit
 
-You can disable turbo on form submission, so you can refresh the page to resubmit form data (useful in dev env).
+You can disable Turbo on form submission, so you can refresh the page to resubmit form data (useful in dev env).
 
-To enable this only in dev mode you can add this in qag.yaml:
+To enable this only in dev mode you can add this in `qag.yaml`:
 
 ```yaml
 when@dev:

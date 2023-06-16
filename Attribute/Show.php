@@ -1,13 +1,12 @@
 <?php
 
-namespace Arkounay\Bundle\QuickAdminGeneratorBundle\Annotation;
+namespace Arkounay\Bundle\QuickAdminGeneratorBundle\Attribute;
 
 /**
- * @Annotation
  * Only when fetch mode is manual
  */
 #[\Attribute(\Attribute::TARGET_PROPERTY)]
-class ShowInForm
+readonly class Show
 {
 
 }

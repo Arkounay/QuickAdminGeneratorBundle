@@ -2,18 +2,18 @@
 
 namespace Arkounay\Bundle\QuickAdminGeneratorBundle\Extension;
 
-use Arkounay\Bundle\QuickAdminGeneratorBundle\Annotation\Crud;
-use Arkounay\Bundle\QuickAdminGeneratorBundle\Annotation\HideInExport;
-use Arkounay\Bundle\QuickAdminGeneratorBundle\Annotation\HideInForm;
-use Arkounay\Bundle\QuickAdminGeneratorBundle\Annotation\HideInList;
-use Arkounay\Bundle\QuickAdminGeneratorBundle\Annotation\HideInView;
-use Arkounay\Bundle\QuickAdminGeneratorBundle\Annotation\Ignore;
-use Arkounay\Bundle\QuickAdminGeneratorBundle\Annotation\Show;
-use Arkounay\Bundle\QuickAdminGeneratorBundle\Annotation\ShowInExport;
-use Arkounay\Bundle\QuickAdminGeneratorBundle\Annotation\ShowInForm;
-use Arkounay\Bundle\QuickAdminGeneratorBundle\Annotation\ShowInList;
-use Arkounay\Bundle\QuickAdminGeneratorBundle\Annotation\ShowInView;
-use Arkounay\Bundle\QuickAdminGeneratorBundle\Annotation\Sort;
+use Arkounay\Bundle\QuickAdminGeneratorBundle\Attribute\Crud;
+use Arkounay\Bundle\QuickAdminGeneratorBundle\Attribute\HideInExport;
+use Arkounay\Bundle\QuickAdminGeneratorBundle\Attribute\HideInForm;
+use Arkounay\Bundle\QuickAdminGeneratorBundle\Attribute\HideInList;
+use Arkounay\Bundle\QuickAdminGeneratorBundle\Attribute\HideInView;
+use Arkounay\Bundle\QuickAdminGeneratorBundle\Attribute\Ignore;
+use Arkounay\Bundle\QuickAdminGeneratorBundle\Attribute\Show;
+use Arkounay\Bundle\QuickAdminGeneratorBundle\Attribute\ShowInExport;
+use Arkounay\Bundle\QuickAdminGeneratorBundle\Attribute\ShowInForm;
+use Arkounay\Bundle\QuickAdminGeneratorBundle\Attribute\ShowInList;
+use Arkounay\Bundle\QuickAdminGeneratorBundle\Attribute\ShowInView;
+use Arkounay\Bundle\QuickAdminGeneratorBundle\Attribute\Sort;
 use Arkounay\Bundle\QuickAdminGeneratorBundle\Model\Field;
 use Arkounay\Bundle\QuickAdminGeneratorBundle\Model\Filter;
 use Arkounay\Bundle\QuickAdminGeneratorBundle\Model\Form\Filter\BooleanFilter;
@@ -23,43 +23,16 @@ use Arkounay\Bundle\QuickAdminGeneratorBundle\Model\Form\Filter\EntityFilter;
 use Arkounay\Bundle\QuickAdminGeneratorBundle\Model\Form\Filter\EnumFilter;
 use Arkounay\Bundle\QuickAdminGeneratorBundle\Model\Form\Filter\IntegerFilter;
 use Arkounay\Bundle\QuickAdminGeneratorBundle\Model\Form\Filter\StringFilter;
-use Doctrine\Common\Annotations\Reader;
 use Doctrine\ORM\Mapping\ClassMetadata;
 use Symfony\Component\EventDispatcher\GenericEvent;
 use Symfony\Component\Form\FormRenderer;
 use Symfony\Component\Form\FormRendererInterface;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
-class FieldService
+readonly class FieldService
 {
 
-    /**
-     * @var TwigLoaderService
-     */
-    private $twigLoader;
-
-    /**
-     * @var EventDispatcherInterface
-     */
-    private $dispatcher;
-
-    /**
-     * @var Reader
-     */
-    private $reader;
-
-    /**
-     * @var FormRendererInterface
-     */
-    private $formRenderer;
-
-    public function __construct(TwigLoaderService $twigLoader, EventDispatcherInterface $dispatcher, Reader $reader, FormRenderer $formRenderer)
-    {
-        $this->twigLoader = $twigLoader;
-        $this->dispatcher = $dispatcher;
-        $this->reader = $reader;
-        $this->formRenderer = $formRenderer;
-    }
+    public function __construct(private TwigLoaderService $twigLoader, private EventDispatcherInterface $dispatcher, private FormRenderer $formRenderer) {}
 
     public function createField(ClassMetadata $metadata, string $fieldIndex, bool $automatic = false, string $fetchMode = Crud::FETCH_AUTO): ?Field
     {
@@ -68,7 +41,7 @@ class FieldService
             $field->setDisplayedInForm(false);
         }
 
-        /** @var \Arkounay\Bundle\QuickAdminGeneratorBundle\Annotation\Field $annotationField */
+        /** @var \Arkounay\Bundle\QuickAdminGeneratorBundle\Attribute\Field $annotationField */
         $annotationField = null;
         if ($metadata) {
             $hasField = $metadata->hasField($fieldIndex);
@@ -78,23 +51,23 @@ class FieldService
                 if ($reflectionProperty) {
 
                     if ($automatic) {
-                        $ignore = $this->getAttribute($reflectionProperty, Ignore::class);
+                        $ignore = AttributeExtension::getAttribute($reflectionProperty, Ignore::class);
                         if ($ignore !== null) {
                             return null;
                         }
-                        $hideInForm = $this->getAttribute($reflectionProperty, HideInForm::class);
+                        $hideInForm = AttributeExtension::getAttribute($reflectionProperty, HideInForm::class);
                         if ($hideInForm !== null) {
                             $field->setDisplayedInForm(false);
                         }
-                        $hideInList = $this->getAttribute($reflectionProperty, HideInList::class);
+                        $hideInList = AttributeExtension::getAttribute($reflectionProperty, HideInList::class);
                         if ($hideInList !== null) {
                             $field->setDisplayedInList(false);
                         }
-                        $hideInView = $this->getAttribute($reflectionProperty, HideInView::class);
+                        $hideInView = AttributeExtension::getAttribute($reflectionProperty, HideInView::class);
                         if ($hideInView !== null) {
                             $field->setDisplayedInView(false);
                         }
-                        $hideInExport = $this->getAttribute($reflectionProperty, HideInExport::class);
+                        $hideInExport = AttributeExtension::getAttribute($reflectionProperty, HideInExport::class);
                         if ($hideInExport !== null) {
                             $field->setDisplayedInExport(false);
                         }
@@ -102,12 +75,12 @@ class FieldService
                     if ($fetchMode === Crud::FETCH_MANUAL) {
 
                         // handle show annotations for manual fetch mode
-                        $show = $this->getAttribute($reflectionProperty, Show::class);
+                        $show = AttributeExtension::getAttribute($reflectionProperty, Show::class);
                         if ($show === null) {
-                            $showInForm = $this->getAttribute($reflectionProperty, ShowInForm::class);
-                            $showInList = $this->getAttribute($reflectionProperty, ShowInList::class);
-                            $showInView = $this->getAttribute($reflectionProperty, ShowInView::class);
-                            $showInExport = $this->getAttribute($reflectionProperty, ShowInExport::class);
+                            $showInForm = AttributeExtension::getAttribute($reflectionProperty, ShowInForm::class);
+                            $showInList = AttributeExtension::getAttribute($reflectionProperty, ShowInList::class);
+                            $showInView = AttributeExtension::getAttribute($reflectionProperty, ShowInView::class);
+                            $showInExport = AttributeExtension::getAttribute($reflectionProperty, ShowInExport::class);
                             $field->setDisplayedInList($showInList !== null);
                             $field->setDisplayedInForm($showInForm !== null);
                             $field->setDisplayedInView($showInView !== null);
@@ -115,11 +88,11 @@ class FieldService
                         }
                     }
                     /** @var Sort $sort */
-                    $sort = $this->getAttribute($reflectionProperty, Sort::class);
+                    $sort = AttributeExtension::getAttribute($reflectionProperty, Sort::class);
                     if ($sort !== null) {
                         $field->setDefaultSortDirection($sort->direction);
                     }
-                    $annotationField = $this->getAttribute($reflectionProperty, \Arkounay\Bundle\QuickAdminGeneratorBundle\Annotation\Field::class);
+                    $annotationField = AttributeExtension::getAttribute($reflectionProperty, \Arkounay\Bundle\QuickAdminGeneratorBundle\Attribute\Field::class);
 
                     if ($reflectionProperty->getType()?->getName() && enum_exists($reflectionProperty->getType()?->getName())) {
                         $field->setType('enum');
@@ -137,7 +110,7 @@ class FieldService
                 }
             } else {
                 // virtual fields
-                $attributes = $metadata->getReflectionClass()?->getMethod($fieldIndex)->getAttributes(\Arkounay\Bundle\QuickAdminGeneratorBundle\Annotation\Field::class);
+                $attributes = $metadata->getReflectionClass()?->getMethod($fieldIndex)->getAttributes(\Arkounay\Bundle\QuickAdminGeneratorBundle\Attribute\Field::class);
                 if (isset($attributes[0])) {
                     $annotationField = $attributes[0]->newInstance();
                     $field->setDisplayedInForm(false);
@@ -263,19 +236,6 @@ class FieldService
         }
 
         return $type;
-    }
-
-    protected function getAttribute(\ReflectionProperty $reflectionProperty, $class)
-    {
-        $res = $this->reader->getPropertyAnnotation($reflectionProperty, $class);
-        if ($res === null) {
-            $attributes = $reflectionProperty->getAttributes($class);
-            if (!empty($attributes)) {
-                $res = $attributes[0]->newInstance();
-            }
-        }
-
-        return $res;
     }
 
 }

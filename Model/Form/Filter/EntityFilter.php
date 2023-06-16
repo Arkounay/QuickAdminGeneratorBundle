@@ -11,21 +11,7 @@ use Symfony\Component\Form\FormInterface;
 class EntityFilter extends GenericFilter
 {
 
-    /**
-     * @var string
-     */
-    private $class;
-
-    /**
-     * @var array
-     */
-    protected $options;
-
-    public function __construct(string $class, array $options = [])
-    {
-        $this->class = $class;
-        $this->options = $options;
-    }
+    public function __construct(private readonly string $class, protected array $options = []) {}
 
     protected function getOptions(Filter $filter): array
     {

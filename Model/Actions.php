@@ -11,7 +11,7 @@ use function Symfony\Component\String\u;
 class Actions extends TypedArray
 {
 
-    protected function createFromIndexName(string $index): Listable
+    public function createFromIndexName(string $index): Listable
     {
         $action = new Action($index);
         $action->addClasses('action-' . $index, 'btn');
