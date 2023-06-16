@@ -89,11 +89,11 @@ qag.category_toggle_boolean_post   POST     ANY      ANY    /admin/category/togg
 ## Next steps
 
 There are multiple ways to configure and override things in QAG Bundle, depending on the complexity of the project.
-You can use [attributes](Fields.md#configure-fields-by-annotations) for simple and quick tweaks regarding entity fields, override Twig templates to change the appearance, add listeners to create special rules that apply when parsing entities, and more.
+You can use [attributes](Fields.md#configure-fields-by-attributes) for simple and quick tweaks regarding entity fields, override Twig templates to change the appearance, add listeners to create special rules that apply when parsing entities, and more.
 
 See :
 1) [Fields configuration](Fields.md)
-    * [Configure Fields by Annotations](Fields.md#configure-fields-by-annotations)
+    * [Configure Fields by Attributes](Fields.md#configure-fields-by-attributes)
       - [QAG\Field](Fields.md#qagfield)
       - [QAG\HideInForm](Fields.md#qaghideinform)
       - [QAG\HideInList](Fields.md#qaghideinlist)
@@ -102,7 +102,6 @@ See :
       - [QAG\Ignore](Fields.md#qagignore)
       - [QAG\Sort](Fields.md#qagsort)
       - [QAG\Crud](Fields.md#qagcrud)
-    * [Configure Fields by Attributes](Fields.md#configure-fields-by-attributes)
     * [Configure Fields by overriding controllers](Fields.md#configure-fields-by-overriding-controllers)
     * [Configure Fields by using Listeners](Fields.md#configure-fields-by-using-listeners)
 2) [Controllers, lists, and security](Controllers.md)

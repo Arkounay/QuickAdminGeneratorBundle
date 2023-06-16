@@ -65,7 +65,7 @@ Create you own controller that extends from `DashboardController` and name it `q
 namespace App\Controller;
    
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 
 class DashboardController extends \Arkounay\Bundle\QuickAdminGeneratorBundle\Controller\DashboardController
 {

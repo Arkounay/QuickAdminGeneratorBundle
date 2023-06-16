@@ -120,7 +120,7 @@ Allows you to completely ignore a field. It will not be parsed, and thus hidden 
 #### QAG\Sort
 Allows you to sort by a specific field in listing by default.
 Has 1 attribute, `direction`. 'asc' or 'desc', specifies the sorting order.
-Only **one** field in an entity should have this annotation.
+Only **one** field in an entity should have this attribute.
 
 #### QAG\Crud (class-level)
 This field must be at the class level.
