@@ -563,7 +563,7 @@ abstract class Crud extends AbstractController
         $queryBuilder->distinct();
         $entities = $queryBuilder->getQuery()->toIterable();
         /** @var Fields|Field[] $fields */
-        $fields = $this->getExportFields();
+        $fields = $this->getExportFields()->sortByPosition();
         $header = [];
         foreach ($fields as $field) {
             $header[] = $this->translator->trans($field->getLabel());
@@ -644,7 +644,7 @@ abstract class Crud extends AbstractController
      */
     protected function buildForm($entity, bool $creation): FormBuilderInterface
     {
-        $fields = $this->getFormFields();
+        $fields = $this->getFormFields()->sortByPosition();
 
         $builder = $this->createFormBuilder($entity, [
             'block_name' => str_replace('/', '_', $this->getRoute()),

@@ -18,5 +18,4 @@ return [
     KnpPaginatorBundle::class => ['all' => true],
     ArkounayQuickAdminGeneratorBundle::class => ['all' => true],
     WebpackEncoreBundle::class => ['all' => true],
-//    Doctrine\Bundle\FixturesBundle\DoctrineFixturesBundle::class => ['dev' => true, 'test' => true],
 ];
