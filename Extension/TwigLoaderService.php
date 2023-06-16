@@ -5,13 +5,10 @@ namespace Arkounay\Bundle\QuickAdminGeneratorBundle\Extension;
 use Twig\Environment;
 use Twig\Loader\LoaderInterface;
 
-class TwigLoaderService
+readonly class TwigLoaderService
 {
 
-    /**
-     * @var LoaderInterface
-     */
-    private $twigLoader;
+    private LoaderInterface $twigLoader;
 
     public function __construct(Environment $environment)
     {
@@ -21,15 +18,15 @@ class TwigLoaderService
     public function getTwigPartialByFieldType(string $type, ?string $twigName = null): string
     {
         if ($twigName !== null) {
-            return "@ArkounayQuickAdminGenerator/crud/fields/_$twigName.html.twig";
+            return Field::twigPath($twigName);
         }
 
         if (str_contains($type, 'datetime')) {
-            $res = '@ArkounayQuickAdminGenerator/crud/fields/_datetime.html.twig';
+            $res = Field::twigPath('datetime');
         } elseif (str_contains($type, 'date')) {
-            $res = '@ArkounayQuickAdminGenerator/crud/fields/_date.html.twig';
+            $res = Field::twigPath('date');
         } else {
-            $res = "@ArkounayQuickAdminGenerator/crud/fields/_$type.html.twig";
+            $res = Field::twigPath($type);
         }
 
         if ($this->twigLoader->exists($res)) {

@@ -4,26 +4,19 @@ namespace Arkounay\Bundle\QuickAdminGeneratorBundle\Tests\TestApp\src\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
-use Arkounay\Bundle\QuickAdminGeneratorBundle\Annotation as QAG;
 
-/**
- * @ORM\Entity()
- */
+#[ORM\Entity]
 class Category
 {
 
-    /**
-     * @ORM\Id()
-     * @ORM\GeneratedValue()
-     * @ORM\Column(type="integer")
-     */
-    private $id;
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(type: 'integer')]
+    private ?int $id = null;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     * @Assert\NotBlank()
-     */
-    private $name;
+    #[ORM\Column(type: 'string', length: 255)]
+    #[Assert\NotBlank]
+    private ?string $name = null;
 
     public function getId(): ?int
     {

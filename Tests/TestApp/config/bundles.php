@@ -1,13 +1,21 @@
 <?php
 
+use Arkounay\Bundle\QuickAdminGeneratorBundle\ArkounayQuickAdminGeneratorBundle;
+use Doctrine\Bundle\DoctrineBundle\DoctrineBundle;
+use Knp\Bundle\PaginatorBundle\KnpPaginatorBundle;
+use Symfony\Bundle\FrameworkBundle\FrameworkBundle;
+use Symfony\Bundle\SecurityBundle\SecurityBundle;
+use Symfony\Bundle\TwigBundle\TwigBundle;
+use Symfony\WebpackEncoreBundle\WebpackEncoreBundle;
+use Twig\Extra\TwigExtraBundle\TwigExtraBundle;
+
 return [
-    Symfony\Bundle\FrameworkBundle\FrameworkBundle::class => ['all' => true],
-    Symfony\Bundle\TwigBundle\TwigBundle::class => ['all' => true],
-    Twig\Extra\TwigExtraBundle\TwigExtraBundle::class => ['all' => true],
-    Doctrine\Bundle\DoctrineBundle\DoctrineBundle::class => ['all' => true],
-    Symfony\Bundle\SecurityBundle\SecurityBundle::class => ['all' => true],
-    Knp\Bundle\PaginatorBundle\KnpPaginatorBundle::class => ['all' => true],
-    Arkounay\Bundle\QuickAdminGeneratorBundle\ArkounayQuickAdminGeneratorBundle::class => ['all' => true],
-    Symfony\WebpackEncoreBundle\WebpackEncoreBundle::class => ['all' => true],
-//    Doctrine\Bundle\FixturesBundle\DoctrineFixturesBundle::class => ['dev' => true, 'test' => true],
+    FrameworkBundle::class => ['all' => true],
+    TwigBundle::class => ['all' => true],
+    TwigExtraBundle::class => ['all' => true],
+    DoctrineBundle::class => ['all' => true],
+    SecurityBundle::class => ['all' => true],
+    KnpPaginatorBundle::class => ['all' => true],
+    ArkounayQuickAdminGeneratorBundle::class => ['all' => true],
+    WebpackEncoreBundle::class => ['all' => true],
 ];

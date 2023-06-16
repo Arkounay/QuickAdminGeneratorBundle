@@ -7,26 +7,18 @@ use Arkounay\Bundle\QuickAdminGeneratorBundle\Controller\Crud;
 use Arkounay\Bundle\QuickAdminGeneratorBundle\Controller\DashboardController;
 use Arkounay\Bundle\QuickAdminGeneratorBundle\Controller\GlobalSearchController;
 use Arkounay\Bundle\QuickAdminGeneratorBundle\Controller\ThemeController;
-use Arkounay\Bundle\QuickAdminGeneratorBundle\Model\Action;
 use ReflectionClass;
-use ReflectionFunction;
 use Symfony\Bundle\FrameworkBundle\Routing\RouteLoaderInterface;
 use Symfony\Component\Routing\Route;
 use Symfony\Component\Routing\RouteCollection;
 use function Symfony\Component\String\u;
 
-class RouteLoader implements RouteLoaderInterface
+readonly class RouteLoader implements RouteLoaderInterface
 {
 
-    /**
-     * @var iterable|Crud[]
-     */
-    private $cruds;
+    private iterable $cruds;
 
-    /**
-     * @var array
-     */
-    private $config;
+    private array $config;
 
     public function __construct(iterable $cruds, array $config)
     {
@@ -39,7 +31,7 @@ class RouteLoader implements RouteLoaderInterface
         $routes = new RouteCollection();
 
         foreach ($this->cruds as $crud) {
-            $class = get_class($crud);
+            $class = $crud::class;
             $reflectionClass = new ReflectionClass($class);
 
             foreach ($crud->getAllActions() as $action) {

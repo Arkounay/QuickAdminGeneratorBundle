@@ -15,11 +15,11 @@ class QagExtensionRuntime implements RuntimeExtensionInterface
     private ?array $_cache = null;
 
     public function __construct(
-        private array $config,
-        private RouterInterface $router,
-        private RequestStack $requestStack,
-        private MenuInterface $menu,
-        private Environment $twig
+        private readonly array $config,
+        private readonly RouterInterface $router,
+        private readonly RequestStack $requestStack,
+        private readonly MenuInterface $menu,
+        private readonly Environment $twig
     ) {}
     
     private function getMenuItems(): iterable
@@ -47,7 +47,7 @@ class QagExtensionRuntime implements RuntimeExtensionInterface
                 }
             }
             return $this->router->generate("qag.{$route}_{$action->getIndex()}", $params);
-        } catch (\Exception $ignored) {}
+        } catch (\Exception) {}
 
         return '#';
     }

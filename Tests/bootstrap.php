@@ -1,10 +1,11 @@
 <?php
 
+use Arkounay\Bundle\QuickAdminGeneratorBundle\Tests\TestApp\src\Entity\Article;
 use Arkounay\Bundle\QuickAdminGeneratorBundle\Tests\TestApp\src\TestKernel;
-use Symfony\Component\Console\Output\NullOutput;
-use Symfony\Component\Dotenv\Dotenv;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Symfony\Component\Console\Input\ArrayInput;
+use Symfony\Component\Console\Output\NullOutput;
+use Symfony\Component\Dotenv\Dotenv;
 
 require dirname(__DIR__).'/vendor/autoload.php';
 
@@ -36,7 +37,7 @@ $application->run($input, $nullOutput);
 
 $em = $application->getKernel()->getContainer()->get('doctrine.orm.default_entity_manager');
 for ($i = 0; $i < 24; $i++) {
-    $article = new \Arkounay\Bundle\QuickAdminGeneratorBundle\Tests\TestApp\src\Entity\Article();
+    $article = new Article();
     $article->setName('Lorem ' . $i);
     $article->setPublished($i % 2 === 0);
     $em->persist($article);

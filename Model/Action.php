@@ -8,45 +8,26 @@ use function Symfony\Component\String\u;
 class Action implements Listable
 {
 
-    /**
-     * @var string
-     */
-    protected $index;
+    protected ?string $label = null;
 
-    /**
-     * @var string
-     */
-    protected $label;
+    protected ?string $icon = null;
 
-    /**
-     * @var string
-     */
-    protected $icon;
+    /** @var string[] */
+    protected array $classes = [];
 
     /**
      * @var string[]
      */
-    protected $classes = [];
+    protected array $dropdownClasses = [];
 
     /**
      * @var string[]
      */
-    protected $dropdownClasses = [];
+    protected array $attributes = [];
 
-    /**
-     * @var string[]
-     */
-    protected $attributes = [];
+    protected ?string $customHref = null;
 
-    /**
-     * @var string
-     */
-    protected $customHref;
-
-    public function __construct(string $index)
-    {
-        $this->index = $index;
-    }
+    public function __construct(protected readonly string $index) {}
 
     public function getIndex(): string
     {
@@ -126,6 +107,22 @@ class Action implements Listable
     {
         $this->attributes = $attributes;
 
+        return $this;
+    }
+
+    public function addAttribute(string $key, string $content): self
+    {
+        if (isset($this->attributes[$key])) {
+            $this->attributes[$key] .= " $content";
+        } else {
+            $this->attributes[$key] = $content;
+        }
+        return $this;
+    }
+
+    public function addAttributes(array $attributes): self
+    {
+        $this->attributes = array_merge($this->attributes, $attributes);
         return $this;
     }
 

@@ -9,26 +9,8 @@ use function Symfony\Component\String\u;
 class Filter implements Listable
 {
 
-    /**
-     * @var string
-     */
-    protected $index;
-
-    /**
-     * @var string
-     */
-    protected $label;
-
-    /**
-     * @var FilterForm
-     */
-    protected $filterForm;
-
-    public function __construct(string $index, FilterForm $filterForm, ?string $label = null)
+    public function __construct(protected string $index, protected FilterForm $filterForm, protected ?string $label = null)
     {
-        $this->index = $index;
-        $this->filterForm = $filterForm;
-        $this->label = $label;
         if ($label === null) {
             $this->label = u($index)->title()->toString();
         }

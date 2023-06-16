@@ -76,7 +76,7 @@ class Menu implements MenuInterface
             ksort($cruds);
             $items = [];
             foreach ($cruds as $crud) {
-                $items[get_class($crud)] = $crud;
+                $items[$crud::class] = $crud;
             }
             foreach ($items as $class => $crud) {
                 $menuItem = $this->createMenuItem($items, $class, $request);
@@ -113,7 +113,6 @@ class Menu implements MenuInterface
     /**
      * @param array $cruds available cruds controller
      * @param $node string|array the yaml item. Can be a crud class or an array
-     * @param Request $request
      * @return MenuItem|null null if nothing to add for this specific node
      */
     protected function createMenuItem(array $cruds, $node, Request $request): ?MenuItem
@@ -223,10 +222,10 @@ class Menu implements MenuInterface
         foreach ($cruds as $crud) {
             if (is_array($crud)) {
                 foreach ($crud['children'] as $child) {
-                    $items[get_class($child)] = $child;
+                    $items[$child::class] = $child;
                 }
             } else {
-                $items[get_class($crud)] = $crud;
+                $items[$crud::class] = $crud;
             }
         }
 

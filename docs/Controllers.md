@@ -127,7 +127,7 @@ By default, the responsive mode of the list view will be simplified, showing onl
 
 ![Responsive Simple](https://raw.githubusercontent.com/Arkounay/QuickAdminGeneratorBundle/master/docs/images/responsive-simple.png)
 
-This will disallow batch actions and hide some information, but make the view more simple on mobile devices.
+This will disable batch actions and hide certain information, making the view more simplified for mobile devices.
 To disable this, override the `simpleResponsiveMode` method and return false.
 
 ```php
@@ -146,8 +146,8 @@ Keep in mind you can change how simple responsive mode looks by overriding the c
 ## Permissions
 
 There are multiple functions that can be overridden to configure permissions:
-- `isEnabled()` checks if the whole controller can be loaded. Will throw an Access Denied exception if it returns false when trying to reach any route in the controller, as well as automatically remove the corresponding link in the menu.
-- `isCreatable` checks if an element can be created.  If false, will prevent the user from going to the "create" route and remove the "Create" action.
+- `isEnabled()` checks if the entire controller can be loaded. If it returns false when trying to access any route within the controller, it will throw an Access Denied exception and automatically remove the corresponding link from the menu.
+- `isCreatable` checks if an element can be created. If it returns false, it will prevent the user from accessing the "create" route and remove the "Create" action from the menu.
 - `isEditable($entity)` checks if an element can be edited. If false, will prevent the user from going to the "edit" route and remove the "Edit" action.
 - `isDeletable($entity)` checks if an element can be deleted. If false, will also remove the "Delete" action and the "Delete" batch action.
 - `isSearchable` checks if an element can be searched. If false, will prevent text search and remove the search bar (filters can still be applied if they exist).

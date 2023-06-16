@@ -2,48 +2,33 @@
 
 namespace Arkounay\Bundle\QuickAdminGeneratorBundle\Tests\TestApp\src\Entity;
 
+use Arkounay\Bundle\QuickAdminGeneratorBundle\Attribute as QAG;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
-use Arkounay\Bundle\QuickAdminGeneratorBundle\Annotation as QAG;
 
-/**
- * @ORM\Entity()
- */
+#[ORM\Entity]
 class Article
 {
 
-    /**
-     * @ORM\Id()
-     * @ORM\GeneratedValue()
-     * @ORM\Column(type="integer")
-     */
-    private $id;
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(type: 'integer')]
+    private ?int $id = null;
 
-    /**
-     * @var \DateTime
-     * @ORM\Column(type="datetime")
-     * @QAG\Field(label="Date of creation", position=1)
-     */
-    private $createdAt;
+    #[ORM\Column(type: 'datetime')]
+    #[QAG\Field(label: 'Date of creation', position: 1)]
+    private ?\DateTimeInterface $createdAt = null;
 
-    /**
-     * @var Category
-     * @ORM\ManyToOne(targetEntity="Arkounay\Bundle\QuickAdminGeneratorBundle\Tests\TestApp\src\Entity\Category")
-     */
-    private $category;
+    #[ORM\ManyToOne(targetEntity: Category::class)]
+    private ?Category $category = null;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     * @Assert\NotBlank()
-     * @QAG\Field(help="The name of the Article.", position=0)
-     */
-    private $name;
+    #[ORM\Column(type: 'string', length: 255)]
+    #[QAG\Field(help: 'The name of the Article.', position: 0)]
+    #[Assert\NotBlank]
+    private ?string $name = null;
 
-    /**
-     * @var bool
-     * @ORM\Column(type="boolean")
-     */
-    private $published = false;
+    #[ORM\Column(type: 'boolean')]
+    private ?bool $published = false;
 
     public function __construct()
     {
