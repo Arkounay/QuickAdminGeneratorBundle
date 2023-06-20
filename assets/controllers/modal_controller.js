@@ -1,5 +1,4 @@
-import { Controller } from '@hotwired/stimulus';
-import Modal from 'bootstrap/js/src/modal';
+import {Controller} from '@hotwired/stimulus';
 
 export default class extends Controller {
 
@@ -81,7 +80,7 @@ export default class extends Controller {
         } else if (backdrop === 'false') {
             backdrop = false;
         }
-        const modal = new Modal('#qag-generic-modal', {
+        const modal = new bootstrap.Modal('#qag-generic-modal', {
             backdrop: backdrop,
             focus: this.focusValue,
             keyboard: this.keyboardValue,

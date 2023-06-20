@@ -1,5 +1,4 @@
 import {Controller} from '@hotwired/stimulus';
-import Modal from 'bootstrap/js/src/modal';
 
 export default class extends Controller {
 
@@ -13,7 +12,7 @@ export default class extends Controller {
         if (name) {
             this.targetModal.querySelector('.js-entity-to-string').textContent = name;
         }
-        new Modal(this.targetModal).show()
+        new bootstrap.Modal(this.targetModal).show()
         this.targetModal.querySelector('form').setAttribute('action', this.element.href);
     }
 
