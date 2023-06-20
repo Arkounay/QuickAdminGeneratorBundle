@@ -1,11 +1,10 @@
 import {Controller} from '@hotwired/stimulus';
-import Modal from 'bootstrap/js/src/modal';
 
 export default class extends Controller {
 
     connect() {
         this.filterElement = document.querySelector('#filter-modal');
-        this.filterModal = new Modal(this.filterElement);
+        this.filterModal = new bootstrap.Modal(this.filterElement);
         this.filterForm = this.filterElement.querySelector('#filter-form');
         this.ajaxFilterUrl = this.element.dataset.ajaxRoute;
 

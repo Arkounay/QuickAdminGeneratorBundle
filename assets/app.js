@@ -1,7 +1,4 @@
 import './styles/app.scss';
-
-import 'bootstrap';
-import Tooltip from 'bootstrap/js/src/tooltip';
 import './bootstrap';
 
 window.bootstrap = require('bootstrap');
@@ -9,7 +6,7 @@ window.bootstrap = require('bootstrap');
 function applyTooltip() {
     const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
     tooltipTriggerList.map((tooltipTriggerEl) => {
-        return new Tooltip(tooltipTriggerEl)
+        return new bootstrap.Tooltip(tooltipTriggerEl)
     })
 }
 
