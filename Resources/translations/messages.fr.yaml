@@ -7,6 +7,9 @@ no_results_for: 'Aucun résultat pour « %query% ».'
 search_for: 'Recherche de « %query% »'
 search_entity: Rechercher %entity_name%
 entity_create: Créer %name%
+entity_edit: Modifier %name%
+entity_view: Voir %name%
+entity_delete: Supprimer %name%
 
 Entities: Entités
 Edit: Modifier

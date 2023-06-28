@@ -485,7 +485,7 @@ abstract class Crud extends AbstractController
 
         return $this->render($this->viewTwig(), $this->retrieveParams('view', [
             'plural_name' => $this->getPluralName(),
-            'action_name' => 'View',
+            'action_name' => $this->translator->trans('entity_view', ['%name%' => $this->getNameSentence()]),
             'back' => $this->backUrl(),
             'fields' => $this->getViewFields(),
             'entity' => $entity,
@@ -517,7 +517,7 @@ abstract class Crud extends AbstractController
             'creation' => true,
             'form' => $form,
             'back' => $this->backUrl(),
-            'action_name' => 'Create'
+            'action_name' => $this->translator->trans('entity_create', ['%name%' => $this->getNameSentence()])
         ]));
     }
 
@@ -549,7 +549,7 @@ abstract class Crud extends AbstractController
             'entity' => $entity,
             'form' => $form,
             'back' => $this->backUrl(),
-            'action_name' => 'Edit'
+            'action_name' => $this->translator->trans('entity_edit', ['%name%' => $this->getNameSentence()])
         ]));
     }
 

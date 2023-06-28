@@ -12,7 +12,9 @@ search_entity: Search %entity_name%
 batch_selection_single: '<strong>One</strong> item selected:'
 batch_selection_multiple: '<strong>%count%</strong> items selected:'
 entity_create: Create %name%
-
+entity_edit: Edit %name%
+entity_view: View %name%
+entity_delete: Delete %name%
 
 theme:
     label: Theme

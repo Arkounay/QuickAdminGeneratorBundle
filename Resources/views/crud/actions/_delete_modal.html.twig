@@ -4,7 +4,7 @@
             <form action="" method="post">
                 <input type="hidden" name="token" value="{{ csrf_token('delete') }}" />
                 <div class="modal-header">
-                    <h5 class="modal-title">{{ 'Remove'|trans }} {{ name|trans }}</h5>
+                    <h5 class="modal-title">{{ 'entity_delete'|trans({'%name%': name_sentence|trans}) }}</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="{{ 'Close'|trans }}"></button>
                 </div>
                 <div class="modal-body">
