@@ -140,7 +140,7 @@
                                             {% set username = app.user|title %}
                                         {% endif %}
                                         <div>{{ username }}</div>
-                                        {% if app.user.email is defined and app.user.email != username %}
+                                        {% if app.user.email is defined and app.user.email|lower != username|lower %}
                                             <div class="mt-1 small text-muted">{{ app.user.email }}</div>
                                         {% endif %}
                                     </div>
