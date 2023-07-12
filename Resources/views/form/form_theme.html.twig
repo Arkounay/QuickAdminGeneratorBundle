@@ -1,7 +1,7 @@
 {% extends 'bootstrap_5_layout.html.twig' %}
 
 {%- block form_start -%}
-    {% if qag.config.allow_form_resubmit|default(false) %}
+    {% if qag().config.allow_form_resubmit|default(false) %}
         {% set attr = attr|merge({'data-turbo': attr['data-turbo']|default('false')}) %}
     {% endif %}
     {{ parent() }}
