@@ -53,7 +53,7 @@
     {% set current_action_name = 'list' %}
     {% if search %}
         <div class="mb-2">
-            {{ 'num_of_result'|trans({results: entities.count, search: search})|raw }}
+            {% block search_result_text 'num_of_result'|trans({results: entities.count, search: search|e})|raw %}
         </div>
     {% endif %}
 
