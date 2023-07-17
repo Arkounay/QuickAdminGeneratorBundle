@@ -13,11 +13,11 @@
 {% import '@ArkounayQuickAdminGenerator/crud/actions/_action_renderer.html.twig' as action_renderer %}
 
 {% block global_actions %}
-    <div class="global-actions col">
+    <div class="global-actions col-sm col-xs-12">
         <div class="d-flex justify-content-end flex-wrap">
             {% if is_searchable %}
                 {% block search_form %}
-                    <form action="{{ app.request.requestUri }}" method="get" class="search-form w-100 w-sm-auto">
+                    <form action="{{ app.request.requestUri }}" method="get" class="search-form w-100 mb-1 w-sm-auto">
                         <div class="input-group">
                             {% block search_form_content %}
                                 <input type="search" class="form-control" name="search" placeholder="{{ 'search_entity'|trans({'%entity_name%': name_sentence}) }}" value="{{ search }}">

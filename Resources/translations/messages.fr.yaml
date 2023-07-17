@@ -10,6 +10,7 @@ entity_create: Créer %name%
 entity_edit: Modifier %name%
 entity_view: Voir %name%
 entity_delete: Supprimer %name%
+Reset: Réinitialiser
 
 Entities: Entités
 Edit: Modifier

@@ -318,10 +318,10 @@
     <div class="page-wrapper" {% block page_wrapper_attr '' %}>
         <div class="container-xl">
             <div class="page-header">
-                <div class="row align-items-start align-items-sm-center justify-content-between">
+                <div class="row align-items-start justify-content-between">
                     <div class="col-auto">
                         {% block content_title_wrapper %}
-                            <h2 class="page-title">
+                            <h2 class="page-title my-1">
                                 {% block content_title '' %}
                             </h2>
                         {% endblock %}
@@ -331,7 +331,7 @@
                 </div>
             </div>
 
-            <div class="page-body">
+            <div class="{% block page_body_attr 'page-body' %}">
                 {% block flash_messages %}
                     {% for label, messages in app.flashes(['danger', 'success', 'warning', 'info']) %}
                         {% for message in messages %}
