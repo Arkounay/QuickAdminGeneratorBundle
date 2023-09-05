@@ -301,9 +301,25 @@ abstract class Crud extends AbstractController
         return $this->redirectToList();
     }
 
+    /**
+     * Checks if an entity can be edited (for ajax toggle boolean)
+     * @param T $entity
+     */
+    public function isEditableBoolean($entity): bool
+    {
+        return $this->isEditable($entity);
+    }
+
+    /**
+     * Changes a boolean property (user for ajax toggles in list)
+     * @param T $entity
+     */
     public function toggleBooleanPostAction(Request $request, $entity): Response
     {
-
+        if (!$this->isEditableBoolean($entity)) {
+            throw $this->createAccessDeniedException("Entity {$this->getEntity()} cannot be edited (boolean).");
+        }
+        
         $index = $request->request->get('index');
         $value = $request->request->getBoolean('checked');
         $propertyAccessor = PropertyAccess::createPropertyAccessor();
