@@ -71,9 +71,7 @@
                                     <span class="text-secondary me-1">#{{ entity.id }}</span>
                                 {% endif %}
 
-                                {% if entity.__toString is defined %}
-                                    {{ entity }}
-                                {% endif %}
+                                {{ qag_entity_to_string(entity) }}
                             {% endblock %}
                         </div>
 
@@ -162,50 +160,52 @@
                                     {% endblock %}
                                 {% endfor %}
                                 {% block actions %}
-                                    {% if actions is not empty %}
+                                    {% if has_actions %}
                                         <td class="text-end">
-                                            <div class="{% block entity_actions_classes entity_actions_display_mode.wrapperClasses %}">
-                                                {% block entity_actions %}
-                                                    {% if actions|length > 1 %}
-                                                        {% if entity_actions_display_mode == constant('Dropdown', entity_actions_display_mode) %}
-                                                            {% block entity_actions_dropdown %}
+                                            {% if actions is not empty %}
+                                                <div class="{% block entity_actions_classes entity_actions_display_mode.wrapperClasses %}">
+                                                    {% block entity_actions %}
+                                                        {% if actions|length > 1 %}
+                                                            {% if entity_actions_display_mode == constant('Dropdown', entity_actions_display_mode) %}
+                                                                {% block entity_actions_dropdown %}
+                                                                    {% set main_action = actions|first %}
+                                                                    {{ action_renderer.action_a(main_action, entity) }}
+                                                                    {% if actions|length == 2 and actions.delete is defined and actions|last == actions.delete %}
+                                                                        {% set action = actions.delete %}
+                                                                        {% block entity_actions_delete %}
+                                                                            <a {{ action_renderer.action_attributes(action, entity, null, ['btn-sm']) }}> {{ qag_render_icon('x', 12, 12) }} </a>
+                                                                        {% endblock %}
+                                                                    {% else %}
+                                                                        <button type="button" {{ stimulus_controller('dropdown_fix') }} class="btn btn-outline-primary dropdown-toggle dropdown-toggle-split"  data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                                            <span class="visually-hidden">Toggle Dropdown</span>
+                                                                        </button>
+                                                                        <div class="dropdown-menu dropdown-menu-end">
+                                                                            {% for action in actions|filter(a => main_action.index != a.index) %}
+                                                                                {% block entity_actions_dropdown_button action_renderer.action_a(action, entity, null, ['dropdown-item'], true) %}
+                                                                            {% endfor %}
+                                                                        </div>
+                                                                    {% endif %}
+                                                                {% endblock %}
+                                                            {% elseif entity_actions_display_mode.expanded %}
+                                                                {% block entity_actions_group_expanded %}
+                                                                    {% for action in actions %}
+                                                                        {% if action.classes is empty %}
+                                                                            {% do action.addClasses('btn', 'btn-outline-dark') %}
+                                                                        {% endif %}
+                                                                        {{ action_renderer.action_a(action, entity) }}
+                                                                    {% endfor %}
+                                                                {% endblock %}
+                                                            {% endif %}
+                                                        {% elseif actions|length == 1 %}
+                                                            {% block entity_actions_single %}
                                                                 {% set main_action = actions|first %}
                                                                 {{ action_renderer.action_a(main_action, entity) }}
-                                                                {% if actions|length == 2 and actions.delete is defined and actions|last == actions.delete %}
-                                                                    {% set action = actions.delete %}
-                                                                    <a {{ action_renderer.action_attributes(action, entity, null, ['btn-sm']) }}> {{ qag_render_icon('x', 12, 12) }} </a>
-                                                                {% else %}
-                                                                    <button type="button" {{ stimulus_controller('dropdown_fix') }} class="btn btn-outline-primary dropdown-toggle dropdown-toggle-split"  data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                                        <span class="visually-hidden">Toggle Dropdown</span>
-                                                                    </button>
-                                                                    <div class="dropdown-menu dropdown-menu-end">
-                                                                        {% for action in actions|filter(a => main_action.index != a.index) %}
-                                                                            {# action \Arkounay\Bundle\QuickAdminGeneratorBundle\Model\Action #}
-                                                                            {{ action_renderer.action_a(action, entity, null, ['dropdown-item'], true) }}
-                                                                        {% endfor %}
-                                                                    </div>
-                                                                {% endif %}
-                                                            {% endblock %}
-                                                        {% elseif entity_actions_display_mode.expanded %}
-                                                            {% block entity_actions_group_expanded %}
-                                                                {% for action in actions %}
-                                                                    {% if action.classes is empty %}
-                                                                        {% do action.addClasses('btn', 'btn-outline-dark') %}
-                                                                    {% endif %}
-                                                                    {{ action_renderer.action_a(action, entity) }}
-                                                                {% endfor %}
                                                             {% endblock %}
                                                         {% endif %}
-                                                    {% elseif actions|length == 1 %}
-                                                        {% block entity_actions_single %}
-                                                            {% set main_action = actions|first %}
-                                                            {{ action_renderer.action_a(main_action, entity) }}
-                                                        {% endblock %}
-                                                    {% endif %}
-                                                {% endblock %}
-
-                                            </div>
-                                        </td>
+                                                    {% endblock %}
+                                                </div>
+                                            </td>
+                                        {% endif %}
                                     {% endif %}
                                 {% endblock %}
                             </tr>

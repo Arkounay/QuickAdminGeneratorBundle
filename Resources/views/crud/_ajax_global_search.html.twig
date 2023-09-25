@@ -4,7 +4,7 @@
         <div class="list-group">
             {% for item in result.items %}
                 <a href="{{ item.url }}" class="list-group-item list-group-item-action" data-action="mouseover->global-search#hover" data-global-search-target="resultItem">
-                    {% block item item.entity %}
+                    {% block item qag_entity_to_string(item.entity) %}
                 </a>
             {% endfor %}
         </div>

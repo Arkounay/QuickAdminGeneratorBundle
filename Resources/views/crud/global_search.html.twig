@@ -27,7 +27,7 @@
                         {% for item in result.items %}
                             <li>
                                 <a href="{{ item.url }}">
-                                    {% block item item.entity %}
+                                    {% block item qag_entity_to_string(item.entity) %}
                                 </a>
                             </li>
                         {% endfor %}

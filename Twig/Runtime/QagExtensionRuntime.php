@@ -4,6 +4,8 @@ namespace Arkounay\Bundle\QuickAdminGeneratorBundle\Twig\Runtime;
 
 use Arkounay\Bundle\QuickAdminGeneratorBundle\Menu\MenuInterface;
 use Arkounay\Bundle\QuickAdminGeneratorBundle\Model\Action;
+use Psr\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\EventDispatcher\GenericEvent;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Routing\RouterInterface;
@@ -19,7 +21,8 @@ class QagExtensionRuntime implements RuntimeExtensionInterface
         private readonly RouterInterface $router,
         private readonly RequestStack $requestStack,
         private readonly MenuInterface $menu,
-        private readonly Environment $twig
+        private readonly Environment $twig,
+        private readonly EventDispatcherInterface $eventDispatcher
     ) {}
     
     private function getMenuItems(): iterable
@@ -60,6 +63,23 @@ class QagExtensionRuntime implements RuntimeExtensionInterface
             'height' => $height,
             'class' => $class
         ]);
+    }
+
+    public function entityToString($entity): string
+    {
+        if (is_string($entity)) {
+            // used for global search
+            return $entity;
+        }
+        $event = new GenericEvent($entity, ['entity' => $entity]);
+        $this->eventDispatcher->dispatch($event, 'qag.events.entity_to_string');
+        if ($event->hasArgument('response')) {
+            return $event->getArgument('response');
+        }
+        if (!method_exists($entity, '__toString')) {
+            throw new \RuntimeException('Entity ' . $entity::class . ' does not implement __toString. Please override __toString or subscribe to qag.events.entity_to_string');
+        }
+        return (string)$entity;
     }
 
     public function getQag(): array

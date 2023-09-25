@@ -220,7 +220,7 @@ tr.highlighted {
   }
 }
 
-.table-view tr:last-child {
+.table-view>tbody>tr:last-child {
   border-bottom-color: transparent;
 }
 

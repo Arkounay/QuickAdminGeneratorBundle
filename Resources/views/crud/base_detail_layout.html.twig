@@ -26,7 +26,9 @@
                     {% if breadcrumb is defined %}
                         {% for item in breadcrumb %}
                             {% if item.href|default(false) %}
-                                <a class="breadcrumb-item {{ item.active|default(false) ? 'active' }}" href="{{ item.href }}">{{ item.label|trans }}</a>
+                                {% block breadcrumb_item %}
+                                    <a class="breadcrumb-item {{ item.active|default(false) ? 'active' }}" href="{{ item.href }}">{{ item.label|trans }}</a>
+                                {% endblock %}
                             {% else %}
                                 <span class="breadcrumb-item {{ item.active|default(false) ? 'active' }}">
                                     {{ item.label|trans }}

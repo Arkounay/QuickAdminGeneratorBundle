@@ -7,6 +7,7 @@ namespace Arkounay\Bundle\QuickAdminGeneratorBundle\DependencyInjection;
 use Arkounay\Bundle\QuickAdminGeneratorBundle\Controller\Crud;
 use Arkounay\Bundle\QuickAdminGeneratorBundle\Extension\FieldService;
 use Arkounay\Bundle\QuickAdminGeneratorBundle\Extension\TwigLoaderService;
+use Arkounay\Bundle\QuickAdminGeneratorBundle\Twig\Runtime\QagExtensionRuntime;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -42,7 +43,8 @@ class ArkounayQuickAdminGeneratorExtension extends Extension
                 new Reference(EventDispatcherInterface::class),
                 new Reference(TranslatorInterface::class),
                 new Reference(TwigLoaderService::class),
-                new Reference(SluggerInterface::class)
+                new Reference(SluggerInterface::class),
+                new Reference(QagExtensionRuntime::class)
             ]);
 
     }

@@ -13,6 +13,7 @@
   + [Filtering through Query Builder](#filtering-through-query-builder)
   + [Filtering through Filters](#filtering-through-filters)
 * [Dependency injection](#dependency-injection)
+* [Overriding an entity's __toString](#overriding-an-entity-s__tostring)
 * [Overriding the default behaviour](#overriding-the-default-behaviour)
   
 ---
@@ -279,6 +280,34 @@ public function __construct(ServiceA $serviceA)
 public function customAction($entity, ServiceB $serviceB) 
 {
     // do something
+}
+```
+
+
+## Overriding an entity's __toString
+
+Sometimes, you might want a different entity's `__toString` method for the admin, or you might find yourself in a situation where you can't easily override `__toString()`.
+To override it you can listen to the `qag.events.entity_to_string` event, and set a reponse:
+
+```php
+class ToStringEvent implements EventSubscriberInterface
+{
+
+    public static function getSubscribedEvents(): array
+    {
+        return [
+            'qag.events.entity_to_string' => 'test',
+        ];
+    }
+
+    public function test(GenericEvent $event): void
+    {
+        $entity = $event->getSubject();
+        if ($entity instanceof MyEntity) {
+            $event->setArgument('response', $entity->getName());
+        }
+    }
+
 }
 ```
 

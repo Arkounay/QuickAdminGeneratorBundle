@@ -13,6 +13,7 @@ use Arkounay\Bundle\QuickAdminGeneratorBundle\Model\Field;
 use Arkounay\Bundle\QuickAdminGeneratorBundle\Model\Fields;
 use Arkounay\Bundle\QuickAdminGeneratorBundle\Model\Filter;
 use Arkounay\Bundle\QuickAdminGeneratorBundle\Model\Filters;
+use Arkounay\Bundle\QuickAdminGeneratorBundle\Twig\Runtime\QagExtensionRuntime;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Mapping\ClassMetadata;
@@ -54,6 +55,7 @@ abstract class Crud extends AbstractController
     protected SluggerInterface $slugger;
     protected TranslatorInterface $translator;
     protected TwigLoaderService $twigLoader;
+    protected QagExtensionRuntime $qagExtensionRuntime;
 
     /** @var EntityRepository<T>  */
     protected EntityRepository $repository;
@@ -85,7 +87,8 @@ abstract class Crud extends AbstractController
         EventDispatcherInterface $eventDispatcher,
         TranslatorInterface $translator,
         TwigLoaderService $twigLoader,
-        SluggerInterface $slugger
+        SluggerInterface $slugger,
+        QagExtensionRuntime $qagExtensionRuntime
     ): void {
         $this->em = $em;
         $this->fieldService = $fieldService;
@@ -96,6 +99,7 @@ abstract class Crud extends AbstractController
         $this->twigLoader = $twigLoader;
         $this->repository = $em->getRepository($this->getEntity());
         $this->slugger = $slugger;
+        $this->qagExtensionRuntime = $qagExtensionRuntime;
     }
 
     /**
@@ -265,7 +269,7 @@ abstract class Crud extends AbstractController
         $event = new GenericEvent($entity);
         $this->eventDispatcher->dispatch($event, 'qag.events.post_delete');
 
-        $this->addFlash('success', $this->translator->trans('entity_deleted', ['%entity%' => $entity]));
+        $this->addFlash('success', $this->translator->trans('entity_deleted', ['%entity%' => $this->qagExtensionRuntime->entityToString($entity)]));
 
         return $this->redirectToList();
     }
@@ -804,9 +808,6 @@ abstract class Crud extends AbstractController
         $this->fields = $this->createFieldsFromMetadata();
         $this->filters = $this->createFilters();
         $request->attributes->add(['qag.main_controller_route' => $this->getRoute()]);
-        if (!method_exists($this->getEntity(), '__toString')) {
-            throw new \RuntimeException("Entity {$this->getEntity()} must implement __toString.");
-        }
     }
 
     /**

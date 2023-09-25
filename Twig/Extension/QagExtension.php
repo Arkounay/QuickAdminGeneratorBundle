@@ -14,6 +14,7 @@ class QagExtension extends AbstractExtension
         return [
             new TwigFunction('qag_action_href', [QagExtensionRuntime::class, 'getActionHref']),
             new TwigFunction('qag_render_icon', [QagExtensionRuntime::class, 'icon'], ['is_safe' => ['html']]),
+            new TwigFunction('qag_entity_to_string', [QagExtensionRuntime::class, 'entityToString']),
             new TwigFunction('qag', [QagExtensionRuntime::class, 'getQag'])
         ];
     }
