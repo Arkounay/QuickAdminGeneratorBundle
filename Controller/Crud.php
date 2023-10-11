@@ -1038,7 +1038,7 @@ abstract class Crud extends AbstractController
      */
     protected function redirectToList(): RedirectResponse
     {
-        return $this->redirectToRoute('qag.' . $this->getRoute(), $this->getListRouteParams());
+        return $this->redirectToRoute('qag.' . $this->getRoute(), $this->getListRouteParams(), Response::HTTP_SEE_OTHER);
     }
 
     protected function backUrl(): string
