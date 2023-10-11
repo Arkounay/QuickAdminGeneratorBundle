@@ -37,7 +37,7 @@ class GlobalSearchController extends AbstractController
 
     private function getSearchResults(Request $request, int $maxResults = 5): array
     {
-        $query = $request->query->get('q', '');
+        $query = trim($request->query->get('q', ''));
 
         $searchResult = [];
         foreach ($this->cruds as $crud) {
