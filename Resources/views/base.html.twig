@@ -80,7 +80,7 @@
 
 </head>
 
-<body {% if theme == 'dark' %}data-bs-theme="dark"{% endif %} data-qag-menu-theme="{{ qag.config.menu.theme }}" class="{% block body_extra_class '' %}" {% block body_attributes '' %}>
+<body {% if theme == 'dark' %}data-bs-theme="dark"{% endif %} data-qag-menu-theme="{{ qag.config.menu.theme }}" class="{% block body_extra_class menu_vertical ? 'vertical-layout' : 'horizontal-layout' %}" {% block body_attributes '' %}>
 {% block body %}
     {% if menu_vertical %}
     <aside class="navbar navbar-vertical navbar-expand-lg navbar-dark" data-bs-theme="dark">
