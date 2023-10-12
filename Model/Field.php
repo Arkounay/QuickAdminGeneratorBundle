@@ -361,6 +361,7 @@ class Field implements Listable
                 $options['class'] = $this->getAssociationMapping();
                 break;
             case 'datetime_immutable':
+            case 'date_immutable':
                 $options['input'] = 'datetime_immutable';
             case 'datetime':
             case 'date':
