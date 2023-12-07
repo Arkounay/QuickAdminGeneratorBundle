@@ -33,14 +33,14 @@
         "symfony/validator": ">=6.3",
         "arkounay/ux-collection": "^3.0",
         "symfony/twig-bundle": ">=6.3.0",
-        "twig/intl-extra": "^3.3",
-        "twig/extra-bundle": "^3.3",
+        "twig/intl-extra": ">=3.3",
+        "twig/extra-bundle": ">=3.3",
         "twig/twig": "^2.12|^3.0",
         "doctrine/doctrine-migrations-bundle": "^3.1",
         "doctrine/orm": "^2.10",
         "symfony/proxy-manager-bridge": ">=6.3.0",
         "symfony/ux-turbo": "^2.0",
-        "symfony/webpack-encore-bundle": "^1.14",
+        "symfony/stimulus-bundle": "^2.13",
         "symfony/monolog-bundle": ">=3.1",
         "symfony/flex": "^2"
     },
@@ -62,6 +62,7 @@
         "phpunit/phpunit": "^9.5",
         "symfony/browser-kit": ">=6.3.0",
         "symfony/css-selector": ">=6.3.0",
-        "symfony/phpunit-bridge": ">=5.3"
+        "symfony/phpunit-bridge": ">=5.3",
+        "symfony/webpack-encore-bundle": ">=1.14"
     }
 }

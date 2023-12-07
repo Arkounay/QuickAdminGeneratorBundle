@@ -1112,7 +1112,7 @@ abstract class Crud extends AbstractController
         $isSearchable = $this->isSearchable();
         $search = null;
         if ($isSearchable) {
-            $search = trim($request->query->get('search'));
+            $search = trim($request->query->getString('search'));
             if ($search !== '') {
                 $this->search($queryBuilder, $search);
             }
