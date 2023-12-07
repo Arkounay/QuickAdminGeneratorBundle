@@ -41,7 +41,6 @@ class TestKernel extends BaseKernel
     protected function configureRoutes(RoutingConfigurator $routes): void
     {
         $routes->import('../config/routes.yaml');
-        $routes->import('../config/routes/annotations.yaml');
     }
 
     private function createTmpDir(string $type): string

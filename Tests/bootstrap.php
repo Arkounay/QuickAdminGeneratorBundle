@@ -26,7 +26,7 @@ $application->setAutoExit(false);
 $application->getKernel()->boot();
 
 $nullOutput = new NullOutput();
-$input = new ArrayInput(['command' => 'doctrine:database:drop', '--no-interaction' => true, '--force' => true]);
+$input = new ArrayInput(['command' => 'doctrine:database:drop', '--no-interaction' => true, '--force' => true, '--if-exists' => true]);
 $application->run($input, $nullOutput);
 
 $input = new ArrayInput(['command' => 'doctrine:database:create', '--no-interaction' => true]);

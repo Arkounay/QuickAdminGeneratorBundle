@@ -6,7 +6,7 @@ use Knp\Bundle\PaginatorBundle\KnpPaginatorBundle;
 use Symfony\Bundle\FrameworkBundle\FrameworkBundle;
 use Symfony\Bundle\SecurityBundle\SecurityBundle;
 use Symfony\Bundle\TwigBundle\TwigBundle;
-use Symfony\WebpackEncoreBundle\WebpackEncoreBundle;
+use Symfony\UX\StimulusBundle\StimulusBundle;
 use Twig\Extra\TwigExtraBundle\TwigExtraBundle;
 
 return [
@@ -16,6 +16,6 @@ return [
     DoctrineBundle::class => ['all' => true],
     SecurityBundle::class => ['all' => true],
     KnpPaginatorBundle::class => ['all' => true],
+    StimulusBundle::class => ['all' => true],
     ArkounayQuickAdminGeneratorBundle::class => ['all' => true],
-    WebpackEncoreBundle::class => ['all' => true],
 ];
