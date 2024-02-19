@@ -2,20 +2,20 @@
   "devDependencies": {
     "@arkounay/ux-collection": "file:vendor/arkounay/ux-collection/Resources/assets",
     "@hotwired/stimulus": "^3.0.0",
-    "@hotwired/turbo": "^7.0.1",
+    "@hotwired/turbo": "^8.0.0",
     "@symfony/stimulus-bridge": "^3.0.0",
     "@symfony/ux-turbo": "file:vendor/symfony/ux-turbo/assets",
-    "@symfony/webpack-encore": "^2.1.0",
+    "@symfony/webpack-encore": "^4.6.0",
     "core-js": "^3.0.0",
-    "node-sass": "^7.0.1",
-    "regenerator-runtime": "^0.13.2",
-    "sass-loader": "^12.1.0",
+    "node-sass": "^9.0.0",
+    "regenerator-runtime": "^0.14.0",
+    "sass-loader": "^14.0.0",
     "sortablejs": "^1.14.0",
     "webpack-notifier": "^1.6.0"
   },
   "license": "UNLICENSED",
   "dependencies": {
-    "@tabler/core": "1.0.0-beta19",
+    "@tabler/core": "1.0.0-beta20",
     "slim-select": "^2.4.5"
   },
   "scripts": {

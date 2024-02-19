@@ -275,7 +275,7 @@
     {% endif %}
 
     <header class="navbar navbar-expand-md navbar-light {% if menu_vertical %}d-none d-lg-flex{% endif %}">
-        <div class="container-xl">
+        <div class="container-xxl">
             {% if menu_vertical %}
                 {{ block('global_search') }}
             {% endif %}
@@ -299,7 +299,7 @@
     <div class="navbar-expand-md">
         <div class="collapse navbar-collapse" id="navbar-menu">
             <div class="navbar navbar-light">
-                <div class="container-xl">
+                <div class="container-xxl">
                     <div class="d-md-none">
                         {{ block('global_search') }}
                     </div>
@@ -317,7 +317,7 @@
     {% endif %}
     <div class="{% block page_wrapper_class 'page-wrapper' %}" {% block page_wrapper_attr '' %}>
         {% block page_content %}
-            <div class="container-xl">
+            <div class="container-xxl">
                 <div class="page-header">
                     <div class="row align-items-start justify-content-between">
                         <div class="col-auto">

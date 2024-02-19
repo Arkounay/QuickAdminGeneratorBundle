@@ -220,7 +220,7 @@
         <form method="post" data-turbo="false" id="batch-form" action="{{ path(route ~ '_delete_batch', app.request.query.all) }}">
             <input type="hidden" name="token" value="{{ csrf_token('batch') }}" />
 
-            <div class="batch-actions-container" {{ stimulus_target('batch_actions', 'actionsContainer') }} style="display: none;">
+            <div class="batch-actions-container px-2" {{ stimulus_target('batch_actions', 'actionsContainer') }} style="display: none;">
                 <span {{ stimulus_target('batch_actions', 'actionText') }} data-single-count="{{ 'batch_selection_single'|trans }}" data-plural-count="{{ 'batch_selection_multiple'|trans }}"></span>
                 {% block batch_actions %}
                     {% for action in batch_actions %}
