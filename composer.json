@@ -31,7 +31,7 @@
         "symfony/asset": ">=6.3",
         "symfony/security-bundle": ">=6.3",
         "symfony/validator": ">=6.3",
-        "arkounay/ux-collection": "^3.0",
+        "arkounay/ux-collection": "^4.0",
         "symfony/twig-bundle": ">=6.3.0",
         "twig/intl-extra": ">=3.3",
         "twig/extra-bundle": ">=3.3",

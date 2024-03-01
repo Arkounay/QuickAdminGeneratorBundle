@@ -1,6 +1,6 @@
 {
   "devDependencies": {
-    "@arkounay/ux-collection": "file:vendor/arkounay/ux-collection/Resources/assets",
+    "@arkounay/ux-collection": "file:vendor/arkounay/ux-collection/assets",
     "@hotwired/stimulus": "^3.0.0",
     "@hotwired/turbo": "^8.0.0",
     "@symfony/stimulus-bridge": "^3.0.0",
