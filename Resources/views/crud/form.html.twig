@@ -6,6 +6,7 @@
 
 {% block content %}
     {{ form_start(form) }}
+    {{ form_errors(form) }}
     {{ parent() }}
     {{ form_end(form) }}
 {% endblock %}
