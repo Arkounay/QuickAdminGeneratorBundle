@@ -533,3 +533,12 @@ textarea[data-controller~="textarea"] {
     max-width: 1600px;
   }
 }
+
+.alert {
+  --bg-alert: var(--tblr-white);
+  background-color: var(--bg-alert);
+}
+
+[data-bs-theme=dark] .alert {
+  --bg-alert: var(--tblr-bg-surface)
+}
