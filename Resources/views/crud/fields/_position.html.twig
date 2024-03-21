@@ -3,7 +3,7 @@
 
 {% if current_action_name == 'list' %}
     <form method="post" action="{{ path(route ~ '_move_post', app.request.query.all|merge({id: entity.id})) }}">
-        <div class="input-group position rounded-0" data-controller="position--item">
+        <div class="input-group position rounded-0 position-btn-invisible" data-controller="position--item">
             <input type="number" class="form-control form-control-sm" min="1" value="{{ value + 1 }}" name="position" data-position--list-target="input" data-position--item-target="input" data-action="position--list#changePosition position--item#changePosition">
             <button class="btn btn-primary invisible" data-position--item-target="button" type="submit">{{ qag_render_icon('device-floppy') }} </button>
         </div>

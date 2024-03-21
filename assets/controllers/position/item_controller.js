@@ -15,11 +15,9 @@ export default class extends Controller {
     }
 
     changePosition() {
-        if (this.currentPosition === this.defaultPosition) {
-            this.buttonTarget.classList.add('invisible');
-        } else {
-            this.buttonTarget.classList.remove('invisible')
-        }
+        const invisible = this.currentPosition === this.defaultPosition;
+        this.element.classList.toggle('position-btn-invisible', invisible)
+        this.buttonTarget.classList.toggle('invisible', invisible)
     }
 
     resetPosition() {

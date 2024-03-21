@@ -101,7 +101,7 @@
                         <div class="d-none d-md-block">
                             {% block global_search %}
                                 {% if qag.config.global_search %}
-                                    <div class="global-search-item {{ menu_horizontal ? 'mx-2 mt-2' }}">
+                                    <div class="global-search-item {{ menu_horizontal ? 'mx-2' }}">
                                         <form action="{{ path('qag.global_search') }}" method="get" data-controller="global-search" data-global-search-index-value="0">
                                             <div class="input-icon">
                                                 <span class="input-icon-addon">
@@ -215,7 +215,7 @@
                                             <span class="nav-link-title">{{ menu_item.label|trans }}</span>
                                         </span>
                                         {% if menu_item.badgeNumber is not null %}
-                                            <span class="badge badge-number badge-pill {{ menu_item.badgeClass|default('bg-red') }}">{{ menu_item.badgeNumber }}</span>
+                                            <span class="badge badge-number badge-pill {{ menu_item.badgeClass|default('bg-red text-red-fg') }}">{{ menu_item.badgeNumber }}</span>
                                         {% endif %}
                                     </a>
                                     <ul class="dropdown-menu {{ menu_vertical and menu_item.active ? 'show' }}">
@@ -233,7 +233,7 @@
                                                                 {{ menu_item.label|trans }}
                                                             </span>
                                                             {% if menu_item.badgeNumber is not null %}
-                                                                <span class="badge badge-number badge-pill {{ menu_item.badgeClass|default('bg-red') }}">{{ menu_item.badgeNumber }}</span>
+                                                                <span class="badge badge-number badge-pill {{ menu_item.badgeClass|default('bg-red text-red-fg') }}">{{ menu_item.badgeNumber }}</span>
                                                             {% endif %}
                                                         </a>
                                                     </li>
@@ -256,7 +256,7 @@
                                                 <div class="d-flex justify-content-between align-items-center">
                                                     {{ menu_item.label|trans }}
                                                     {% if menu_item.badgeNumber is not null %}
-                                                        <span class="badge badge-number badge-pill {{ menu_item.badgeClass|default('bg-red') }}">{{ menu_item.badgeNumber }}</span>
+                                                        <span class="badge badge-number badge-pill {{ menu_item.badgeClass|default('bg-red text-red-fg') }}">{{ menu_item.badgeNumber }}</span>
                                                     {% endif %}
                                                 </div>
                                             </a>
@@ -289,7 +289,7 @@
             {% else %}
                 <div></div>
             {% endif %}
-            <div class="navbar-nav flex-row order-md-last">
+            <div class="navbar-nav flex-row align-items-center order-md-last">
                 {{ block('user_menu') }}
             </div>
         </div>
@@ -319,7 +319,7 @@
         {% block page_content %}
             <div class="container-xxl">
                 <div class="page-header">
-                    <div class="row align-items-start justify-content-between">
+                    <div class="row align-items-baseline justify-content-between">
                         <div class="col-auto">
                             {% block content_title_wrapper %}
                                 <h2 class="page-title my-1">

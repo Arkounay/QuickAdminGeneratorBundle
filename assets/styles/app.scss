@@ -30,6 +30,7 @@
   --btn-border-outline-color: #b6b6b6;
   --tbl-hover-light: #fcfcfc;
   --tblr-navbar-color: rgba(30, 41, 59, 0.7);
+  --tblr-border-color-active: #b3b7bd;
 }
 
 body .markdown > table > thead > tr > body th, body .table > thead > tr > th {
@@ -155,12 +156,23 @@ body .markdown > table > thead > tr > body th, body .table > thead > tr > th {
   }
 }
 
-.position input {
-  padding: 12px;
-  @-moz-document url-prefix() {
+.input-group.position {
+  --height: 28px;
+  box-shadow: none;
+  input {
     padding: 12px 0 12px 12px;
+    @-moz-document url-prefix() {
+      padding: 12px 0 12px 12px;
+    }
+    &::-webkit-inner-spin-button {
+      height: var(--height);
+    }
+    height: var(--height);
   }
-  height: 28px;
+  &.position-btn-invisible input {
+    border-top-right-radius: 2px !important;
+    border-bottom-right-radius: 2px !important;
+  }
 }
 
 html, body {
@@ -247,7 +259,7 @@ tr.highlighted {
         border-color: lighten($blue, 40%);
       }
       &:hover {
-        @extend .bg-white;
+        background-color: rgba(var(--tblr-muted-rgb), 0.04);
       }
     }
   }
@@ -510,7 +522,10 @@ textarea[data-controller~="textarea"] {
     }
 
   }
+}
 
+.dropdown-menu {
+  --tblr-dropdown-link-hover-bg: rgba(var(--tblr-muted-rgb), 0.04);
 }
 
 @media (min-width: 2000px) {
