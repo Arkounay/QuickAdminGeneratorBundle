@@ -30,4 +30,8 @@ document.addEventListener('turbo:render', (e) => {
     }
 });
 
-document.addEventListener('turbo:before-cache', () => document.querySelectorAll('.highlighted').forEach((e) => e.classList.remove('highlighted')));
+document.addEventListener('turbo:before-cache', () => {
+    document.querySelectorAll('.highlighted').forEach((e) => e.classList.remove('highlighted'));
+    document.querySelectorAll('.modal-backdrop').forEach((e) => e.remove());
+    document.querySelectorAll('.modal').forEach((e) => e.style.display = 'none');
+});
