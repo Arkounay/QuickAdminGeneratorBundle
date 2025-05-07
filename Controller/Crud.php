@@ -18,6 +18,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Mapping\ClassMetadata;
 use Doctrine\ORM\QueryBuilder;
+use Exception;
 use JetBrains\PhpStorm\ExpectedValues;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -38,15 +39,18 @@ use Symfony\Component\String\Inflector\InflectorInterface;
 use Symfony\Component\String\Slugger\SluggerInterface;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
+use function count;
 
 /**
  * Creates a Crud for a given entity managed by Doctrine.
- * @template T
+ * @template T of object
  */
 abstract class Crud extends AbstractController
 {
     private const ITEMS_PER_PAGE = 15;
     protected EntityManagerInterface $em;
+
+    /** @var ClassMetadata<T> */
     protected ClassMetadata $metadata;
     protected FieldService $fieldService;
     protected ?Request $request = null;
@@ -60,10 +64,8 @@ abstract class Crud extends AbstractController
     /** @var EntityRepository<T>  */
     protected EntityRepository $repository;
 
-    /** @var Fields|Field[] */
     protected Fields $fields;
 
-    /** @var Filters|Filter[] */
     protected Filters $filters;
 
     /** If the Crud is active and fully loaded */
@@ -177,6 +179,7 @@ abstract class Crud extends AbstractController
     }
 
     /**
+     * @param T $entity
      * Actions that can be applied to a single existing entity, such as "Edit" or "Delete"
      */
     public function getActions($entity): Actions
@@ -211,6 +214,9 @@ abstract class Crud extends AbstractController
 
     /**
      * All the actions available for a list of entities
+     *
+     * @param iterable<T> $entities
+     * @return Actions[]
      */
     public function getActionsPerEntities(iterable $entities): array
     {
@@ -224,6 +230,8 @@ abstract class Crud extends AbstractController
 
     /**
      * The batch actions available for a lit of entities
+     *
+     * @param iterable<T> $entities
      */
     public function getBatchActions(iterable $entities): Actions
     {
@@ -254,6 +262,7 @@ abstract class Crud extends AbstractController
 
     /**
      * Removes an entity
+     * @param T $entity
      */
     public function deleteAction($entity): Response
     {
@@ -284,7 +293,7 @@ abstract class Crud extends AbstractController
             return $this->redirectToList();
         }
         $checked = $this->request->request->all('batch-actions');
-        $nbChecked = \count($checked);
+        $nbChecked = count($checked);
         foreach ($checked as $k => $v) {
             /** @var T $entity */
             $entity = $this->repository->find($k);
@@ -329,7 +338,7 @@ abstract class Crud extends AbstractController
         $propertyAccessor = PropertyAccess::createPropertyAccessor();
         try {
             $propertyAccessor->setValue($entity, $index, $value);
-        } catch (\Exception) {
+        } catch (Exception) {
             throw $this->createAccessDeniedException("Entity {$this->getEntity()}'s property $index cannot be read or written");
         }
 
@@ -600,7 +609,7 @@ abstract class Crud extends AbstractController
                 foreach ($fields as $field) {
                     try {
                         $value = $propertyAccessor->getValue($entity, $field->getIndex());
-                    } catch (\Exception) {
+                    } catch (Exception) {
                         $value = '';
                     }
 
@@ -703,6 +712,8 @@ abstract class Crud extends AbstractController
 
     /**
      * Returns all the entity's attributes that will be turned into Fields.
+     *
+     * @return string[]
      */
     protected function getAllEntityFields(): array
     {
@@ -725,9 +736,9 @@ abstract class Crud extends AbstractController
                 }
             }
         }
-        $methods = $this->metadata->getReflectionClass()?->getMethods(\ReflectionMethod::IS_PUBLIC);
+        $methods = $this->metadata->getReflectionClass()->getMethods(\ReflectionMethod::IS_PUBLIC);
         foreach ($methods as $method) {
-            if (\count($method->getAttributes(\Arkounay\Bundle\QuickAdminGeneratorBundle\Attribute\Field::class)) === 1) {
+            if (count($method->getAttributes(\Arkounay\Bundle\QuickAdminGeneratorBundle\Attribute\Field::class)) === 1) {
                 $res[] = $method->getName();
             }
         }
@@ -1065,7 +1076,7 @@ abstract class Crud extends AbstractController
     protected function hasActions(array $actionEntities): bool
     {
         foreach ($actionEntities as $actions) {
-            if (\count($actions) > 0) {
+            if (count($actions) > 0) {
                 return true;
             }
         }

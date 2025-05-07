@@ -7,12 +7,16 @@ use Arkounay\Bundle\QuickAdminGeneratorBundle\Extension\FieldService;
 use Doctrine\ORM\Mapping\ClassMetadata;
 
 /**
+ * @template TEntity of object
  * @template-extends TypedArray<int, Field>
  * @method Field get(string $field)
  */
 class Fields extends TypedArray
 {
 
+    /**
+     * @param ClassMetadata<TEntity> $metadata
+     */
     public function __construct(private readonly ClassMetadata $metadata, private readonly FieldService $fieldService){}
 
     public function createFromIndexName(string $index): Listable
@@ -25,7 +29,7 @@ class Fields extends TypedArray
         return Field::class;
     }
 
-    public function sortByPosition(): self
+    public function sortByPosition(): static
     {
         uasort($this->items, static fn(Field $a, Field $b): int => $a->getPosition() <=> $b->getPosition());
 
@@ -33,7 +37,7 @@ class Fields extends TypedArray
     }
 
 
-    public function moveToLastPosition(string $index): self
+    public function moveToLastPosition(string $index): static
     {
         $maxPosition = 0;
         foreach ($this as $field) {
@@ -45,7 +49,7 @@ class Fields extends TypedArray
         return $this;
     }
 
-    public function moveToFirstPosition(string $index): self
+    public function moveToFirstPosition(string $index): static
     {
         $minPosition = 0;
         foreach ($this as $field) {
