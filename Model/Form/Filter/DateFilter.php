@@ -45,7 +45,10 @@ class DateFilter extends GenericFilter
         };
     }
 
-    public function isEmpty($data): bool
+    /**
+     * @param mixed $data
+     */
+    public function isEmpty(mixed $data): bool
     {
         if (!isset($data['choice'])) {
             return false;

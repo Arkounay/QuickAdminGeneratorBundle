@@ -11,8 +11,14 @@ use Symfony\Component\Form\FormInterface;
 class EntityFilter extends GenericFilter
 {
 
+    /**
+     * @param array<string, mixed> $options
+     */
     public function __construct(private readonly string $class, protected array $options = []) {}
 
+    /**
+     * @return array<string, mixed>
+     */
     protected function getOptions(Filter $filter): array
     {
         return array_merge(parent::getOptions($filter), $this->options, ['class' => $this->class]);
@@ -32,7 +38,10 @@ class EntityFilter extends GenericFilter
             ->setParameter($index, $form->get($index)->getData()['entity']);
     }
 
-    public function isEmpty($data): bool
+    /**
+     * @param mixed $data
+     */
+    public function isEmpty(mixed $data): bool
     {
         return empty($data['entity']);
     }

@@ -6,6 +6,9 @@ namespace Arkounay\Bundle\QuickAdminGeneratorBundle\Attribute;
 readonly class Field
 {
 
+    /**
+     * @param array<string, mixed> $options
+     */
     public function __construct(
         public ?string $label = null,
         public ?string $twigName = null,

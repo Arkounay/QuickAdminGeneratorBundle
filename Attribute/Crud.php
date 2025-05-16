@@ -10,7 +10,7 @@ readonly class Crud
     final public const FETCH_MANUAL = 'manual';
 
     /**
-     * @var string auto|manual
+     * @var 'auto'|'manual'|null
      * Check if fields should be fetched automatically or manually
      */
     public ?string $fetchMode;

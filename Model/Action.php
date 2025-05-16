@@ -46,14 +46,14 @@ class Action implements Listable
         return $this;
     }
 
+    /**
+     * @return string[]
+     */
     public function getClasses(): array
     {
         return $this->classes;
     }
 
-    /**
-     * @param string[] $classes
-     */
     public function addSharedClasses(string ...$classes): self
     {
         foreach ($classes as $class) {
@@ -64,9 +64,6 @@ class Action implements Listable
         return $this;
     }
 
-    /**
-     * @param string[] $classes
-     */
     public function addClasses(string ...$classes): self
     {
         $this->classes = array_merge($this->classes, $classes);
@@ -93,16 +90,25 @@ class Action implements Listable
     }
 
 
+    /**
+     * @return string[]
+     */
     public function getDropdownClasses(): array
     {
         return $this->dropdownClasses;
     }
 
-    public function getAttributes(): ?array
+    /**
+     * @return string[]
+     */
+    public function getAttributes(): array
     {
         return $this->attributes;
     }
 
+    /**
+     * @param string[] $attributes
+     */
     public function setAttributes(array $attributes): self
     {
         $this->attributes = $attributes;
@@ -120,6 +126,9 @@ class Action implements Listable
         return $this;
     }
 
+    /**
+     * @param string[] $attributes
+     */
     public function addAttributes(array $attributes): self
     {
         $this->attributes = array_merge($this->attributes, $attributes);
@@ -131,9 +140,6 @@ class Action implements Listable
         $this->attributes = array_merge($this->attributes, $modal->toAttributes());
     }
 
-    /**
-     * @param string[] $classes
-     */
     public function addDropDownClasses(string ...$classes): self
     {
         $this->dropdownClasses = array_merge($this->dropdownClasses, $classes);

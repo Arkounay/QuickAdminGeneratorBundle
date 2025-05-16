@@ -2,7 +2,6 @@
 
 namespace Arkounay\Bundle\QuickAdminGeneratorBundle\Model;
 
-use JetBrains\PhpStorm\ExpectedValues;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
@@ -156,13 +155,18 @@ class Modal
         return $this;
     }
 
-    #[ExpectedValues(['true', 'false', 'static'])]
+    /**
+     * @return 'true'|'false'|'static'
+     */
     public function getBackdrop(): string
     {
         return $this->backdrop;
     }
 
-    public function setBackdrop(#[ExpectedValues(['true', 'false', 'static'])] string $backdrop): self
+    /**
+     * @param 'true'|'false'|'static' $backdrop
+     */
+    public function setBackdrop(string $backdrop): self
     {
         $this->backdrop = $backdrop;
         return $this;
@@ -205,6 +209,9 @@ class Modal
         return $bool ? 'true' : 'false';
     }
 
+    /**
+     * @return array<string, string|null>
+     */
     public function toAttributes(): array
     {
         $controller = $this->getController();

@@ -64,8 +64,10 @@ abstract class Crud extends AbstractController
     /** @var EntityRepository<T>  */
     protected EntityRepository $repository;
 
+    /** @var Fields<T> */
     protected Fields $fields;
 
+    /** @var Filters<T> */
     protected Filters $filters;
 
     /** If the Crud is active and fully loaded */
@@ -332,7 +334,7 @@ abstract class Crud extends AbstractController
         if (!$this->isEditableBoolean($entity)) {
             throw $this->createAccessDeniedException("Entity {$this->getEntity()} cannot be edited (boolean).");
         }
-        
+
         $index = $request->request->get('index');
         $value = $request->request->getBoolean('checked');
         $propertyAccessor = PropertyAccess::createPropertyAccessor();
@@ -661,6 +663,7 @@ abstract class Crud extends AbstractController
 
     /**
      * Overrides a form type. By default, forms are created using a custom formBuilder.
+     * @param T $entity
      */
     protected function overrideFormType($entity, bool $creation): ?string
     {
@@ -770,6 +773,8 @@ abstract class Crud extends AbstractController
 
     /**
      * Fields that will be used to display the list of entities.
+     *
+     * @return Fields<T>
      */
     protected function getListingFields(): Fields
     {
@@ -778,6 +783,8 @@ abstract class Crud extends AbstractController
 
     /**
      * Fields that will be used to display the detail of an entity.
+     *
+     * @return Fields<T>
      */
     protected function getViewFields(): Fields
     {
@@ -786,6 +793,8 @@ abstract class Crud extends AbstractController
 
     /**
      * Fields that will be used for the export of an entity.
+     *
+     * @return Fields<T>
      */
     protected function getExportFields(): Fields
     {
@@ -794,12 +803,17 @@ abstract class Crud extends AbstractController
 
     /**
      * Fields that will be used to automatically generate the form in the create / edit actions.
+     *
+     * @return Fields<T>
      */
     protected function getFormFields(): Fields
     {
         return clone $this->fields->filter(static fn(Field $field) => $field->isDisplayedInForm());
     }
 
+    /**
+     * @return Filters<T>
+     */
     protected function getFilters(): Filters
     {
         return $this->filters;
@@ -823,6 +837,8 @@ abstract class Crud extends AbstractController
 
     /**
      * Creates a Fields object without any field by default
+     *
+     * @return Fields<T>
      */
     protected function createFields(): Fields
     {
@@ -831,6 +847,8 @@ abstract class Crud extends AbstractController
 
     /**
      * Creates a Fields object with default fields
+     *
+     * @return Fields<T>
      */
     protected function createFieldsFromMetadata(): Fields
     {
@@ -869,6 +887,9 @@ abstract class Crud extends AbstractController
         return $fields;
     }
 
+    /**
+     * @return Filters<T>
+     */
     final protected function createFilters(): Filters
     {
         return new Filters($this->metadata, $this->fieldService);
@@ -967,6 +988,7 @@ abstract class Crud extends AbstractController
     /**
      * All the actions that will generate Routes.
      * Every functions that end with "Actions" will be considered as an Action and thus, a new route will be automatically created.
+     * @return array<string>
      */
     public function getAllActions(): array
     {
@@ -983,7 +1005,7 @@ abstract class Crud extends AbstractController
 
     /**
      * Finds the entity from an id.
-     * @return T
+     * @return T|null
      */
     public function guessEntity()
     {
@@ -1003,11 +1025,12 @@ abstract class Crud extends AbstractController
     }
 
     /**
-     * The default paginations options. Used to add a default sorting on the listing page.
+     * The default pagination options. Used to add a default sorting on the listing page.
+     * @param Fields<T> $fields
+     * @return array<string, string>
      */
     protected function getPaginationOptions(Fields $fields): array
     {
-        /** @var Fields|Field[] $fields */
         foreach ($fields as $field) {
             if ($field->getDefaultSortDirection() !== null) {
                 return ['defaultSortFieldName' => 'e.' . $field->getIndex(), 'defaultSortDirection' => $field->getDefaultSortDirection()];
@@ -1028,7 +1051,7 @@ abstract class Crud extends AbstractController
     /**
      * True by default
      * If true, the responsive mode will be simplified, there won't be a table but a simple list that will display entity's toString().
-     * This removes batch actions and fields informations.
+     * This removes batch actions and fields information.
      * Return false to use a responsive table with more data instead.
      */
     protected function simpleResponsiveMode(): bool
@@ -1063,6 +1086,9 @@ abstract class Crud extends AbstractController
         return $this->generateUrl('qag.' . $this->getRoute(), $this->getListRouteParams());
     }
 
+    /**
+     * @return array<string, mixed>
+     */
     protected function getListRouteParams(): array
     {
         $params = array_merge($this->request->query->all(), $this->request->get('referer', []));
@@ -1072,6 +1098,7 @@ abstract class Crud extends AbstractController
 
     /**
      * Checks if there are actions to display in the page, so the last column can be removed if there are not.
+     * @param array<int, Actions<int|string>> $actionEntities
      */
     protected function hasActions(array $actionEntities): bool
     {
@@ -1096,6 +1123,7 @@ abstract class Crud extends AbstractController
 
     /**
      * Used to check if the entity is a part of the getListQueryBuilder
+     * @param T $entity
      */
     protected function entityIsInList($entity): bool
     {
@@ -1108,6 +1136,8 @@ abstract class Crud extends AbstractController
 
     /**
      * Allows params overriding before twig rendering
+     * @param array<string, mixed> $params
+     * @return array<string, mixed>
      */
     protected function retrieveParams(string $action, array $params): array
     {
@@ -1118,6 +1148,9 @@ abstract class Crud extends AbstractController
         ], $params);
     }
 
+    /**
+     * @return array{0: bool, 1: string|null, 2: \Symfony\Component\Form\FormInterface|null, 3: int}
+     */
     protected function applySearchAndFiltersQueryBuilder(Request $request, QueryBuilder $queryBuilder): array
     {
         $isSearchable = $this->isSearchable();

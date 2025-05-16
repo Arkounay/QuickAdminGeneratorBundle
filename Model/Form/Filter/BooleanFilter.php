@@ -10,6 +10,9 @@ use Symfony\Component\Form\FormInterface;
 
 class BooleanFilter extends GenericFilter
 {
+    /**
+     * @return array<string, mixed>
+     */
     protected function getOptions(Filter $filter): array
     {
         return array_merge(parent::getOptions($filter), [
@@ -34,7 +37,10 @@ class BooleanFilter extends GenericFilter
             ->setParameter($index, $form->getData()[$index]);
     }
 
-    public function isEmpty($data): bool
+    /**
+     * @param mixed $data
+     */
+    public function isEmpty(mixed $data): bool
     {
         return $data === '';
     }
