@@ -3,6 +3,7 @@
 
 namespace Arkounay\Bundle\QuickAdminGeneratorBundle\Controller;
 
+use Arkounay\Bundle\QuickAdminGeneratorBundle\Extension\EntityService;
 use Arkounay\Bundle\QuickAdminGeneratorBundle\Extension\FieldService;
 use Arkounay\Bundle\QuickAdminGeneratorBundle\Extension\RouteExtension;
 use Arkounay\Bundle\QuickAdminGeneratorBundle\Extension\TwigLoaderService;
@@ -56,6 +57,7 @@ abstract class Crud extends AbstractController
     protected TranslatorInterface $translator;
     protected TwigLoaderService $twigLoader;
     protected QagExtensionRuntime $qagExtensionRuntime;
+    protected EntityService $entityService;
 
     /** @var EntityRepository<T>  */
     protected EntityRepository $repository;
@@ -88,7 +90,8 @@ abstract class Crud extends AbstractController
         TranslatorInterface $translator,
         TwigLoaderService $twigLoader,
         SluggerInterface $slugger,
-        QagExtensionRuntime $qagExtensionRuntime
+        QagExtensionRuntime $qagExtensionRuntime,
+        EntityService $entityService
     ): void {
         $this->em = $em;
         $this->fieldService = $fieldService;
@@ -100,6 +103,7 @@ abstract class Crud extends AbstractController
         $this->repository = $em->getRepository($this->getEntity());
         $this->slugger = $slugger;
         $this->qagExtensionRuntime = $qagExtensionRuntime;
+        $this->entityService = $entityService;
     }
 
     /**
@@ -323,7 +327,7 @@ abstract class Crud extends AbstractController
         if (!$this->isEditableBoolean($entity)) {
             throw $this->createAccessDeniedException("Entity {$this->getEntity()} cannot be edited (boolean).");
         }
-        
+
         $index = $request->request->get('index');
         $value = $request->request->getBoolean('checked');
         $propertyAccessor = PropertyAccess::createPropertyAccessor();
@@ -637,7 +641,7 @@ abstract class Crud extends AbstractController
         if ($event->isPropagationStopped()) {
             return;
         }
-        $this->addFlash('highlighted_row_id', $entity->getId());
+        $this->addFlash('highlighted_row_id', $this->entityService->getId($entity));
     }
 
     /**
@@ -1090,7 +1094,7 @@ abstract class Crud extends AbstractController
     {
         return $this->getListQueryBuilder()
             ->andWhere('e.id = :id')
-            ->setParameter('id', $entity->getId())
+            ->setParameter('id', $this->entityService->getId($entity))
             ->getQuery()
             ->getOneOrNullResult() !== null;
     }
@@ -1158,7 +1162,7 @@ abstract class Crud extends AbstractController
                     throw $this->createAccessDeniedException("Entity {$this->getEntity()} cannot be edited.");
                 }
                 if ($this->hasQuickListQueryBuilderSecurity() && !$this->entityIsInList($entity)) {
-                    throw $this->createAccessDeniedException("Entity {$this->getEntity()} #{$entity->getId()} is filtered out.");
+                    throw $this->createAccessDeniedException("Entity {$this->getEntity()} #{$this->entityService->getId($entity)} is filtered out.");
                 }
                 if ($entity === null) {
                     throw $this->createNotFoundException("No {$this->getNameSentence()} found with id #{$this->request->attributes->get('id')}");
@@ -1174,7 +1178,7 @@ abstract class Crud extends AbstractController
                     throw $this->createAccessDeniedException("Entity {$this->getEntity()} is not removable.");
                 }
                 if ($this->hasQuickListQueryBuilderSecurity() && !$this->entityIsInList($entity)) {
-                    throw $this->createAccessDeniedException("Entity {$this->getEntity()} #{$entity->getId()} is filtered out.");
+                    throw $this->createAccessDeniedException("Entity {$this->getEntity()} #{$this->entityService->getId($entity)} is filtered out.");
                 }
                 break;
             case 'view':
@@ -1182,7 +1186,7 @@ abstract class Crud extends AbstractController
                     throw $this->createAccessDeniedException("Entity {$this->getEntity()} cannot be viewed.");
                 }
                 if ($this->hasQuickListQueryBuilderSecurity() && !$this->entityIsInList($entity)) {
-                    throw $this->createAccessDeniedException("Entity {$this->getEntity()} #{$entity->getId()} is filtered out.");
+                    throw $this->createAccessDeniedException("Entity {$this->getEntity()} #{$this->entityService->getId($entity)} is filtered out.");
                 }
                 if ($entity === null) {
                     throw $this->createNotFoundException("No {$this->getName()} found with id #{$this->request->attributes->get('id')}");
@@ -1193,7 +1197,7 @@ abstract class Crud extends AbstractController
                     throw $this->createAccessDeniedException("Entity {$this->getEntity()} cannot be edited.");
                 }
                 if ($this->hasQuickListQueryBuilderSecurity() && !$this->entityIsInList($entity)) {
-                    throw $this->createAccessDeniedException("Entity {$this->getEntity()} #{$entity->getId()} is filtered out.");
+                    throw $this->createAccessDeniedException("Entity {$this->getEntity()} #{$this->entityService->getId($entity)} is filtered out.");
                 }
                 break;
         }

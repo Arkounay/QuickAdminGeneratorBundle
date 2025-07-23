@@ -10,6 +10,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Routing\RouterInterface;
 use Twig\Environment;
+use Arkounay\Bundle\QuickAdminGeneratorBundle\Extension\EntityService;
 use Twig\Extension\RuntimeExtensionInterface;
 
 class QagExtensionRuntime implements RuntimeExtensionInterface
@@ -22,9 +23,10 @@ class QagExtensionRuntime implements RuntimeExtensionInterface
         private readonly RequestStack $requestStack,
         private readonly MenuInterface $menu,
         private readonly Environment $twig,
-        private readonly EventDispatcherInterface $eventDispatcher
+        private readonly EventDispatcherInterface $eventDispatcher,
+        private readonly EntityService $entityService
     ) {}
-    
+
     private function getMenuItems(): iterable
     {
         return $this->menu->generateMenu();
@@ -44,7 +46,7 @@ class QagExtensionRuntime implements RuntimeExtensionInterface
             $params = $_GET; /* use $_GET instead of $request->query->all() to avoid knp pagination's change of query attributes */
             unset($params['referer']);
             if ($entity !== null) {
-                $params['id'] = $entity->getId();
+                $params['id'] = $this->entityService->getId($entity);
                 if ($request->attributes->get('qag.from') === 'view') {
                     $params['from'] = 'view';
                 }
@@ -88,6 +90,10 @@ class QagExtensionRuntime implements RuntimeExtensionInterface
             $this->_cache = ['menu_items' => $this->getMenuItems(), 'config' => $this->config];
         }
         return $this->_cache;
+    }
+
+    protected function getEntityIdentifier() {
+
     }
 
 }
