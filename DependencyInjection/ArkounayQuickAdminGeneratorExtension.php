@@ -5,6 +5,7 @@ namespace Arkounay\Bundle\QuickAdminGeneratorBundle\DependencyInjection;
 
 
 use Arkounay\Bundle\QuickAdminGeneratorBundle\Controller\Crud;
+use Arkounay\Bundle\QuickAdminGeneratorBundle\Extension\EntityService;
 use Arkounay\Bundle\QuickAdminGeneratorBundle\Extension\FieldService;
 use Arkounay\Bundle\QuickAdminGeneratorBundle\Extension\TwigLoaderService;
 use Arkounay\Bundle\QuickAdminGeneratorBundle\Twig\Runtime\QagExtensionRuntime;
@@ -44,7 +45,8 @@ class ArkounayQuickAdminGeneratorExtension extends Extension
                 new Reference(TranslatorInterface::class),
                 new Reference(TwigLoaderService::class),
                 new Reference(SluggerInterface::class),
-                new Reference(QagExtensionRuntime::class)
+                new Reference(QagExtensionRuntime::class),
+                new Reference(EntityService::class)
             ]);
 
     }

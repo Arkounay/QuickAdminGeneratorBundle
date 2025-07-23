@@ -3,6 +3,7 @@
 
 namespace Arkounay\Bundle\QuickAdminGeneratorBundle\Controller;
 
+use Arkounay\Bundle\QuickAdminGeneratorBundle\Extension\EntityService;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\EventDispatcher\GenericEvent;
@@ -18,7 +19,8 @@ class GlobalSearchController extends AbstractController
         /** @var iterable|Crud[] */
         private readonly iterable $cruds,
         private readonly EventDispatcherInterface $eventDispatcher,
-        private readonly TranslatorInterface $translator
+        private readonly TranslatorInterface $translator,
+        private readonly EntityService $entityService
     )
     {}
 
@@ -64,9 +66,9 @@ class GlobalSearchController extends AbstractController
                             if (\count($actions) > 0) {
                                 $url = null;
                                 if ($crud->isViewable($entity)) {
-                                    $url = $this->generateUrl("qag.{$crud->getRoute()}_view", ['id' => $entity->getId(), 'highlight' => $query]);
+                                    $url = $this->generateUrl("qag.{$crud->getRoute()}_view", ['id' => $this->entityService->getId($entity), 'highlight' => $query]);
                                 } elseif ($crud->isEditable($entity)) {
-                                    $url = $this->generateUrl("qag.{$crud->getRoute()}_edit", ['id' => $entity->getId(), 'highlight' => $query]);
+                                    $url = $this->generateUrl("qag.{$crud->getRoute()}_edit", ['id' => $this->entityService->getId($entity), 'highlight' => $query]);
                                 }
 
                                 if ($url !== null) {
