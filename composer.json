@@ -30,6 +30,7 @@
         "symfony/expression-language": ">=6.3",
         "symfony/asset": ">=6.3",
         "symfony/security-bundle": ">=6.3",
+        "symfony/translation": ">=6.3",
         "symfony/validator": ">=6.3",
         "arkounay/ux-collection": "^4.0",
         "symfony/twig-bundle": ">=6.3.0",
