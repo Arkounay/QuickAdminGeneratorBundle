@@ -11,6 +11,8 @@ export default class extends Controller {
         uncheckedIcon: String,
     }
 
+    isInitialLoad = true;
+
     connect() {
         window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', event => {
             if (this.themeValue === 'auto') {
@@ -19,6 +21,18 @@ export default class extends Controller {
         })
         this.element.classList.remove("dropstart");
         this.element.classList.add("dropdown");
+
+        document.addEventListener('turbo:load', this.handleTurboLoad);
+    }
+
+    disconnect() {
+        document.removeEventListener('turbo:load', this.handleTurboLoad);
+    }
+
+    handleTurboLoad = () => {
+        this.isInitialLoad = true;
+        this.refreshTheme();
+        this.isInitialLoad = false;
     }
 
     selectTheme(event) {
@@ -36,7 +50,7 @@ export default class extends Controller {
     themeValueChanged(value) {
         this.refreshTheme();
 
-        if (!document.documentElement.hasAttribute('data-turbo-preview')) {
+        if (!document.documentElement.hasAttribute('data-turbo-preview') && !this.isInitialLoad) {
             fetch(this.urlValue, {
                 method: 'POST',
                 headers: {
@@ -60,7 +74,5 @@ export default class extends Controller {
                 item.firstChild.innerHTML = this.uncheckedIconValue;
             }
         }
-
     }
-
 }

@@ -51,7 +51,7 @@ Encore
     })
 
     .configureBabel((config) => {
-        config.plugins.push('@babel/plugin-proposal-class-properties');
+        config.plugins.push('@babel/plugin-transform-class-properties');
     })
 
     // enables Sass/SCSS support
