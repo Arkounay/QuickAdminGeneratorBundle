@@ -6,7 +6,7 @@ namespace Arkounay\Bundle\QuickAdminGeneratorBundle\Model;
 /**
  * @internal
  * @template TKey of array-key
- * @template T
+ * @template T of Listable
  * @template-implements \IteratorAggregate<TKey, T>
  * @template-implements \ArrayAccess<TKey|null, T>
  */
@@ -14,7 +14,7 @@ abstract class TypedArray implements \IteratorAggregate, \ArrayAccess, \Countabl
 {
 
     /**
-     * @var Listable[]
+     * @var array<TKey, T>
      */
     protected array $items = [];
 
@@ -26,7 +26,7 @@ abstract class TypedArray implements \IteratorAggregate, \ArrayAccess, \Countabl
     abstract protected function getType(): string;
 
     /**
-     * @return T
+     * @phpstan-return T
      */
     public function get(string $field): Listable
     {
@@ -34,9 +34,9 @@ abstract class TypedArray implements \IteratorAggregate, \ArrayAccess, \Countabl
     }
 
     /**
-     * @param T|string $field
+     * @phpstan-param T|string $field
      */
-    public function add(Listable|string $field): self
+    public function add(Listable|string $field): static
     {
         $type = $this->getType();
         if ($field instanceof $type) {
@@ -55,20 +55,23 @@ abstract class TypedArray implements \IteratorAggregate, \ArrayAccess, \Countabl
         return $this;
     }
 
-    public function remove(string $fieldIndex): self
+    public function remove(string $fieldIndex): static
     {
         unset($this->items[$fieldIndex]);
 
         return $this;
     }
 
+    /**
+     * @return \ArrayIterator<TKey, T>
+     */
     public function getIterator(): \Traversable
     {
         return new \ArrayIterator($this->items);
     }
 
     /**
-     * @param Listable $value
+     * @param T $value
      */
     public function offsetSet(mixed $offset, $value): void
     {
@@ -81,17 +84,24 @@ abstract class TypedArray implements \IteratorAggregate, \ArrayAccess, \Countabl
         }
     }
 
+    /**
+     * @param TKey $offset
+     */
     public function offsetExists($offset): bool
     {
         return isset($this->items[$offset]);
     }
 
+    /**
+     * @param TKey $offset
+     */
     public function offsetUnset($offset): void
     {
         unset($this->items[$offset]);
     }
 
     /**
+     * @param TKey $offset
      * @return T
      */
     public function offsetGet($offset): Listable
@@ -104,13 +114,16 @@ abstract class TypedArray implements \IteratorAggregate, \ArrayAccess, \Countabl
         return empty($this->items);
     }
 
-    public function clear(): self
+    public function clear(): static
     {
         $this->items = [];
 
         return $this;
     }
 
+    /**
+     * @param iterable<TKey, T>|iterable<T> $fields
+     */
     public function set(iterable $fields): void
     {
         $this->clear();
@@ -124,7 +137,7 @@ abstract class TypedArray implements \IteratorAggregate, \ArrayAccess, \Countabl
         return \count($this->items);
     }
 
-    public function moveToLastPosition(string $index): self
+    public function moveToLastPosition(string $index): static
     {
         $tmp = $this->items[$index];
         unset($this->items[$index]);
@@ -133,7 +146,7 @@ abstract class TypedArray implements \IteratorAggregate, \ArrayAccess, \Countabl
         return $this;
     }
 
-    public function moveToFirstPosition(string $index): self
+    public function moveToFirstPosition(string $index): static
     {
         $this->items = array_merge([$index => $this->items[$index]], $this->items);
 
@@ -142,12 +155,16 @@ abstract class TypedArray implements \IteratorAggregate, \ArrayAccess, \Countabl
 
     public function contains(string $index): bool
     {
-        return isset($this->items);
+        return isset($this->items[$index]);
     }
 
-    public function filter(callable $callback): self
+    /**
+     * @param callable(T, TKey): bool $callback
+     * @return static
+     */
+    public function filter(callable $callback): static
     {
-        $this->items = array_filter($this->items, $callback);
+        $this->items = array_filter($this->items, $callback, ARRAY_FILTER_USE_BOTH);
 
         return $this;
     }

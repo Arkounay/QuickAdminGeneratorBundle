@@ -6,6 +6,8 @@ namespace Arkounay\Bundle\QuickAdminGeneratorBundle\Model;
 use function Symfony\Component\String\u;
 
 /**
+ * @template TKey of array-key
+ * @template-extends TypedArray<TKey, Action>
  * @method Action get(string $field)
  */
 class Actions extends TypedArray

@@ -11,10 +11,7 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 class Field implements Listable
 {
 
-    /**
-     * @var string
-     */
-    protected $index;
+    protected string $index;
 
     /**
      * @var string
@@ -82,7 +79,7 @@ class Field implements Listable
     protected $formType;
 
     /**
-     * @var array
+     * @var array<string, mixed>
      */
     protected $options = [];
 
@@ -264,11 +261,17 @@ class Field implements Listable
         return $this;
     }
 
+    /**
+     * @return array<string, mixed>
+     */
     public function getOptions(): array
     {
         return $this->options;
     }
 
+    /**
+     * @param array<string, mixed> $options
+     */
     public function setOptions(array $options): self
     {
         $this->options = $options;
@@ -332,16 +335,25 @@ class Field implements Listable
         $this->position = $position;
     }
 
-    public function getPayload()
+    /**
+     * @return mixed
+     */
+    public function getPayload(): mixed
     {
         return $this->payload;
     }
 
-    public function setPayload($payload): void
+    /**
+     * @param mixed $payload
+     */
+    public function setPayload(mixed $payload): void
     {
         $this->payload = $payload;
     }
 
+    /**
+     * @return array<string, mixed>
+     */
     public function guessFormOptions(): array
     {
         $options = ['label' => $this->getLabel(), 'required' => $this->isRequired()];
@@ -394,9 +406,9 @@ class Field implements Listable
         return match ($this->getType()) {
             'decimal' => TextType::class,
             'enum' => EnumType::class,
-            'date' => $this->getFormType() ?? DateType::class,
-            'datetime_immutable', 'datetime' => $this->getFormType() ?? DateTimeType::class,
-            'relation_to_many', 'relation' => $this->getFormType() ?? EntityType::class,
+            'date' => DateType::class,
+            'datetime_immutable', 'datetime' => DateTimeType::class,
+            'relation_to_many', 'relation' => EntityType::class,
             default => null,
         };
     }
